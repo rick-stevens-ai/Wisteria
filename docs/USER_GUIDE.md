@@ -176,6 +176,23 @@ python curses_wisteria_v5.py --resume previous_session.json --model gpt41
 4. Session saved with all hypotheses and feedback history
 5. Automatic .json extension added if not provided
 
+#### `t` - Notes
+1. Press `t` to add/edit notes for current hypothesis
+2. Type your personal notes and observations
+3. Use arrow keys to navigate within text
+4. Press `Enter` to save or `Esc` to cancel
+5. Notes are preserved across all versions of the hypothesis
+6. Notes appear in both interface and PDF exports
+
+**Notes Features**:
+- **Personal Observations**: Add your own insights and thoughts
+- **Research Context**: Note connections to other work or ideas
+- **Todo Items**: Track what needs to be investigated further
+- **Version Persistence**: Notes carry forward to improved versions
+- **Editing Support**: Cursor navigation and text editing
+- **Visual Display**: Highlighted section in hypothesis details
+- **PDF Integration**: Professional formatting in exported documents
+
 #### `s` - Select Hypothesis
 1. Press `s` to choose by number
 2. Enter hypothesis number (e.g., "3")
@@ -402,6 +419,7 @@ Feedback History:
 | **Session** | | |
 | Load Session | `l` | Load previous session |
 | Save Session | `x` | Save current session with custom filename |
+| Notes | `t` | Add/edit personal notes for current hypothesis |
 | Select Hypothesis | `s` | Jump to hypothesis by number |
 | View Titles | `v` | Show all hypothesis titles |
 | **Display** | | |

@@ -35,6 +35,7 @@ The script:
    - n - Generate a new hypothesis different from previous ones
    - l - Load from a JSON file a previous session log
    - x - Save current session to a JSON file with custom filename
+   - t - Add/edit personal notes for the current hypothesis
    - v - View the titles of hypotheses in current session
    - s - Select a hypothesis to continue to refine
    - h - Toggle hallmarks analysis display
@@ -333,6 +334,33 @@ class CursesInterface:
                         self.safe_addstr(self.detail_win, display_y, 2, line)
                 y_pos += 1
             
+            # Notes section
+            notes = hypothesis.get('notes', '')
+            if notes.strip():
+                y_pos += 1
+                if y_pos - 2 >= self.detail_scroll_offset and y_pos - self.detail_scroll_offset < max_y:
+                    display_y = y_pos - self.detail_scroll_offset
+                    if 2 <= display_y < max_y:
+                        self.safe_addstr(self.detail_win, display_y, 2, "Personal Notes:", curses.A_UNDERLINE)
+                y_pos += 1
+                
+                wrapped_notes = textwrap.fill(notes, content_width)
+                for line in wrapped_notes.split('\n'):
+                    if y_pos >= max_y + self.detail_scroll_offset + 20:  # Reasonable limit
+                        break
+                    if y_pos - 2 >= self.detail_scroll_offset:
+                        display_y = y_pos - self.detail_scroll_offset
+                        if 2 <= display_y < max_y:
+                            self.safe_addstr(self.detail_win, display_y, 2, line, curses.color_pair(5))  # Different color for notes
+                    y_pos += 1
+            else:
+                y_pos += 1
+                if y_pos - 2 >= self.detail_scroll_offset and y_pos - self.detail_scroll_offset < max_y:
+                    display_y = y_pos - self.detail_scroll_offset
+                    if 2 <= display_y < max_y:
+                        self.safe_addstr(self.detail_win, display_y, 2, "[No notes - press 't' to add notes]", curses.color_pair(4))
+                y_pos += 1
+            
             # Show improvements if this is an improvement
             if hypothesis.get("improvements_made") and hypothesis.get("type") == "improvement":
                 y_pos += 1
@@ -475,7 +503,7 @@ class CursesInterface:
         self.safe_addstr(self.status_win, 0, 0, status_line)
         
         # Commands - show on two lines if needed
-        commands_line1 = " f=Feedback n=New l=Load x=Save s=Select v=View h=Toggle r=Refs p=PDF q=Quit "
+        commands_line1 = " f=Feedback n=New l=Load x=Save t=Notes s=Select v=View h=Toggle r=Refs p=PDF q=Quit "
         commands_line2 = " Up/Down=Navigate j/k=Scroll d/u=FastScroll "
         
         # Try to fit both lines, otherwise just show main commands
@@ -709,6 +737,27 @@ def generate_hypothesis_pdf(hypothesis, research_goal, output_filename=None):
         validation = hypothesis.get('experimental_validation', 'No experimental validation plan provided.')
         story.append(Paragraph(validation, body_style))
         story.append(Spacer(1, 20))
+        
+        # Personal Notes
+        notes = hypothesis.get('notes', '')
+        if notes.strip():
+            notes_style = ParagraphStyle(
+                'NotesStyle',
+                parent=styles['Normal'],
+                fontSize=11,
+                spaceAfter=12,
+                leftIndent=10,
+                rightIndent=10,
+                leading=14,
+                backColor=HexColor('#FFF9E6'),
+                borderWidth=1,
+                borderColor=HexColor('#E6CC00'),
+                borderPadding=8
+            )
+            
+            story.append(Paragraph("Personal Notes", heading_style))
+            story.append(Paragraph(notes, notes_style))
+            story.append(Spacer(1, 20))
         
         # Improvements (if any)
         if hypothesis.get("improvements_made") and hypothesis.get("type") == "improvement":
@@ -1524,6 +1573,9 @@ Please format your response as a JSON object with the following structure:
                 # Initialize feedback history if not present
                 if "feedback_history" not in improved_hypothesis:
                     improved_hypothesis["feedback_history"] = []
+                # Initialize notes if not present
+                if "notes" not in improved_hypothesis:
+                    improved_hypothesis["notes"] = ""
                 return improved_hypothesis
             else:
                 # Fallback: try to parse the entire response as JSON
@@ -1532,6 +1584,9 @@ Please format your response as a JSON object with the following structure:
                 # Initialize feedback history if not present
                 if "feedback_history" not in improved_hypothesis:
                     improved_hypothesis["feedback_history"] = []
+                # Initialize notes if not present
+                if "notes" not in improved_hypothesis:
+                    improved_hypothesis["notes"] = ""
                 return improved_hypothesis
                 
         except json.JSONDecodeError as je:
@@ -1692,6 +1747,9 @@ Ensure this hypothesis explores a unique angle that has not been covered by the 
                 # Initialize feedback history for new hypotheses
                 if "feedback_history" not in new_hypothesis:
                     new_hypothesis["feedback_history"] = []
+                # Initialize notes for new hypotheses
+                if "notes" not in new_hypothesis:
+                    new_hypothesis["notes"] = ""
                 return new_hypothesis
             else:
                 # Fallback: try to parse the entire response as JSON
@@ -1700,6 +1758,9 @@ Ensure this hypothesis explores a unique angle that has not been covered by the 
                 # Initialize feedback history for new hypotheses
                 if "feedback_history" not in new_hypothesis:
                     new_hypothesis["feedback_history"] = []
+                # Initialize notes for new hypotheses
+                if "notes" not in new_hypothesis:
+                    new_hypothesis["notes"] = ""
                 return new_hypothesis
                 
         except json.JSONDecodeError as je:
@@ -1761,7 +1822,7 @@ def load_session_from_json(filename):
         hypotheses = data.get("hypotheses", [])
         research_goal = metadata.get("research_goal", "")
         
-        # Ensure all loaded hypotheses have feedback_history field
+        # Ensure all loaded hypotheses have feedback_history and notes fields
         for hypothesis in hypotheses:
             if "feedback_history" not in hypothesis:
                 hypothesis["feedback_history"] = []
@@ -1774,6 +1835,9 @@ def load_session_from_json(filename):
                         "version_after": hypothesis.get("version", "1.1")
                     }
                     hypothesis["feedback_history"].append(feedback_entry)
+            # Initialize notes if not present
+            if "notes" not in hypothesis:
+                hypothesis["notes"] = ""
         
         print(f"Loaded session from {filename}")
         print(f"Original research goal: {research_goal}")
@@ -2213,6 +2277,9 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                                         feedback_history.append(feedback_entry)
                                         improved_hypothesis["feedback_history"] = feedback_history
                                         
+                                        # Copy notes from current hypothesis
+                                        improved_hypothesis["notes"] = current_hypothesis.get("notes", "")
+                                        
                                         improved_hypothesis["generation_timestamp"] = datetime.now().isoformat()
                                         all_hypotheses.append(improved_hypothesis)
                                         interface.set_status("Hypothesis improved!")
@@ -2430,6 +2497,59 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                                     filename_input += chr(key_save)
                                     interface.draw_status_bar(f"Enter filename: {filename_input}")
                                     stdscr.refresh()
+                            
+                        elif key == ord('t') or key == ord('T'):
+                            # Notes - add/edit notes for current hypothesis
+                            if current_hypothesis:
+                                current_notes = current_hypothesis.get("notes", "")
+                                interface.set_status("Enter notes (Enter to save, ESC to cancel):")
+                                interface.draw_status_bar()
+                                stdscr.refresh()
+                                
+                                # Get notes input - allow multi-line editing
+                                notes_input = current_notes
+                                editing_notes = True
+                                cursor_pos = len(notes_input)
+                                
+                                while editing_notes:
+                                    # Display current notes input with cursor
+                                    display_notes = notes_input[:cursor_pos] + "_" + notes_input[cursor_pos:] if len(notes_input) < 100 else notes_input[-97:] + "..."
+                                    interface.draw_status_bar(f"Notes: {display_notes}")
+                                    stdscr.refresh()
+                                    
+                                    key_notes = stdscr.getch()
+                                    if key_notes == 27:  # ESC
+                                        interface.set_status("Notes editing cancelled")
+                                        editing_notes = False
+                                    elif key_notes == ord('\n') or key_notes == curses.KEY_ENTER or key_notes == 10:
+                                        # Save notes
+                                        current_hypothesis["notes"] = notes_input
+                                        # Update notes in all hypothesis versions with same number
+                                        hyp_num = current_hypothesis["hypothesis_number"]
+                                        for hyp in all_hypotheses:
+                                            if hyp.get("hypothesis_number") == hyp_num:
+                                                hyp["notes"] = notes_input
+                                        interface.set_status(f"Notes saved for hypothesis #{hyp_num}")
+                                        editing_notes = False
+                                    elif key_notes == curses.KEY_BACKSPACE or key_notes == 127 or key_notes == 8:
+                                        if cursor_pos > 0:
+                                            notes_input = notes_input[:cursor_pos-1] + notes_input[cursor_pos:]
+                                            cursor_pos -= 1
+                                    elif key_notes == curses.KEY_LEFT:
+                                        if cursor_pos > 0:
+                                            cursor_pos -= 1
+                                    elif key_notes == curses.KEY_RIGHT:
+                                        if cursor_pos < len(notes_input):
+                                            cursor_pos += 1
+                                    elif key_notes == curses.KEY_HOME:
+                                        cursor_pos = 0
+                                    elif key_notes == curses.KEY_END:
+                                        cursor_pos = len(notes_input)
+                                    elif 32 <= key_notes <= 126:  # Printable characters
+                                        notes_input = notes_input[:cursor_pos] + chr(key_notes) + notes_input[cursor_pos:]
+                                        cursor_pos += 1
+                            else:
+                                interface.set_status("No hypothesis selected for notes")
                             
                         elif key == ord('s') or key == ord('S'):
                             # Select hypothesis - prompt for hypothesis number

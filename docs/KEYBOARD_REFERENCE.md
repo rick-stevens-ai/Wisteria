@@ -26,6 +26,7 @@
 |-----|---------|-------------|
 | `l` | Load | Load hypotheses from JSON file |
 | `x` | Save | Save current session with custom filename |
+| `t` | Notes | Add/edit personal notes for current hypothesis |
 | `s` | Select | Jump to hypothesis by number |
 | `v` | View | Show all hypothesis titles |
 
@@ -196,6 +197,40 @@ backup_jan_15          # Saves as backup_jan_15.json
 - Includes all feedback history and timestamps
 - Preserves hypothesis version information
 - Creates file in current directory
+
+#### `t` - Notes
+**Purpose**: Add or edit personal notes for the current hypothesis
+
+**Usage Flow**:
+1. Press `t` while viewing a hypothesis
+2. Status bar shows: "Enter notes (Enter to save, ESC to cancel):"
+3. Type or edit your personal notes
+4. Use arrow keys to navigate within the text
+5. Press `Enter` to save or `Esc` to cancel
+6. Notes are applied to all versions of the hypothesis
+
+**Editing Features**:
+- **Text Navigation**: Left/Right arrow keys to move cursor
+- **Text Editing**: Insert text at cursor position
+- **Backspace**: Delete character before cursor
+- **Home/End**: Jump to beginning/end of text
+- **Visual Cursor**: Shows current editing position
+
+**Examples**:
+```
+"This hypothesis reminds me of the 2019 Nature paper on CRISPR"
+"TODO: Check if this conflicts with our previous findings"
+"Promising approach - should discuss with the team"
+"May need additional controls for confounding variables"
+```
+
+**Technical Notes**:
+- Notes are saved to all versions of the same hypothesis number
+- Maximum practical length ~1000 characters for display
+- Notes appear in hypothesis details pane
+- Included in PDF exports with special formatting
+- Preserved during session save/load operations
+- Copied to new versions when hypothesis is improved
 
 #### `s` - Select by Number
 **Purpose**: Jump directly to a specific hypothesis by its number
@@ -392,6 +427,7 @@ Press any key to continue...
 │ SESSION              │ SYSTEM               │               │
 │ l - Load session     │ Esc - Cancel         │               │
 │ x - Save session     │ Ctrl+C - Force quit  │               │
+│ t - Notes            │                      │               │
 │ s - Select by #      │                      │               │
 │ v - View titles      │                      │               │
 └─────────────────────────────────────────────────────────────┘
