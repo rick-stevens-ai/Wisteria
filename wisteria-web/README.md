@@ -26,7 +26,23 @@ A modern web interface for the Wisteria Research Hypothesis Generator, built wit
 - Node.js 16+
 - npm or yarn
 
-### Backend Setup
+### Option 1: Quick Start (Recommended)
+
+Use the provided startup script to run both backend and frontend simultaneously:
+
+```bash
+cd wisteria-web
+chmod +x start-services.sh
+./start-services.sh
+```
+
+This will start:
+- Backend API at `http://localhost:5001`
+- Frontend UI at `http://localhost:3000`
+
+### Option 2: Manual Setup
+
+#### Backend Setup
 
 1. **Navigate to backend directory**:
    ```bash
@@ -44,10 +60,10 @@ A modern web interface for the Wisteria Research Hypothesis Generator, built wit
    pip install -r requirements.txt
    ```
 
-4. **Set environment variables** (optional):
+4. **Set environment variables**:
    ```bash
    export OPENAI_API_KEY="your-openai-api-key"
-   export VLLM_API_KEY="your-vllm-api-key"
+   export SCOUT_API_KEY="your-scout-api-key"
    ```
 
 5. **Run the Flask server**:
@@ -55,9 +71,9 @@ A modern web interface for the Wisteria Research Hypothesis Generator, built wit
    python run.py
    ```
 
-The backend will be available at `http://localhost:5000`
+The backend will be available at `http://localhost:5001`
 
-### Frontend Setup
+#### Frontend Setup
 
 1. **Navigate to frontend directory**:
    ```bash
@@ -144,7 +160,7 @@ servers:
 
   - server: "localhost:9999"
     shortname: "scout"
-    openai_api_key: "CELS"
+    openai_api_key: "${SCOUT_API_KEY}"
     openai_api_base: "http://localhost:9999/v1"
     openai_model: "scout"
 ```
@@ -152,7 +168,7 @@ servers:
 ### Environment Variables
 
 - `OPENAI_API_KEY`: Your OpenAI API key
-- `VLLM_API_KEY`: Your vLLM API key (if using local models)
+- `SCOUT_API_KEY`: Your scout API key (if using local models)
 - `DATABASE_URL`: Database connection string (defaults to SQLite)
 - `SECRET_KEY`: Flask secret key (auto-generated in development)
 
