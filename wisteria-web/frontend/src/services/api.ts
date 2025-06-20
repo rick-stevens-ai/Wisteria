@@ -115,4 +115,38 @@ export const apiService = {
       return { error: error.response?.data?.error || 'Failed to delete session' };
     }
   },
+
+  // Download hypothesis as PDF
+  downloadHypothesisPdf: async (sessionId: string, hypothesisId: string): Promise<ApiResponse<void>> => {
+    try {
+      const response = await api.get(`/sessions/${sessionId}/hypotheses/${hypothesisId}/pdf`, {
+        responseType: 'blob'
+      });
+      
+      // Create download link
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      
+      // Extract filename from response headers or create default
+      const contentDisposition = response.headers['content-disposition'];
+      let filename = 'hypothesis.pdf';
+      if (contentDisposition) {
+        const filenameMatch = contentDisposition.match(/filename="(.+)"/);
+        if (filenameMatch) {
+          filename = filenameMatch[1];
+        }
+      }
+      
+      link.setAttribute('download', filename);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+      
+      return { message: 'PDF downloaded successfully' };
+    } catch (error: any) {
+      return { error: error.response?.data?.error || 'Failed to download PDF' };
+    }
+  },
 }; 

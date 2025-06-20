@@ -15,6 +15,10 @@ function App() {
   const [selectedModel, setSelectedModel] = useState('');
   const [feedback, setFeedback] = useState('');
 
+  // Hypothesis navigation state
+  const [hypothesisIndex, setHypothesisIndex] = useState(0);
+  const [sessionHypotheses, setSessionHypotheses] = useState<Hypothesis[]>([]);
+
   useEffect(() => {
     loadModels();
     loadSessions();
@@ -123,11 +127,71 @@ function App() {
   const selectSession = async (session: Session) => {
     setCurrentSession(session);
     setCurrentHypothesis(null);
+    setHypothesisIndex(0);
     
     // Load session details with hypotheses
     const result = await apiService.getSession(session.id);
     if (result.data && result.data.hypotheses && result.data.hypotheses.length > 0) {
-      setCurrentHypothesis(result.data.hypotheses[result.data.hypotheses.length - 1]);
+      setSessionHypotheses(result.data.hypotheses);
+      setCurrentHypothesis(result.data.hypotheses[0]);
+      setHypothesisIndex(0);
+    } else {
+      setSessionHypotheses([]);
+    }
+  };
+
+  const deleteSession = async (sessionId: string) => {
+    if (!window.confirm('Are you sure you want to delete this session? This action cannot be undone.')) {
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    const result = await apiService.deleteSession(sessionId);
+    if (result.message) {
+      // Remove from sessions list
+      setSessions(sessions.filter(s => s.id !== sessionId));
+      
+      // If this was the current session, clear it
+      if (currentSession?.id === sessionId) {
+        setCurrentSession(null);
+        setCurrentHypothesis(null);
+        setSessionHypotheses([]);
+        setHypothesisIndex(0);
+      }
+    } else {
+      setError(result.error || 'Failed to delete session');
+    }
+    setLoading(false);
+  };
+
+  const downloadHypothesisPdf = async () => {
+    if (!currentSession || !currentHypothesis) return;
+
+    setLoading(true);
+    setError(null);
+
+    const result = await apiService.downloadHypothesisPdf(currentSession.id, currentHypothesis.id);
+    if (result.error) {
+      setError(result.error);
+    }
+    setLoading(false);
+  };
+
+  const navigateHypothesis = (direction: 'prev' | 'next') => {
+    if (sessionHypotheses.length === 0) return;
+
+    let newIndex = hypothesisIndex;
+    if (direction === 'prev') {
+      newIndex = Math.max(0, hypothesisIndex - 1);
+    } else {
+      newIndex = Math.min(sessionHypotheses.length - 1, hypothesisIndex + 1);
+    }
+
+    if (newIndex !== hypothesisIndex) {
+      setHypothesisIndex(newIndex);
+      setCurrentHypothesis(sessionHypotheses[newIndex]);
     }
   };
 
@@ -192,14 +256,38 @@ function App() {
                 {sessions.map((session) => (
                   <div
                     key={session.id}
-                    onClick={() => selectSession(session)}
                     className={`session-item ${currentSession?.id === session.id ? 'active' : ''}`}
                   >
-                    <h4>{session.research_goal}</h4>
-                    <p>{session.model_shortname}</p>
-                    <p style={{ fontSize: '0.75rem', color: '#9ca3af' }}>
-                      {new Date(session.created_at).toLocaleDateString()}
-                    </p>
+                    <div 
+                      className="session-content"
+                      onClick={() => selectSession(session)}
+                    >
+                      <h4>{session.research_goal}</h4>
+                      <p>{session.model_shortname}</p>
+                      <p style={{ fontSize: '0.75rem', color: '#9ca3af' }}>
+                        {new Date(session.created_at).toLocaleDateString()}
+                      </p>
+                      <p style={{ fontSize: '0.75rem', color: '#6b7280' }}>
+                        {session.hypothesis_count || 0} hypotheses
+                      </p>
+                    </div>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        deleteSession(session.id);
+                      }}
+                      className="btn btn-danger btn-sm"
+                      style={{ 
+                        position: 'absolute', 
+                        top: '0.5rem', 
+                        right: '0.5rem',
+                        fontSize: '0.75rem',
+                        padding: '0.25rem 0.5rem'
+                      }}
+                      title="Delete session"
+                    >
+                      ×
+                    </button>
                   </div>
                 ))}
               </div>
@@ -231,15 +319,58 @@ function App() {
                     </div>
                   ) : (
                     <div>
+                      {/* Hypothesis Navigation */}
+                      {sessionHypotheses.length > 1 && (
+                        <div className="hypothesis-navigation" style={{ 
+                          display: 'flex', 
+                          justifyContent: 'space-between', 
+                          alignItems: 'center',
+                          marginBottom: '1rem',
+                          padding: '0.5rem',
+                          backgroundColor: '#f8f9fa',
+                          borderRadius: '0.375rem'
+                        }}>
+                          <button
+                            onClick={() => navigateHypothesis('prev')}
+                            disabled={hypothesisIndex === 0}
+                            className="btn btn-outline-secondary btn-sm"
+                          >
+                            ← Previous
+                          </button>
+                          <span style={{ fontSize: '0.875rem', color: '#6b7280' }}>
+                            Hypothesis {hypothesisIndex + 1} of {sessionHypotheses.length}
+                          </span>
+                          <button
+                            onClick={() => navigateHypothesis('next')}
+                            disabled={hypothesisIndex === sessionHypotheses.length - 1}
+                            className="btn btn-outline-secondary btn-sm"
+                          >
+                            Next →
+                          </button>
+                        </div>
+                      )}
+
                       {/* Hypothesis Display */}
                       <div className="hypothesis">
                         <div className="hypothesis-header">
-                          <h3 className="hypothesis-title">
-                            Hypothesis #{currentHypothesis.hypothesis_number} v{currentHypothesis.version}
-                          </h3>
-                          <p className="hypothesis-meta">
-                            Type: {currentHypothesis.hypothesis_type}
-                          </p>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                            <div>
+                              <h3 className="hypothesis-title">
+                                Hypothesis #{currentHypothesis.hypothesis_number} v{currentHypothesis.version}
+                              </h3>
+                              <p className="hypothesis-meta">
+                                Type: {currentHypothesis.hypothesis_type}
+                              </p>
+                            </div>
+                            <button
+                              onClick={downloadHypothesisPdf}
+                              disabled={loading}
+                              className="btn btn-outline-primary btn-sm"
+                              title="Download as PDF"
+                            >
+                              📄 PDF
+                            </button>
+                          </div>
                         </div>
                         
                         <div className="hypothesis-section">
