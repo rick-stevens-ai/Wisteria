@@ -34,6 +34,7 @@ The script:
    - f - Provide feedback to improve the current hypothesis
    - n - Generate a new hypothesis different from previous ones
    - l - Load from a JSON file a previous session log
+   - x - Save current session to a JSON file with custom filename
    - v - View the titles of hypotheses in current session
    - s - Select a hypothesis to continue to refine
    - h - Toggle hallmarks analysis display
@@ -474,7 +475,7 @@ class CursesInterface:
         self.safe_addstr(self.status_win, 0, 0, status_line)
         
         # Commands - show on two lines if needed
-        commands_line1 = " f=Feedback n=New l=Load s=Select v=View h=Toggle r=Refs p=PDF q=Quit "
+        commands_line1 = " f=Feedback n=New l=Load x=Save s=Select v=View h=Toggle r=Refs p=PDF q=Quit "
         commands_line2 = " Up/Down=Navigate j/k=Scroll d/u=FastScroll "
         
         # Try to fit both lines, otherwise just show main commands
@@ -2360,6 +2361,73 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                                         stdscr.refresh()
                                 elif 32 <= key_load <= 126:  # Printable characters
                                     filename_input += chr(key_load)
+                                    interface.draw_status_bar(f"Enter filename: {filename_input}")
+                                    stdscr.refresh()
+                            
+                        elif key == ord('x') or key == ord('X'):
+                            # Save session - prompt for filename
+                            interface.set_status("Enter filename to save (ESC to cancel):")
+                            interface.draw_status_bar()
+                            stdscr.refresh()
+                            
+                            # Get filename input
+                            filename_input = ""
+                            saving_mode = True
+                            
+                            while saving_mode:
+                                key_save = stdscr.getch()
+                                if key_save == 27:  # ESC
+                                    interface.set_status("Save cancelled")
+                                    saving_mode = False
+                                elif key_save == ord('\n') or key_save == curses.KEY_ENTER or key_save == 10:
+                                    if filename_input.strip():
+                                        # Try to save the session
+                                        interface.set_status("Saving session...")
+                                        interface.draw_status_bar()
+                                        stdscr.refresh()
+                                        
+                                        save_filename = filename_input.strip()
+                                        # Add .json extension if not present
+                                        if not save_filename.endswith('.json'):
+                                            save_filename += '.json'
+                                        
+                                        try:
+                                            # Construct metadata for save
+                                            unique_hypothesis_numbers = set()
+                                            for hyp in all_hypotheses:
+                                                unique_hypothesis_numbers.add(hyp.get("hypothesis_number", 0))
+                                            
+                                            metadata = {
+                                                "session_type": "interactive",
+                                                "research_goal": research_goal,
+                                                "model": model_config.get('model_name', 'unknown'),
+                                                "model_name": model_config.get('model_name', 'unknown'),
+                                                "num_unique_hypotheses": len(unique_hypothesis_numbers),
+                                                "total_hypothesis_versions": len(all_hypotheses),
+                                                "timestamp": datetime.now().isoformat(),
+                                                "hypothesis_types": {
+                                                    "original": len([h for h in all_hypotheses if h.get("type") == "original"]),
+                                                    "improvements": len([h for h in all_hypotheses if h.get("type") == "improvement"]),
+                                                    "new_alternatives": len([h for h in all_hypotheses if h.get("type") == "new_alternative"])
+                                                }
+                                            }
+                                            
+                                            save_hypotheses_to_json(all_hypotheses, save_filename, metadata)
+                                            interface.set_status(f"Session saved successfully to {save_filename}")
+                                        except Exception as e:
+                                            interface.set_status(f"Save error: {str(e)[:50]}")
+                                            import traceback
+                                            traceback.print_exc()  # For debugging
+                                    else:
+                                        interface.set_status("Save cancelled - no filename provided")
+                                    saving_mode = False
+                                elif key_save == curses.KEY_BACKSPACE or key_save == 127 or key_save == 8:
+                                    if filename_input:
+                                        filename_input = filename_input[:-1]
+                                        interface.draw_status_bar(f"Enter filename: {filename_input}")
+                                        stdscr.refresh()
+                                elif 32 <= key_save <= 126:  # Printable characters
+                                    filename_input += chr(key_save)
                                     interface.draw_status_bar(f"Enter filename: {filename_input}")
                                     stdscr.refresh()
                             

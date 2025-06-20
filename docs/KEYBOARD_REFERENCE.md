@@ -25,6 +25,7 @@
 | Key | Action | Description |
 |-----|---------|-------------|
 | `l` | Load | Load hypotheses from JSON file |
+| `x` | Save | Save current session with custom filename |
 | `s` | Select | Jump to hypothesis by number |
 | `v` | View | Show all hypothesis titles |
 
@@ -171,6 +172,30 @@ my_session.json
 - Merges without duplicating
 - Preserves all feedback history
 - Updates research goal if different
+
+#### `x` - Save Session
+**Purpose**: Save current session to a custom filename
+
+**Usage Flow**:
+1. Press `x`
+2. Status bar shows: "Enter filename to save (ESC to cancel):"
+3. Type desired filename (without .json extension)
+4. Press `Enter` to save or `Esc` to cancel
+5. Session saved with all hypotheses and feedback history
+
+**Examples**:
+```
+my_research_session     # Saves as my_research_session.json
+climate_hypotheses      # Saves as climate_hypotheses.json
+backup_jan_15          # Saves as backup_jan_15.json
+```
+
+**Technical Notes**:
+- Automatically adds .json extension if not provided
+- Saves complete session with metadata
+- Includes all feedback history and timestamps
+- Preserves hypothesis version information
+- Creates file in current directory
 
 #### `s` - Select by Number
 **Purpose**: Jump directly to a specific hypothesis by its number
@@ -366,7 +391,8 @@ Press any key to continue...
 ├─────────────────────────────────────────────────────────────┤
 │ SESSION              │ SYSTEM               │               │
 │ l - Load session     │ Esc - Cancel         │               │
-│ s - Select by #      │ Ctrl+C - Force quit  │               │
+│ x - Save session     │ Ctrl+C - Force quit  │               │
+│ s - Select by #      │                      │               │
 │ v - View titles      │                      │               │
 └─────────────────────────────────────────────────────────────┘
 ```

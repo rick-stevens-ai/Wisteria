@@ -169,6 +169,13 @@ python curses_wisteria_v5.py --resume previous_session.json --model gpt41
 3. Press `Enter` to load or `Esc` to cancel
 4. Hypotheses are merged into current session
 
+#### `x` - Save Session
+1. Press `x` to save current session
+2. Type desired filename (without .json extension)
+3. Press `Enter` to save or `Esc` to cancel
+4. Session saved with all hypotheses and feedback history
+5. Automatic .json extension added if not provided
+
 #### `s` - Select Hypothesis
 1. Press `s` to choose by number
 2. Enter hypothesis number (e.g., "3")
@@ -394,6 +401,7 @@ Feedback History:
 | PDF Export | `p` | Export to PDF document |
 | **Session** | | |
 | Load Session | `l` | Load previous session |
+| Save Session | `x` | Save current session with custom filename |
 | Select Hypothesis | `s` | Jump to hypothesis by number |
 | View Titles | `v` | Show all hypothesis titles |
 | **Display** | | |
