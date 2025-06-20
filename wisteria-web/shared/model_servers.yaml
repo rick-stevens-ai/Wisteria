@@ -37,6 +37,6 @@ servers:
   # Local vLLM Server - Llama 3.1 8B
   - server: "localhost:9999"
     shortname: "scout"
-    openai_api_key: "CELS"
+    openai_api_key: "${SCOUT_API_KEY}"
     openai_api_base: "http://localhost:9999/v1"
     openai_model: "scout"

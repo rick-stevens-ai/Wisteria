@@ -78,9 +78,31 @@ Configure your AI models in `model_servers.yaml`. The file supports various mode
 - OpenAI models (GPT-4, O3, O4-mini)
 - Custom API endpoints
 
-Set required environment variables:
-- `VLLM_API_KEY` - For local/custom model servers
-- `OPENAI_API_KEY` - For OpenAI models
+### API Key Setup
+
+1. **Copy the example configuration:**
+   ```bash
+   cp model_servers.example.yaml model_servers.yaml
+   ```
+
+2. **Set required environment variables:**
+   ```bash
+   # For OpenAI models
+   export OPENAI_API_KEY="your-openai-api-key-here"
+   
+   # For local vLLM server (scout model)
+   export SCOUT_API_KEY="your-scout-api-key-here"
+   ```
+
+3. **For persistent environment variables, add to your shell profile:**
+   ```bash
+   # Add to ~/.bashrc, ~/.zshrc, or ~/.profile
+   echo 'export OPENAI_API_KEY="your-openai-api-key-here"' >> ~/.zshrc
+   echo 'export SCOUT_API_KEY="your-scout-api-key-here"' >> ~/.zshrc
+   source ~/.zshrc
+   ```
+
+**Important:** Never commit your actual API keys to version control. The `model_servers.yaml` file uses environment variables to keep your keys secure.
 
 ## Usage
 
