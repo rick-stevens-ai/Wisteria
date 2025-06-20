@@ -40,6 +40,22 @@ This will start:
 - Backend API at `http://localhost:5001`
 - Frontend UI at `http://localhost:3000`
 
+### Shutting Down Services
+
+To stop both services cleanly, use the shutdown script:
+
+```bash
+cd wisteria-web
+chmod +x shutdown-services.sh
+./shutdown-services.sh
+```
+
+This will:
+- Gracefully terminate the Flask backend
+- Stop the React development server
+- Kill any processes using ports 3000 and 5001
+- Provide feedback on what was terminated
+
 ### Option 2: Manual Setup
 
 #### Backend Setup
