@@ -6,4 +6,4 @@ if __name__ == '__main__':
     print("Starting Wisteria Web API...")
     print("API will be available at: http://localhost:5001")
     print("WebSocket support enabled for real-time updates")
-    socketio.run(app, host='0.0.0.0', port=5001, debug=True) 
+    socketio.run(app, host='0.0.0.0', port=5001, debug=True, allow_unsafe_werkzeug=True) 
