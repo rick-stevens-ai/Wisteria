@@ -1,3 +1,10 @@
+# Environment variables and secrets
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+
 # Python
 __pycache__/
 *.py[cod]
@@ -23,28 +30,62 @@ share/python-wheels/
 *.egg
 MANIFEST
 
-# Generated hypothesis files
-hypotheses_*.json
-*.pdf
+# Virtual environments
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
 
-# macOS
-.DS_Store
-.AppleDouble
-.LSOverride
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# Backup files
-*~
-*.bak
-*.swp
-*.swo
+# React build files
+build/
+dist/
 
 # IDE
 .vscode/
 .idea/
 *.iml
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
 # Logs
 *.log
+logs/
 
-# Test files
-test_*.pdf
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Temporary files
+*.tmp
+*.temp
+
+# Generated hypothesis files
+hypotheses_*.json
+*.pdf
+
+# macOS
+.AppleDouble
+.LSOverride
+
+# Backup files
+*.bak
+*.swp
+*.swo
