@@ -40,6 +40,7 @@ The script:
    - s - Select a hypothesis to continue to refine
    - h - Toggle hallmarks analysis display
    - r - Toggle references display
+   - a - Fetch abstracts and papers from Semantic Scholar for current hypothesis references
    - p - Print current hypothesis to PDF document
    - q - Quit and save all hypotheses
 5) Ensures each new hypothesis is different from previous ones
@@ -61,6 +62,11 @@ import re
 import curses
 import textwrap
 import threading
+import urllib.request
+import urllib.parse
+import urllib.error
+import requests
+from pathlib import Path
 
 # PDF generation imports
 try:
@@ -85,6 +91,261 @@ def clean_json_string(text):
     # Keep: \t (0x09), \n (0x0A), \r (0x0D)
     text = re.sub(r'[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]', '', text)
     return text
+
+# ---------------------------------------------------------------------
+# Paper and Abstract Fetching Functions
+# ---------------------------------------------------------------------
+
+def create_papers_directory(session_name):
+    """Create directory structure for storing papers and abstracts for a session"""
+    papers_dir = Path("papers") / session_name
+    papers_dir.mkdir(parents=True, exist_ok=True)
+    
+    # Create subdirectories
+    (papers_dir / "abstracts").mkdir(exist_ok=True)
+    (papers_dir / "papers").mkdir(exist_ok=True)
+    
+    return papers_dir
+
+def extract_paper_info_from_citation(citation):
+    """Extract author, title, and year from citation string"""
+    info = {"author": "", "title": "", "year": "", "journal": ""}
+    
+    try:
+        # Try to extract year (4 digits in parentheses)
+        year_match = re.search(r'\((\d{4})\)', citation)
+        if year_match:
+            info["year"] = year_match.group(1)
+        
+        # Try to extract title (text between periods, often after year)
+        # Look for pattern: Author. (Year). Title. Journal
+        parts = citation.split('.')
+        if len(parts) >= 3:
+            # First part is usually author
+            info["author"] = parts[0].strip()
+            
+            # Find title (usually the part after year)
+            for i, part in enumerate(parts):
+                if info["year"] in part and i + 1 < len(parts):
+                    info["title"] = parts[i + 1].strip()
+                    if i + 2 < len(parts):
+                        info["journal"] = parts[i + 2].strip()
+                    break
+            
+            # If we didn't find title after year, try second part
+            if not info["title"] and len(parts) > 1:
+                info["title"] = parts[1].strip()
+                if len(parts) > 2:
+                    info["journal"] = parts[2].strip()
+    
+    except Exception as e:
+        print(f"Error extracting paper info: {e}")
+    
+    return info
+
+def search_semantic_scholar(query, max_results=5, api_key=None):
+    """Search Semantic Scholar for papers matching the query"""
+    try:
+        # Construct Semantic Scholar API URL
+        base_url = "https://api.semanticscholar.org/graph/v1/paper/search"
+        params = {
+            'query': query,
+            'limit': max_results,
+            'fields': 'title,authors,year,externalIds,url,venue,openAccessPdf,abstract,paperId'
+        }
+        
+        headers = {}
+        if api_key:
+            headers['x-api-key'] = api_key
+        
+        # Make request
+        response = requests.get(base_url, params=params, headers=headers, timeout=30)
+        
+        if response.status_code == 200:
+            data = response.json()
+            papers = []
+            
+            for paper_data in data.get('data', []):
+                paper = {}
+                
+                # Title
+                paper['title'] = paper_data.get('title', 'Unknown Title')
+                
+                # Authors
+                authors = []
+                for author in paper_data.get('authors', []):
+                    if author.get('name'):
+                        authors.append(author['name'])
+                paper['authors'] = authors
+                
+                # Abstract
+                paper['abstract'] = paper_data.get('abstract', 'No abstract available') or 'No abstract available'
+                
+                # Published year
+                paper['published'] = str(paper_data.get('year', 'Unknown'))
+                
+                # Paper ID and PDF link
+                paper['paper_id'] = paper_data.get('paperId', '')
+                paper['venue'] = paper_data.get('venue', 'Unknown venue')
+                
+                # PDF URL from openAccessPdf
+                open_access_pdf = paper_data.get('openAccessPdf')
+                if open_access_pdf and open_access_pdf.get('url'):
+                    paper['pdf_url'] = open_access_pdf['url']
+                else:
+                    paper['pdf_url'] = None
+                
+                # External IDs (for DOI, arXiv, etc.)
+                external_ids = paper_data.get('externalIds', {})
+                paper['doi'] = external_ids.get('DOI', '')
+                paper['arxiv_id'] = external_ids.get('ArXiv', '')
+                
+                papers.append(paper)
+            
+            return papers
+        else:
+            print(f"Error from Semantic Scholar API: {response.status_code} - {response.text}")
+            return []
+    
+    except Exception as e:
+        print(f"Error searching Semantic Scholar: {e}")
+        return []
+
+def save_abstract_to_file(paper, papers_dir, citation_index):
+    """Save paper abstract to a text file"""
+    try:
+        paper_id = paper.get('paper_id', 'unknown')
+        filename = f"abstract_{citation_index:02d}_{paper_id}.txt"
+        filepath = papers_dir / "abstracts" / filename
+        
+        with open(filepath, 'w', encoding='utf-8') as f:
+            f.write(f"Title: {paper.get('title', 'Unknown')}\n")
+            f.write(f"Authors: {', '.join(paper.get('authors', []))}\n")
+            f.write(f"Published: {paper.get('published', 'Unknown')}\n")
+            f.write(f"Venue: {paper.get('venue', 'Unknown venue')}\n")
+            f.write(f"Semantic Scholar ID: {paper.get('paper_id', 'N/A')}\n")
+            f.write(f"DOI: {paper.get('doi', 'N/A')}\n")
+            f.write(f"arXiv ID: {paper.get('arxiv_id', 'N/A')}\n")
+            f.write(f"PDF URL: {paper.get('pdf_url', 'N/A')}\n")
+            f.write("\nAbstract:\n")
+            f.write(paper.get('abstract', 'No abstract available'))
+        
+        return str(filepath)
+    
+    except Exception as e:
+        print(f"Error saving abstract: {e}")
+        return None
+
+def download_paper_pdf(paper, papers_dir, citation_index):
+    """Download paper PDF if available"""
+    try:
+        pdf_url = paper.get('pdf_url')
+        if not pdf_url:
+            return None
+        
+        paper_id = paper.get('paper_id', 'unknown')
+        filename = f"paper_{citation_index:02d}_{paper_id}.pdf"
+        filepath = papers_dir / "papers" / filename
+        
+        # Download PDF using requests for better error handling
+        response = requests.get(pdf_url, stream=True, timeout=60)
+        response.raise_for_status()
+        
+        with open(filepath, 'wb') as f:
+            for chunk in response.iter_content(chunk_size=8192):
+                f.write(chunk)
+        
+        return str(filepath)
+    
+    except Exception as e:
+        print(f"Error downloading PDF: {e}")
+        return None
+
+def fetch_papers_for_hypothesis(hypothesis, session_name, interface=None):
+    """Fetch papers and abstracts for all references in a hypothesis"""
+    references = hypothesis.get('references', [])
+    if not references:
+        return {"status": "no_references", "message": "No references found in hypothesis"}
+    
+    # Create papers directory
+    papers_dir = create_papers_directory(session_name)
+    
+    # Get Semantic Scholar API key from environment
+    ss_api_key = os.environ.get('SS_API_KEY') or os.environ.get('SEMANTIC_SCHOLAR_API_KEY')
+    
+    results = {
+        "status": "success",
+        "papers_dir": str(papers_dir),
+        "fetched": [],
+        "failed": []
+    }
+    
+    total_refs = len(references)
+    
+    for i, ref in enumerate(references):
+        if interface:
+            status_msg = f"Fetching papers... ({i+1}/{total_refs})"
+            interface.draw_status_bar(status_msg)
+            interface.stdscr.refresh()
+        
+        try:
+            if isinstance(ref, dict):
+                citation = ref.get('citation', '')
+            else:
+                citation = str(ref)
+            
+            if not citation:
+                results["failed"].append({"index": i+1, "reason": "Empty citation"})
+                continue
+            
+            # Extract paper information from citation
+            paper_info = extract_paper_info_from_citation(citation)
+            
+            # Search for papers using title or author+year
+            query = paper_info.get('title', '') or f"{paper_info.get('author', '')} {paper_info.get('year', '')}"
+            if not query.strip():
+                query = citation[:50]  # Use first 50 chars as fallback
+            
+            papers = search_semantic_scholar(query.strip(), max_results=3, api_key=ss_api_key)
+            
+            if papers:
+                # Use the most relevant paper (first one)
+                best_paper = papers[0]
+                
+                # Save abstract
+                abstract_path = save_abstract_to_file(best_paper, papers_dir, i+1)
+                
+                # Try to download PDF
+                pdf_path = download_paper_pdf(best_paper, papers_dir, i+1)
+                
+                results["fetched"].append({
+                    "index": i+1,
+                    "citation": citation,
+                    "title": best_paper.get('title'),
+                    "abstract_path": abstract_path,
+                    "pdf_path": pdf_path,
+                    "paper_id": best_paper.get('paper_id'),
+                    "doi": best_paper.get('doi'),
+                    "venue": best_paper.get('venue')
+                })
+            else:
+                results["failed"].append({
+                    "index": i+1, 
+                    "citation": citation,
+                    "reason": "No papers found"
+                })
+        
+        except Exception as e:
+            results["failed"].append({
+                "index": i+1,
+                "citation": citation if 'citation' in locals() else "Unknown",
+                "reason": str(e)
+            })
+        
+        # Add a small delay between requests to be respectful to the API
+        time.sleep(1)
+    
+    return results
 
 # ---------------------------------------------------------------------
 # Curses Interface Classes and Pane Management
@@ -1449,15 +1710,19 @@ def get_user_feedback(all_hypotheses=None, current_hypothesis=None):
     print("\\f - Provide feedback to improve this hypothesis")
     print("\\n - Generate a new hypothesis (different from previous ones)")
     print("\\l - Load from a JSON file a previous session log")
+    print("\\x - Save current session to a JSON file with custom filename")
+    print("\\t - Add/edit personal notes for the current hypothesis")
     print("\\v - View the titles of hypotheses in current session")
     print("\\s - Select a hypothesis to continue to refine")
     print("\\h - Toggle hallmarks analysis display")
     print("\\r - Toggle references display")
+    print("\\a - Fetch abstracts and papers from Semantic Scholar for current hypothesis references")
+    print("\\p - Print current hypothesis to PDF document")
     print("\\q - Quit and save all hypotheses")
     print("-" * 60)
     
     while True:
-        choice = input("\nEnter your choice (\\f, \\n, \\l, \\v, \\s, \\h, \\r, or \\q): ").strip()
+        choice = input("\nEnter your choice (\\f, \\n, \\l, \\x, \\t, \\v, \\s, \\h, \\r, \\a, \\p, or \\q): ").strip()
         
         if choice == "\\f":
             print("\nPlease provide your feedback for improving this hypothesis:")
@@ -1502,11 +1767,14 @@ def get_user_feedback(all_hypotheses=None, current_hypothesis=None):
         elif choice == "\\r":
             return "TOGGLE_REFERENCES"
             
+        elif choice == "\\a":
+            return "FETCH_PAPERS"
+            
         elif choice == "\\q":
             return "QUIT"
             
         else:
-            print("Invalid choice. Please enter \\f, \\n, \\l, \\v, \\s, \\h, \\r, or \\q.")
+            print("Invalid choice. Please enter \\f, \\n, \\l, \\x, \\t, \\v, \\s, \\h, \\r, \\a, \\p, or \\q.")
 
 @backoff.on_exception(
     backoff.expo,
@@ -2422,6 +2690,44 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                             interface.show_references = not interface.show_references
                             status = "enabled" if interface.show_references else "disabled"
                             interface.set_status(f"References display {status}")
+                            
+                        elif key == ord('a') or key == ord('A'):
+                            # Fetch abstracts and papers for current hypothesis
+                            interface.clear_status_on_action()
+                            if current_hypothesis:
+                                interface.set_status("Fetching papers from Semantic Scholar...")
+                                interface.draw_status_bar()
+                                stdscr.refresh()
+                                
+                                # Generate session name from output filename
+                                if output_filename:
+                                    session_name = os.path.splitext(os.path.basename(output_filename))[0]
+                                else:
+                                    session_name = f"session_{int(time.time())}"
+                                
+                                # Fetch papers in a separate thread to avoid blocking UI
+                                def fetch_papers_thread():
+                                    results = fetch_papers_for_hypothesis(current_hypothesis, session_name, interface)
+                                    
+                                    # Update status with results
+                                    if results["status"] == "no_references":
+                                        interface.set_status("No references found in current hypothesis")
+                                    elif results["status"] == "success":
+                                        fetched_count = len(results["fetched"])
+                                        failed_count = len(results["failed"])
+                                        if fetched_count > 0:
+                                            interface.set_status(f"Fetched {fetched_count} papers, {failed_count} failed. Saved to: {results['papers_dir']}")
+                                        else:
+                                            interface.set_status(f"No papers could be fetched. {failed_count} failed.")
+                                    else:
+                                        interface.set_status(f"Error fetching papers: {results.get('message', 'Unknown error')}")
+                                
+                                # Start fetch in background
+                                fetch_thread = threading.Thread(target=fetch_papers_thread)
+                                fetch_thread.daemon = True
+                                fetch_thread.start()
+                            else:
+                                interface.set_status("No hypothesis selected")
                             
                         elif key == ord('l') or key == ord('L'):
                             # Load session - prompt for filename
