@@ -42,6 +42,11 @@ The script:
    - r - Toggle references display
    - p - Print current hypothesis to PDF document
    - q - Quit and save all hypotheses
+   - ←/→ - Switch focus between hypothesis list and details pane
+   - ↑/↓ - Navigate between hypotheses (when list focused) 
+   - j/k - Scroll focused pane by 1 line (vim-style)
+   - d/u - Scroll focused pane by 5 lines (fast scroll)
+   - Page Up/Down - Scroll focused pane by 5 lines
 5) Ensures each new hypothesis is different from previous ones
 6) Outputs all hypotheses and refinements to JSON file
 """
@@ -131,6 +136,10 @@ class CursesInterface:
         self.last_current_idx = -1
         self.last_hypothesis_content = None
         
+        # Focus management for left/right arrow navigation
+        self.focus_pane = "list"  # Can be "list" or "details"
+        self.list_scroll_offset = 0  # For scrolling in hypothesis list
+        
     def init_colors(self):
         """Initialize curses color pairs"""
         if curses.has_colors():
@@ -208,10 +217,15 @@ class CursesInterface:
         self.list_win.clear()
         self.list_win.box()
         
-        # Title
-        list_title = " Hypothesis List "
+        # Title with focus indicator
+        if self.focus_pane == "list":
+            list_title = " Hypothesis List [FOCUSED] "
+            title_attr = curses.A_BOLD | curses.A_REVERSE
+        else:
+            list_title = " Hypothesis List "
+            title_attr = curses.A_BOLD
         title_x = (self.LIST_WIDTH - len(list_title)) // 2
-        self.list_win.addstr(0, title_x, list_title, curses.A_BOLD)
+        self.list_win.addstr(0, title_x, list_title, title_attr)
         
         if not all_hypotheses:
             self.list_win.addstr(2, 2, "No hypotheses yet", curses.color_pair(4))
@@ -275,10 +289,15 @@ class CursesInterface:
         self.detail_win.clear()
         self.detail_win.box()
         
-        # Title
-        detail_title = " Current Hypothesis "
+        # Title with focus indicator
+        if self.focus_pane == "details":
+            detail_title = " Current Hypothesis [FOCUSED] "
+            title_attr = curses.A_BOLD | curses.A_REVERSE
+        else:
+            detail_title = " Current Hypothesis "
+            title_attr = curses.A_BOLD
         title_x = (self.DETAIL_WIDTH - len(detail_title)) // 2
-        self.detail_win.addstr(0, title_x, detail_title, curses.A_BOLD)
+        self.detail_win.addstr(0, title_x, detail_title, title_attr)
         
         if not hypothesis:
             self.detail_win.addstr(2, 2, "No hypothesis selected", curses.color_pair(4))
@@ -575,14 +594,17 @@ class CursesInterface:
         """Draw only the components that have changed"""
         if self.dirty_header:
             self.draw_header(research_goal, model_name)
+            self.header_win.refresh()
             self.dirty_header = False
         
         if self.dirty_list:
             self.draw_hypothesis_list(all_hypotheses)
+            self.list_win.refresh()
             self.dirty_list = False
         
         if self.dirty_details:
             self.draw_hypothesis_details(current_hypothesis)
+            self.detail_win.refresh()
             self.dirty_details = False
         
         if self.dirty_status or status_msg:
@@ -590,6 +612,7 @@ class CursesInterface:
                 self.draw_status_bar(status_msg)
             else:
                 self.draw_status_bar()
+            self.status_win.refresh()
             self.dirty_status = False
         
     def handle_resize(self):
@@ -607,6 +630,7 @@ class CursesInterface:
             self.list_scroll_offset += 1
         else:
             self.list_scroll_offset = max(0, self.list_scroll_offset - 1)
+        self.mark_dirty("list")
             
     def scroll_detail(self, direction):
         """Scroll the hypothesis details"""
@@ -2050,6 +2074,13 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
     # Initialize curses interface
     interface = CursesInterface(stdscr)
     
+    # Show initial status
+    interface.draw_header(research_goal, model_config['model_name'])
+    interface.header_win.refresh()  # Force refresh for startup
+    interface.draw_status_bar("Initializing Wisteria interface...")
+    interface.status_win.refresh()  # Force refresh for startup
+    stdscr.refresh()
+    
     # Setup initial data
     if initial_hypotheses:
         all_hypotheses = initial_hypotheses.copy()
@@ -2080,10 +2111,20 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
         current_hypothesis = max(all_hypotheses, key=lambda h: h.get("generation_timestamp", ""))
         interface.current_hypothesis_idx = current_hypothesis.get("hypothesis_number", 1) - 1
         
+        # Show loading status for resumed session
+        interface.draw_status_bar("Loading resumed session... Press any key when ready.")
+        interface.status_win.refresh()  # Force refresh for startup
+        stdscr.refresh()
+        
     else:
         all_hypotheses = []
         hypothesis_counter = 0
         version_tracker = {}
+        
+        # Show preparation status
+        interface.draw_status_bar(f"Preparing to generate {num_initial_hypotheses} hypothesis{'es' if num_initial_hypotheses > 1 else ''}...")
+        interface.status_win.refresh()  # Force refresh for startup
+        stdscr.refresh()
         
         # Generate initial hypotheses with progress display
         if num_initial_hypotheses == 1:
@@ -2113,6 +2154,7 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                     anim_char = animation_chars[animation_counter % len(animation_chars)]
                     working_msg = f"Generating initial hypothesis {anim_char} Working..."
                     interface.draw_status_bar(working_msg)
+                    interface.status_win.refresh()  # Force refresh for animation
                     interface.stdscr.refresh()
                     time.sleep(0.3)  # Update animation every 300ms
                     animation_counter += 1
@@ -2127,11 +2169,13 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                 initial_hypotheses = generated_hypothesis
                 if initial_hypotheses and not initial_hypotheses[0].get("error"):
                     interface.draw_status_bar("Initial hypothesis completed!")
+                    interface.status_win.refresh()  # Force refresh
                     interface.stdscr.refresh()
                     time.sleep(0.5)
                     
             except Exception as e:
                 interface.draw_status_bar(f"Error: {str(e)[:50]}")
+                interface.status_win.refresh()  # Force refresh
                 interface.stdscr.refresh()
                 stdscr.getch()
                 return []
@@ -2147,6 +2191,7 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                 bar = '█' * filled_length + '░' * (bar_length - filled_length)
                 progress_msg = f"Generating hypothesis {i+1}/{num_initial_hypotheses} [{bar}] {progress_percent:.0f}%"
                 interface.draw_status_bar(progress_msg)
+                interface.status_win.refresh()  # Force refresh for progress
                 interface.stdscr.refresh()
                 
                 try:
@@ -2175,6 +2220,7 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                         anim_char = animation_chars[animation_counter % len(animation_chars)]
                         working_msg = f"Generating hypothesis {i+1}/{num_initial_hypotheses} [{bar}] {anim_char} Working..."
                         interface.draw_status_bar(working_msg)
+                        interface.status_win.refresh()  # Force refresh for animation
                         interface.stdscr.refresh()
                         time.sleep(0.3)  # Update animation every 300ms
                         animation_counter += 1
@@ -2193,12 +2239,14 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                         # Show completion for this hypothesis
                         completed_msg = f"Hypothesis {i+1}/{num_initial_hypotheses} completed! [{bar}]"
                         interface.draw_status_bar(completed_msg)
+                        interface.status_win.refresh()  # Force refresh
                         interface.stdscr.refresh()
                         time.sleep(0.5)  # Brief pause to show completion
                     else:
                         # Show error but continue with others
                         error_msg = f"Error generating hypothesis {i+1}, continuing..."
                         interface.draw_status_bar(error_msg)
+                        interface.status_win.refresh()
                         interface.stdscr.refresh()
                         time.sleep(1)  # Brief pause to show error
                         
@@ -2206,6 +2254,7 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                     # Show error but continue with others
                     error_msg = f"Error on hypothesis {i+1}: {str(e)[:30]}"
                     interface.draw_status_bar(error_msg)
+                    interface.status_win.refresh()
                     interface.stdscr.refresh()
                     time.sleep(1)  # Brief pause to show error
         
@@ -2257,14 +2306,48 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
         interface.current_hypothesis_idx = 0
     
     # Main curses loop - improved for performance
-    # Use blocking input instead of nodelay to prevent busy waiting
-    stdscr.timeout(50)  # Short timeout for status updates but no busy loop
+    # Use longer timeout to reduce busy waiting and improve responsiveness
+    stdscr.timeout(200)  # 200ms timeout for better responsiveness
     
     waiting_for_feedback = False
     feedback_input = ""
     
     # Force initial draw
     interface.mark_dirty("all")
+    
+    # Get current hypothesis for initial display
+    current_hypothesis = None
+    if all_hypotheses:
+        # Simple approach: just get the first hypothesis for initial display
+        current_hypothesis = all_hypotheses[0] if all_hypotheses else None
+    
+    # Draw the complete interface immediately after generation
+    try:
+        # Force all components to be marked as dirty so they will actually draw
+        interface.dirty_header = True
+        interface.dirty_list = True
+        interface.dirty_details = True
+        interface.dirty_status = True
+        
+        # Draw all components
+        interface.draw_header(research_goal, model_config['model_name'])
+        interface.draw_hypothesis_list(all_hypotheses)
+        interface.draw_hypothesis_details(current_hypothesis)
+        interface.draw_status_bar("Ready to explore - press any key for commands")
+        
+        # Refresh all windows
+        interface.header_win.refresh()
+        interface.list_win.refresh()
+        interface.detail_win.refresh()
+        interface.status_win.refresh()
+        stdscr.refresh()
+        
+    except Exception as e:
+        # If initial draw fails, show error but continue
+        interface.draw_status_bar(f"Display error: {str(e)[:50]}")
+        interface.status_win.refresh()
+        stdscr.refresh()
+        time.sleep(3)  # Give time to see the error
     
     while True:
         try:
@@ -2378,15 +2461,24 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                     else:
                         # Handle normal commands
                         if key == ord('q') or key == ord('Q'):
+                            # Debug: confirm q command is reached
+                            interface.draw_status_bar("Quitting application...")
+                            interface.status_win.refresh()
+                            stdscr.refresh()
+                            time.sleep(1)
                             break
                         elif key == ord('f') or key == ord('F'):
                             interface.clear_status_on_action()
                             if current_hypothesis:
                                 waiting_for_feedback = True
                                 feedback_input = ""
-                                interface.set_status("Enter feedback (Enter to submit, ESC to cancel)", persistent=True)
+                                interface.draw_status_bar("Enter feedback (Enter to submit, ESC to cancel)")
+                                interface.status_win.refresh()
+                                stdscr.refresh()
                             else:
-                                interface.set_status("No hypothesis selected")
+                                interface.draw_status_bar("No hypothesis selected")
+                                interface.status_win.refresh()
+                                stdscr.refresh()
                         elif key == ord('n') or key == ord('N'):
                             interface.clear_status_on_action()
                             interface.set_status("Generating new hypothesis...", persistent=True)
@@ -2396,7 +2488,9 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                             try:
                                 new_hypothesis = generate_new_hypothesis(research_goal, all_hypotheses, model_config)
                                 if new_hypothesis.get("error"):
-                                    interface.set_status("Error generating new hypothesis")
+                                    interface.draw_status_bar("Error generating new hypothesis")
+                                    interface.status_win.refresh()
+                                    stdscr.refresh()
                                 else:
                                     hypothesis_counter += 1
                                     version_tracker[hypothesis_counter] = 0
@@ -2406,22 +2500,45 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                                     new_hypothesis["generation_timestamp"] = datetime.now().isoformat()
                                     all_hypotheses.append(new_hypothesis)
                                     interface.current_hypothesis_idx = hypothesis_counter - 1
-                                    interface.set_status("New hypothesis generated!")
+                                    interface.draw_status_bar("New hypothesis generated!")
+                                    interface.status_win.refresh()
+                                    # Force refresh of list and details panes to show new hypothesis
+                                    interface.dirty_list = True
+                                    interface.dirty_details = True
+                                    interface.draw_hypothesis_list(all_hypotheses)
+                                    interface.draw_hypothesis_details(new_hypothesis)
+                                    interface.list_win.refresh()
+                                    interface.detail_win.refresh()
+                                    stdscr.refresh()
                                     
                             except Exception as e:
-                                interface.set_status(f"Error: {str(e)[:50]}")
+                                interface.draw_status_bar(f"Error: {str(e)[:50]}")
+                                interface.status_win.refresh()
+                                stdscr.refresh()
                                 
                         elif key == ord('h') or key == ord('H'):
                             interface.clear_status_on_action()
                             interface.show_hallmarks = not interface.show_hallmarks
                             status = "enabled" if interface.show_hallmarks else "disabled"
-                            interface.set_status(f"Hallmarks display {status}")
+                            interface.draw_status_bar(f"Hallmarks display {status}")
+                            interface.status_win.refresh()
+                            # Force redraw of details pane to show/hide hallmarks
+                            interface.dirty_details = True
+                            interface.draw_hypothesis_details(current_hypothesis)
+                            interface.detail_win.refresh()
+                            stdscr.refresh()
                             
                         elif key == ord('r') or key == ord('R'):
                             interface.clear_status_on_action()
                             interface.show_references = not interface.show_references
                             status = "enabled" if interface.show_references else "disabled"
-                            interface.set_status(f"References display {status}")
+                            interface.draw_status_bar(f"References display {status}")
+                            interface.status_win.refresh()
+                            # Force redraw of details pane to show/hide references
+                            interface.dirty_details = True
+                            interface.draw_hypothesis_details(current_hypothesis)
+                            interface.detail_win.refresh()
+                            stdscr.refresh()
                             
                         elif key == ord('l') or key == ord('L'):
                             # Load session - prompt for filename
@@ -2436,7 +2553,9 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                             while loading_mode:
                                 key_load = stdscr.getch()
                                 if key_load == 27:  # ESC
-                                    interface.set_status("Load cancelled")
+                                    interface.draw_status_bar("Load cancelled")
+                                    interface.status_win.refresh()
+                                    stdscr.refresh()
                                     loading_mode = False
                                 elif key_load == ord('\n') or key_load == curses.KEY_ENTER or key_load == 10:
                                     if filename_input.strip():
@@ -2488,11 +2607,26 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                                                 current_hyp = max(all_hypotheses, key=lambda h: h.get("generation_timestamp", ""))
                                                 interface.current_hypothesis_idx = current_hyp.get("hypothesis_number", 1) - 1
                                             
-                                            interface.set_status(f"Session loaded successfully! {len(loaded_hypotheses)} hypotheses added.")
+                                            interface.draw_status_bar(f"Session loaded successfully! {len(loaded_hypotheses)} hypotheses added.")
+                                            interface.status_win.refresh()
+                                            # Force refresh of all panes to show loaded hypotheses
+                                            interface.dirty_list = True
+                                            interface.dirty_details = True
+                                            interface.draw_hypothesis_list(all_hypotheses)
+                                            if all_hypotheses:
+                                                current_hyp = all_hypotheses[interface.current_hypothesis_idx] if interface.current_hypothesis_idx < len(all_hypotheses) else all_hypotheses[0]
+                                                interface.draw_hypothesis_details(current_hyp)
+                                            interface.list_win.refresh()
+                                            interface.detail_win.refresh()
+                                            stdscr.refresh()
                                         else:
-                                            interface.set_status("Failed to load session - file not found or invalid format")
+                                            interface.draw_status_bar("Failed to load session - file not found or invalid format")
+                                            interface.status_win.refresh()
+                                            stdscr.refresh()
                                     else:
-                                        interface.set_status("Load cancelled - no filename provided")
+                                        interface.draw_status_bar("Load cancelled - no filename provided")
+                                        interface.status_win.refresh()
+                                        stdscr.refresh()
                                     loading_mode = False
                                 elif key_load == curses.KEY_BACKSPACE or key_load == 127 or key_load == 8:
                                     if filename_input:
@@ -2517,7 +2651,9 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                             while saving_mode:
                                 key_save = stdscr.getch()
                                 if key_save == 27:  # ESC
-                                    interface.set_status("Save cancelled")
+                                    interface.draw_status_bar("Save cancelled")
+                                    interface.status_win.refresh()
+                                    stdscr.refresh()
                                     saving_mode = False
                                 elif key_save == ord('\n') or key_save == curses.KEY_ENTER or key_save == 10:
                                     if filename_input.strip():
@@ -2553,13 +2689,19 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                                             }
                                             
                                             save_hypotheses_to_json(all_hypotheses, save_filename, metadata)
-                                            interface.set_status(f"Session saved successfully to {save_filename}")
+                                            interface.draw_status_bar(f"Session saved successfully to {save_filename}")
+                                            interface.status_win.refresh()
+                                            stdscr.refresh()
                                         except Exception as e:
-                                            interface.set_status(f"Save error: {str(e)[:50]}")
+                                            interface.draw_status_bar(f"Save error: {str(e)[:50]}")
+                                            interface.status_win.refresh()
+                                            stdscr.refresh()
                                             import traceback
                                             traceback.print_exc()  # For debugging
                                     else:
-                                        interface.set_status("Save cancelled - no filename provided")
+                                        interface.draw_status_bar("Save cancelled - no filename provided")
+                                        interface.status_win.refresh()
+                                        stdscr.refresh()
                                     saving_mode = False
                                 elif key_save == curses.KEY_BACKSPACE or key_save == 127 or key_save == 8:
                                     if filename_input:
@@ -2572,6 +2714,11 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                                     stdscr.refresh()
                             
                         elif key == ord('t') or key == ord('T'):
+                            # Debug: confirm t command is reached
+                            interface.draw_status_bar("Notes command activated...")
+                            interface.status_win.refresh()
+                            stdscr.refresh()
+                            time.sleep(1)
                             # Notes - add/edit notes for current hypothesis
                             if current_hypothesis:
                                 current_notes = current_hypothesis.get("notes", "")
@@ -2592,7 +2739,8 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                                     
                                     key_notes = stdscr.getch()
                                     if key_notes == 27:  # ESC
-                                        interface.set_status("Notes editing cancelled")
+                                        interface.draw_status_bar("Notes editing cancelled")
+                                        interface.status_win.refresh()
                                         editing_notes = False
                                     elif key_notes == ord('\n') or key_notes == curses.KEY_ENTER or key_notes == 10:
                                         # Save notes
@@ -2602,7 +2750,8 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                                         for hyp in all_hypotheses:
                                             if hyp.get("hypothesis_number") == hyp_num:
                                                 hyp["notes"] = notes_input
-                                        interface.set_status(f"Notes saved for hypothesis #{hyp_num}")
+                                        interface.draw_status_bar(f"Notes saved for hypothesis #{hyp_num}")
+                                        interface.status_win.refresh()
                                         editing_notes = False
                                     elif key_notes == curses.KEY_BACKSPACE or key_notes == 127 or key_notes == 8:
                                         if cursor_pos > 0:
@@ -2621,13 +2770,23 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                                     elif 32 <= key_notes <= 126:  # Printable characters
                                         notes_input = notes_input[:cursor_pos] + chr(key_notes) + notes_input[cursor_pos:]
                                         cursor_pos += 1
+                                
+                                # After notes editing, force refresh of details pane to show updated notes
+                                interface.dirty_details = True
+                                interface.draw_hypothesis_details(current_hypothesis)
+                                interface.detail_win.refresh()
+                                stdscr.refresh()
                             else:
-                                interface.set_status("No hypothesis selected for notes")
+                                interface.draw_status_bar("No hypothesis selected for notes")
+                                interface.status_win.refresh()
+                                stdscr.refresh()
                             
                         elif key == ord('s') or key == ord('S'):
                             # Select hypothesis - prompt for hypothesis number
                             if not all_hypotheses:
-                                interface.set_status("No hypotheses available to select")
+                                interface.draw_status_bar("No hypotheses available to select")
+                                interface.status_win.refresh()
+                                stdscr.refresh()
                             else:
                                 # Get available hypothesis numbers
                                 hypothesis_groups = {}
@@ -2665,13 +2824,25 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                                                     latest_version = max(hypothesis_groups[selected_num], key=lambda h: h.get("version", "1.0"))
                                                     interface.current_hypothesis_idx = selected_num - 1
                                                     interface.detail_scroll_offset = 0  # Reset scroll
-                                                    interface.set_status(f"Selected hypothesis #{selected_num} for review/refinement")
+                                                    interface.draw_status_bar(f"Selected hypothesis #{selected_num} for review/refinement")
+                                                    interface.status_win.refresh()
+                                                    # Force refresh of details pane to show selected hypothesis
+                                                    interface.dirty_details = True
+                                                    interface.draw_hypothesis_details(latest_version)
+                                                    interface.detail_win.refresh()
+                                                    stdscr.refresh()
                                                 else:
-                                                    interface.set_status(f"Invalid hypothesis number. Available: {available_numbers}")
+                                                    interface.draw_status_bar(f"Invalid hypothesis number. Available: {available_numbers}")
+                                                    interface.status_win.refresh()
+                                                    stdscr.refresh()
                                             except ValueError:
-                                                interface.set_status("Invalid number format")
+                                                interface.draw_status_bar("Invalid number format")
+                                                interface.status_win.refresh()
+                                                stdscr.refresh()
                                         else:
-                                            interface.set_status("Selection cancelled - no number provided")
+                                            interface.draw_status_bar("Selection cancelled - no number provided")
+                                            interface.status_win.refresh()
+                                            stdscr.refresh()
                                         selecting_mode = False
                                     elif key_select == curses.KEY_BACKSPACE or key_select == 127 or key_select == 8:
                                         if number_input:
@@ -2686,7 +2857,9 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                         elif key == ord('v') or key == ord('V'):
                             # View hypothesis titles - show in a popup-like manner
                             if not all_hypotheses:
-                                interface.set_status("No hypotheses available to view")
+                                interface.draw_status_bar("No hypotheses available to view")
+                                interface.status_win.refresh()
+                                stdscr.refresh()
                             else:
                                 # Group hypotheses by number
                                 hypothesis_groups = {}
@@ -2757,7 +2930,9 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                                     if key_view != -1:  # Any key pressed
                                         view_mode = False
                                 
-                                interface.set_status("Returned from hypothesis titles view")
+                                interface.draw_status_bar("Returned from hypothesis titles view")
+                                interface.status_win.refresh()
+                                stdscr.refresh()
                             
                         elif key == curses.KEY_UP:
                             interface.clear_status_on_action()
@@ -2782,24 +2957,62 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                             interface.mark_dirty("list")
                             interface.mark_dirty("details")
                             
-                        elif key == curses.KEY_PPAGE:  # Page Up - scroll detail up
-                            interface.scroll_detail(-5)
+                        elif key == curses.KEY_LEFT:  # Switch focus to list pane
+                            interface.clear_status_on_action()
+                            if interface.focus_pane != "list":
+                                interface.focus_pane = "list"
+                                interface.draw_status_bar("Focus: Hypothesis List (↑↓ to navigate, j/k to scroll)")
+                                interface.status_win.refresh()
+                                interface.mark_dirty("list")
+                                interface.mark_dirty("details")
+                                stdscr.refresh()
                             
-                        elif key == curses.KEY_NPAGE:  # Page Down - scroll detail down
-                            interface.scroll_detail(5)
+                        elif key == curses.KEY_RIGHT:  # Switch focus to details pane
+                            interface.clear_status_on_action()
+                            if interface.focus_pane != "details":
+                                interface.focus_pane = "details"
+                                interface.draw_status_bar("Focus: Hypothesis Details (j/k/d/u to scroll)")
+                                interface.status_win.refresh()
+                                interface.mark_dirty("list")
+                                interface.mark_dirty("details")
+                                stdscr.refresh()
+                            
+                        elif key == curses.KEY_PPAGE:  # Page Up - scroll focused pane up
+                            if interface.focus_pane == "list":
+                                interface.scroll_list(-5)
+                            else:
+                                interface.scroll_detail(-5)
+                            
+                        elif key == curses.KEY_NPAGE:  # Page Down - scroll focused pane down
+                            if interface.focus_pane == "list":
+                                interface.scroll_list(5)
+                            else:
+                                interface.scroll_detail(5)
                             
                         # Mac-friendly scrolling alternatives
                         elif key == ord('j') or key == ord('J'):  # j = scroll down (vim-style)
-                            interface.scroll_detail(1)
+                            if interface.focus_pane == "list":
+                                interface.scroll_list(1)
+                            else:
+                                interface.scroll_detail(1)
                             
                         elif key == ord('k') or key == ord('K'):  # k = scroll up (vim-style)
-                            interface.scroll_detail(-1)
+                            if interface.focus_pane == "list":
+                                interface.scroll_list(-1)
+                            else:
+                                interface.scroll_detail(-1)
                             
                         elif key == ord('d') or key == ord('D'):  # d = scroll down faster
-                            interface.scroll_detail(5)
+                            if interface.focus_pane == "list":
+                                interface.scroll_list(5)
+                            else:
+                                interface.scroll_detail(5)
                             
                         elif key == ord('u') or key == ord('U'):  # u = scroll up faster
-                            interface.scroll_detail(-5)
+                            if interface.focus_pane == "list":
+                                interface.scroll_list(-5)
+                            else:
+                                interface.scroll_detail(-5)
                             
                         elif key == ord('p') or key == ord('P'):  # p = print to PDF
                             interface.clear_status_on_action()
@@ -2812,15 +3025,25 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                                     try:
                                         pdf_path = generate_hypothesis_pdf(current_hypothesis, research_goal)
                                         if pdf_path:
-                                            interface.set_status(f"PDF saved: {pdf_path}")
+                                            interface.draw_status_bar(f"PDF saved: {pdf_path}")
+                                            interface.status_win.refresh()
+                                            stdscr.refresh()
                                         else:
-                                            interface.set_status("Error: Failed to generate PDF")
+                                            interface.draw_status_bar("Error: Failed to generate PDF")
+                                            interface.status_win.refresh()
+                                            stdscr.refresh()
                                     except Exception as e:
-                                        interface.set_status(f"Error: {str(e)[:50]}")
+                                        interface.draw_status_bar(f"Error: {str(e)[:50]}")
+                                        interface.status_win.refresh()
+                                        stdscr.refresh()
                                 else:
-                                    interface.set_status("Error: PDF generation requires reportlab (pip install reportlab)")
+                                    interface.draw_status_bar("Error: PDF generation requires reportlab (pip install reportlab)")
+                                    interface.status_win.refresh()
+                                    stdscr.refresh()
                             else:
-                                interface.set_status("No hypothesis selected for PDF generation")
+                                interface.draw_status_bar("No hypothesis selected for PDF generation")
+                                interface.status_win.refresh()
+                                stdscr.refresh()
                             
             except curses.error:
                 pass  # Ignore curses errors from input
@@ -2828,7 +3051,12 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
         except KeyboardInterrupt:
             break
         except Exception as e:
-            interface.set_status(f"Error: {str(e)[:50]}")
+            # More detailed error reporting for debugging
+            error_msg = f"Error: {str(e)[:50]}"
+            interface.draw_status_bar(error_msg)
+            interface.status_win.refresh()
+            stdscr.refresh()
+            time.sleep(2)  # Give user time to see the error
     
     return all_hypotheses
 

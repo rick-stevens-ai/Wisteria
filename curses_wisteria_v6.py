@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 
 """
-Wisteria Research Hypothesis Generator v5.0 - Curses Multi-Pane Interface
+Wisteria Research Hypothesis Generator v6.0 - Curses Multi-Pane Interface
 
 Usage:
-    python curses_wisteria_v5.py <research_goal_file.txt> --model <model_shortname> [--num-hypotheses <N>] [--output <output_file.json>]
-    python curses_wisteria_v5.py --goal "<research_goal_text>" --model <model_shortname> [--num-hypotheses <N>] [--output <output_file.json>]
-    python curses_wisteria_v5.py --resume <session_file.json> --model <model_shortname> [--output <output_file.json>]
+    python curses_wisteria_v6.py <research_goal_file.txt> --model <model_shortname> [--num-hypotheses <N>] [--output <output_file.json>]
+    python curses_wisteria_v6.py --goal "<research_goal_text>" --model <model_shortname> [--num-hypotheses <N>] [--output <output_file.json>]
+    python curses_wisteria_v6.py --resume <session_file.json> --model <model_shortname> [--output <output_file.json>]
 
 Where:
     - research_goal_file.txt: A text file containing the research goal/question
@@ -17,10 +17,10 @@ Where:
     - --output: Output JSON file for the hypotheses (default: hypotheses_<timestamp>.json)
 
 Examples:
-    python curses_wisteria_v5.py research_goal.txt --model gpt41
-    python curses_wisteria_v5.py --goal "How can we improve renewable energy storage efficiency?" --model scout --num-hypotheses 3
-    python curses_wisteria_v5.py --resume hypotheses_interactive_gpt41_20250531_165238.json --model gpt41
-    python curses_wisteria_v5.py --goal "What causes neurodegenerative diseases?" --model gpt41 --num-hypotheses 5 --output my_hypotheses.json
+    python curses_wisteria_v6.py research_goal.txt --model gpt41
+    python curses_wisteria_v6.py --goal "How can we improve renewable energy storage efficiency?" --model scout --num-hypotheses 3
+    python curses_wisteria_v6.py --resume hypotheses_interactive_gpt41_20250531_165238.json --model gpt41
+    python curses_wisteria_v6.py --goal "What causes neurodegenerative diseases?" --model gpt41 --num-hypotheses 5 --output my_hypotheses.json
 
 The script:
 1) Reads a research goal from a text file OR accepts it directly via --goal argument OR resumes from a previous session
@@ -41,8 +41,16 @@ The script:
    - h - Toggle hallmarks analysis display
    - r - Toggle references display
    - a - Fetch abstracts and papers from Semantic Scholar for current hypothesis references
+   - u - Update hypothesis with information from downloaded abstracts
+   - b - Browse and view downloaded abstracts
+   - c - Score hypothesis hallmarks (1-5 scale) using AI evaluation
    - p - Print current hypothesis to PDF document
    - q - Quit and save all hypotheses
+   - ←/→ - Switch focus between hypothesis list and details pane
+   - ↑/↓ - Navigate between hypotheses (when list focused) 
+   - j/k - Scroll focused pane by 1 line (vim-style)
+   - d/u - Scroll focused pane by 5 lines (fast scroll)
+   - Page Up/Down - Scroll focused pane by 5 lines
 5) Ensures each new hypothesis is different from previous ones
 6) Outputs all hypotheses and refinements to JSON file
 """
@@ -89,8 +97,12 @@ def clean_json_string(text):
         return text
     # Remove ASCII control characters (0x00-0x1F and 0x7F) except for whitespace
     # Keep: \t (0x09), \n (0x0A), \r (0x0D)
-    text = re.sub(r'[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]', '', text)
-    return text
+    try:
+        text = re.sub(r'[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]', '', text)
+        return text
+    except Exception:
+        # Return original text if regex fails
+        return text
 
 # ---------------------------------------------------------------------
 # Paper and Abstract Fetching Functions
@@ -261,6 +273,553 @@ def download_paper_pdf(paper, papers_dir, citation_index):
         print(f"Error downloading PDF: {e}")
         return None
 
+def find_abstracts_for_hypothesis(hypothesis):
+    """Find and read abstracts for a hypothesis from papers directory"""
+    abstracts = []
+    
+    try:
+        # Look for papers directories that might contain abstracts for this hypothesis
+        papers_base_dir = Path("papers")
+        if not papers_base_dir.exists():
+            return abstracts
+        
+        # Find the most recent papers directory (by timestamp)
+        papers_dirs = [d for d in papers_base_dir.iterdir() if d.is_dir() and d.name.startswith("papers_")]
+        if not papers_dirs:
+            return abstracts
+        
+        # Sort by timestamp in directory name and get the most recent
+        papers_dirs.sort(key=lambda x: x.name, reverse=True)
+        latest_papers_dir = papers_dirs[0]
+        
+        abstracts_dir = latest_papers_dir / "abstracts"
+        if not abstracts_dir.exists():
+            return abstracts
+        
+        # Read all abstract files
+        for abstract_file in abstracts_dir.glob("abstract_*.txt"):
+            try:
+                with open(abstract_file, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                    abstracts.append({
+                        "filename": abstract_file.name,
+                        "content": content
+                    })
+            except Exception as e:
+                print(f"Error reading abstract file {abstract_file}: {e}")
+        
+        return abstracts
+    
+    except Exception as e:
+        print(f"Error finding abstracts: {e}")
+        return abstracts
+
+def find_all_available_abstracts():
+    """Find all available abstracts from all papers directories"""
+    all_abstracts = []
+    
+    try:
+        papers_base_dir = Path("papers")
+        if not papers_base_dir.exists():
+            return all_abstracts
+        
+        # Find all papers directories
+        papers_dirs = [d for d in papers_base_dir.iterdir() if d.is_dir() and d.name.startswith("papers_")]
+        if not papers_dirs:
+            return all_abstracts
+        
+        # Sort by timestamp in directory name (most recent first)
+        papers_dirs.sort(key=lambda x: x.name, reverse=True)
+        
+        for papers_dir in papers_dirs:
+            abstracts_dir = papers_dir / "abstracts"
+            if abstracts_dir.exists():
+                session_name = papers_dir.name
+                
+                # Read all abstract files from this session
+                for abstract_file in abstracts_dir.glob("abstract_*.txt"):
+                    try:
+                        with open(abstract_file, 'r', encoding='utf-8') as f:
+                            content = f.read()
+                            
+                        # Parse title from content
+                        title = "Unknown Title"
+                        lines = content.split('\n')
+                        for line in lines:
+                            if line.startswith("1|Title:"):
+                                title = line.replace("1|Title:", "").strip()
+                                break
+                            elif line.startswith("Title:"):
+                                title = line.replace("Title:", "").strip()
+                                break
+                        
+                        all_abstracts.append({
+                            "filename": abstract_file.name,
+                            "title": title,
+                            "content": content,
+                            "session": session_name,
+                            "full_path": str(abstract_file)
+                        })
+                    except Exception as e:
+                        print(f"Error reading abstract file {abstract_file}: {e}")
+        
+        return all_abstracts
+    
+    except Exception as e:
+        print(f"Error finding abstracts: {e}")
+        return all_abstracts
+
+def browse_abstracts_interface(stdscr, interface):
+    """Browse abstracts using a two-panel interface"""
+    # Find all available abstracts
+    all_abstracts = find_all_available_abstracts()
+    
+    if not all_abstracts:
+        interface.set_status("No abstracts found. Use 'a' command to fetch papers first.")
+        return
+    
+    # Abstract browser state
+    current_abstract_idx = 0
+    abstract_scroll_offset = 0
+    list_scroll_offset = 0
+    
+    # Save original interface state
+    original_focus = interface.focus_pane
+    original_show_hallmarks = interface.show_hallmarks
+    original_show_references = interface.show_references
+    
+    # Set browse mode
+    browse_mode = True
+    
+    while browse_mode:
+        try:
+            # Clear and redraw interface for abstract browsing
+            stdscr.clear()
+            
+            # Draw header
+            header_text = f" ABSTRACT BROWSER - {len(all_abstracts)} abstracts available "
+            if len(header_text) > interface.width:
+                header_text = f" ABSTRACT BROWSER - {len(all_abstracts)} abstracts "
+            
+            stdscr.addstr(0, 0, header_text, curses.A_BOLD | curses.A_REVERSE)
+            if len(header_text) < interface.width:
+                stdscr.addstr(0, len(header_text), " " * (interface.width - len(header_text)), curses.A_REVERSE)
+            
+            # Draw separator line
+            stdscr.addstr(1, 0, "─" * interface.width)
+            
+            # Calculate panel dimensions (similar to main interface)
+            content_height = interface.height - 4  # Leave room for header and commands
+            list_width = int(interface.width * 0.4)  # 40% for abstract list
+            detail_width = interface.width - list_width - 1  # Rest for abstract content
+            
+            # Draw abstract list (left panel)
+            list_y_start = 2
+            list_y_end = list_y_start + content_height
+            
+            # List header
+            list_header = " Abstract List "
+            stdscr.addstr(list_y_start, 0, list_header, curses.A_BOLD)
+            if len(list_header) < list_width:
+                stdscr.addstr(list_y_start, len(list_header), "─" * (list_width - len(list_header)))
+            
+            # Draw abstract list items
+            for i, abstract in enumerate(all_abstracts):
+                line_y = list_y_start + 2 + i - list_scroll_offset
+                
+                if line_y < list_y_start + 2:
+                    continue
+                if line_y >= list_y_end - 1:
+                    break
+                
+                # Prepare display text
+                title = abstract["title"]
+                session_short = abstract["session"].replace("papers_", "")[:15]
+                
+                # Truncate title to fit
+                max_title_len = list_width - len(session_short) - 8
+                if len(title) > max_title_len:
+                    title = title[:max_title_len-3] + "..."
+                
+                display_text = f"{i+1:2d}. {title} [{session_short}]"
+                
+                # Highlight current selection
+                attr = curses.A_REVERSE if i == current_abstract_idx else 0
+                
+                try:
+                    stdscr.addstr(line_y, 2, display_text[:list_width-3], attr)
+                except curses.error:
+                    pass
+            
+            # Draw vertical separator
+            for y in range(list_y_start, list_y_end):
+                try:
+                    stdscr.addstr(y, list_width, "│")
+                except curses.error:
+                    pass
+            
+            # Draw abstract content (right panel)
+            detail_x_start = list_width + 1
+            current_abstract = all_abstracts[current_abstract_idx] if all_abstracts else None
+            
+            if current_abstract:
+                # Content header
+                content_header = f" Abstract {current_abstract_idx + 1} of {len(all_abstracts)} "
+                try:
+                    stdscr.addstr(list_y_start, detail_x_start, content_header, curses.A_BOLD)
+                    if len(content_header) < detail_width:
+                        stdscr.addstr(list_y_start, detail_x_start + len(content_header), 
+                                    "─" * (detail_width - len(content_header)))
+                except curses.error:
+                    pass
+                
+                # Display abstract content with scrolling
+                content_lines = current_abstract["content"].split('\n')
+                content_y_start = list_y_start + 2
+                
+                for i, line in enumerate(content_lines):
+                    display_y = content_y_start + i - abstract_scroll_offset
+                    
+                    if display_y < content_y_start:
+                        continue
+                    if display_y >= list_y_end - 1:
+                        break
+                    
+                    # Wrap long lines
+                    wrapped_lines = textwrap.wrap(line, detail_width - 2) if line.strip() else [""]
+                    
+                    for j, wrapped_line in enumerate(wrapped_lines):
+                        wrapped_y = display_y + j
+                        if wrapped_y >= list_y_end - 1:
+                            break
+                        
+                        try:
+                            stdscr.addstr(wrapped_y, detail_x_start + 1, wrapped_line[:detail_width-2])
+                        except curses.error:
+                            pass
+            
+            # Draw command bar at bottom
+            cmd_y = interface.height - 2
+            commands = " ↑↓=Navigate j/k=Scroll abstract d/u=Fast scroll ESC/q=Exit "
+            try:
+                stdscr.addstr(cmd_y, 0, commands[:interface.width], curses.A_REVERSE)
+                if len(commands) < interface.width:
+                    stdscr.addstr(cmd_y, len(commands), " " * (interface.width - len(commands)), curses.A_REVERSE)
+            except curses.error:
+                pass
+            
+            # Status line
+            if current_abstract:
+                status_text = f" File: {current_abstract['filename']} | Session: {current_abstract['session']} "
+                try:
+                    stdscr.addstr(cmd_y + 1, 0, status_text[:interface.width])
+                except curses.error:
+                    pass
+            
+            stdscr.refresh()
+            
+            # Handle input
+            key = stdscr.getch()
+            
+            if key == 27 or key == ord('q') or key == ord('Q'):  # ESC or Q to exit
+                browse_mode = False
+                
+            elif key == curses.KEY_UP:
+                if current_abstract_idx > 0:
+                    current_abstract_idx -= 1
+                    abstract_scroll_offset = 0  # Reset content scroll when changing abstract
+                    
+                    # Auto-scroll list if needed
+                    if current_abstract_idx < list_scroll_offset:
+                        list_scroll_offset = current_abstract_idx
+                        
+            elif key == curses.KEY_DOWN:
+                if current_abstract_idx < len(all_abstracts) - 1:
+                    current_abstract_idx += 1
+                    abstract_scroll_offset = 0  # Reset content scroll when changing abstract
+                    
+                    # Auto-scroll list if needed
+                    visible_lines = content_height - 3  # Account for headers
+                    if current_abstract_idx >= list_scroll_offset + visible_lines:
+                        list_scroll_offset = current_abstract_idx - visible_lines + 1
+                        
+            elif key == ord('j') or key == ord('J'):  # Scroll abstract content down
+                abstract_scroll_offset += 1
+                
+            elif key == ord('k') or key == ord('K'):  # Scroll abstract content up
+                abstract_scroll_offset = max(0, abstract_scroll_offset - 1)
+                
+            elif key == ord('d') or key == ord('D'):  # Fast scroll abstract content down
+                abstract_scroll_offset += 5
+                
+            elif key == ord('u') or key == ord('U'):  # Fast scroll abstract content up
+                abstract_scroll_offset = max(0, abstract_scroll_offset - 5)
+                
+            elif key == curses.KEY_PPAGE:  # Page Up - scroll abstract up
+                abstract_scroll_offset = max(0, abstract_scroll_offset - 10)
+                
+            elif key == curses.KEY_NPAGE:  # Page Down - scroll abstract down
+                abstract_scroll_offset += 10
+                
+        except curses.error:
+            pass  # Ignore display errors
+        except KeyboardInterrupt:
+            browse_mode = False
+    
+    # Restore original interface state
+    interface.focus_pane = original_focus
+    interface.show_hallmarks = original_show_hallmarks
+    interface.show_references = original_show_references
+    
+    # Clear screen and force full redraw
+    stdscr.clear()
+    interface.mark_dirty("all")
+
+def score_hypothesis_hallmarks(hypothesis, model_config):
+    """Score hypothesis hallmarks on a 1-5 scale using AI evaluation"""
+    try:
+        # Get the hallmarks for scoring
+        hallmarks = hypothesis.get('hallmarks', {})
+        
+        if not hallmarks:
+            return {"error": "No hallmarks found in hypothesis for scoring"}
+        
+        # Create the scoring prompt
+        scoring_prompt = f"""You are an expert research scientist evaluating the quality of scientific hypothesis hallmarks. You will score each hallmark on a scale from 1 to 5, where:
+
+1 = Very Poor: Major flaws, fundamentally inadequate
+2 = Poor: Significant weaknesses, below standard
+3 = Adequate: Meets basic requirements but has notable limitations
+4 = Good: Strong quality with minor weaknesses
+5 = Excellent: Exceptional quality, exemplary
+
+Be AGGRESSIVE in your scoring - use the full dynamic range. Most real hypotheses should score in the 2-4 range, with 5s being rare and reserved for truly exceptional work.
+
+HYPOTHESIS TO EVALUATE:
+Title: {hypothesis.get('title', 'N/A')}
+Description: {hypothesis.get('description', 'N/A')}
+
+HALLMARKS TO SCORE:
+
+1. TESTABILITY (Falsifiability):
+{hallmarks.get('testability', 'No analysis provided')}
+
+2. SPECIFICITY AND CLARITY:
+{hallmarks.get('specificity', 'No analysis provided')}
+
+3. GROUNDED IN PRIOR KNOWLEDGE:
+{hallmarks.get('grounded_knowledge', 'No analysis provided')}
+
+4. PREDICTIVE POWER & NOVEL INSIGHT:
+{hallmarks.get('predictive_power', 'No analysis provided')}
+
+5. PARSIMONY (Principle of Simplicity):
+{hallmarks.get('parsimony', 'No analysis provided')}
+
+Provide your scoring in this exact JSON format:
+{{
+    "scores": {{
+        "testability": 3,
+        "specificity": 2,
+        "grounded_knowledge": 4,
+        "predictive_power": 3,
+        "parsimony": 4
+    }},
+    "total_score": 16,
+    "reasoning": {{
+        "testability": "Brief explanation for this score",
+        "specificity": "Brief explanation for this score",
+        "grounded_knowledge": "Brief explanation for this score",
+        "predictive_power": "Brief explanation for this score",
+        "parsimony": "Brief explanation for this score"
+    }},
+    "overall_assessment": "Brief overall assessment of hypothesis quality"
+}}"""
+        
+        # Call the model
+        client = openai.OpenAI(
+            api_key=model_config['api_key'],
+            base_url=model_config['api_base']
+        )
+        
+        response = client.chat.completions.create(
+            model=model_config['model_name'],
+            messages=[
+                {"role": "system", "content": "You are a rigorous scientific evaluator who scores hypothesis hallmarks objectively and uses the full 1-5 scale aggressively. Always respond with valid JSON."},
+                {"role": "user", "content": scoring_prompt}
+            ],
+            temperature=0.3,  # Lower temperature for consistent scoring
+            max_tokens=1000
+        )
+        
+        response_text = response.choices[0].message.content.strip()
+        response_text = clean_json_string(response_text)
+        
+        # Extract JSON from response
+        json_match = re.search(r'\{.*\}', response_text, re.DOTALL)
+        if not json_match:
+            return {"error": "Could not extract JSON from model response"}
+        
+        try:
+            scoring_data = json.loads(json_match.group())
+        except json.JSONDecodeError as e:
+            return {"error": f"JSON parsing error: {str(e)}"}
+        
+        # Validate scoring data
+        if 'scores' not in scoring_data:
+            return {"error": "No scores found in model response"}
+        
+        scores = scoring_data['scores']
+        
+        # Validate that all required hallmarks are scored
+        required_hallmarks = ['testability', 'specificity', 'grounded_knowledge', 'predictive_power', 'parsimony']
+        for hallmark in required_hallmarks:
+            if hallmark not in scores:
+                return {"error": f"Missing score for {hallmark}"}
+            
+            # Validate score range
+            score = scores[hallmark]
+            if not isinstance(score, int) or score < 1 or score > 5:
+                return {"error": f"Invalid score for {hallmark}: {score} (must be 1-5)"}
+        
+        # Calculate total score
+        total_score = sum(scores.values())
+        scoring_data['total_score'] = total_score
+        
+        # Add metadata
+        scoring_data['scoring_timestamp'] = datetime.now().isoformat()
+        scoring_data['hypothesis_version'] = hypothesis.get('version', '1.0')
+        scoring_data['hypothesis_title'] = hypothesis.get('title', 'Untitled')
+        
+        return scoring_data
+        
+    except Exception as e:
+        return {"error": f"Error scoring hypothesis: {str(e)}"}
+
+def update_hypothesis_with_abstracts(hypothesis, model_config):
+    """Update hypothesis using information from downloaded abstracts"""
+    try:
+        # Find abstracts for this hypothesis
+        abstracts = find_abstracts_for_hypothesis(hypothesis)
+        
+        if not abstracts:
+            return {"error": "No abstracts found. Use 'a' command to fetch abstracts first."}
+        
+        # Prepare abstracts text for the prompt
+        abstracts_text = "\n\n".join([f"Abstract {i+1}:\n{abstract['content']}" for i, abstract in enumerate(abstracts)])
+        
+        # Create the update prompt
+        update_prompt = f"""You are a research scientist updating a hypothesis based on new information from scientific abstracts.
+
+CURRENT HYPOTHESIS:
+Title: {hypothesis.get('title', 'N/A')}
+Description: {hypothesis.get('description', 'N/A')}
+Experimental Validation Plan: {hypothesis.get('experimental_validation_plan', 'N/A')}
+Theory and Computing Plan: {hypothesis.get('theory_and_computing_plan', 'N/A')}
+
+NEW ABSTRACTS TO INCORPORATE:
+{abstracts_text}
+
+Please update the hypothesis by incorporating relevant information from these abstracts. The updated hypothesis should:
+1. Retain the core concept but refine it based on new insights
+2. Update the experimental validation plan with new methodologies or considerations from the abstracts
+3. Enhance the theory and computing plan with new approaches or computational methods mentioned
+4. Maintain scientific rigor and coherence
+
+Provide the response in this exact JSON format:
+{{
+    "title": "Updated title",
+    "description": "Updated detailed description incorporating insights from abstracts",
+    "experimental_validation_plan": "Updated experimental plan with new methodologies and considerations",
+    "theory_and_computing_plan": "Updated computational approach incorporating new methods",
+    "hallmarks": [
+        "Updated hallmark 1",
+        "Updated hallmark 2",
+        "Updated hallmark 3"
+    ],
+    "references": [
+        {{
+            "citation": "Relevant citation from abstracts or existing references",
+            "relevance": "How this reference supports the updated hypothesis"
+        }}
+    ],
+    "update_summary": "Brief summary of what was updated based on the abstracts"
+}}"""
+        
+        # Call the model
+        client = openai.OpenAI(
+            api_key=model_config['api_key'],
+            base_url=model_config['api_base']
+        )
+        
+        response = client.chat.completions.create(
+            model=model_config['model_name'],
+            messages=[
+                {"role": "system", "content": "You are a helpful research scientist assistant that updates hypotheses based on new scientific information. Always respond with valid JSON."},
+                {"role": "user", "content": update_prompt}
+            ],
+            temperature=0.7,
+            max_tokens=2000
+        )
+        
+        response_text = response.choices[0].message.content.strip()
+        response_text = clean_json_string(response_text)
+        
+        # Extract JSON from response
+        json_match = re.search(r'\{.*\}', response_text, re.DOTALL)
+        if not json_match:
+            return {"error": "Could not extract JSON from model response"}
+        
+        try:
+            updated_data = json.loads(json_match.group())
+        except json.JSONDecodeError as e:
+            return {"error": f"JSON parsing error: {str(e)}"}
+        
+        # Preserve original metadata and update version
+        updated_hypothesis = hypothesis.copy()
+        
+        # Update core fields
+        for field in ['title', 'description', 'experimental_validation_plan', 'theory_and_computing_plan', 'hallmarks', 'references']:
+            if field in updated_data:
+                updated_hypothesis[field] = updated_data[field]
+        
+        # Update version number (increment minor version)
+        current_version = updated_hypothesis.get('version', '1.0')
+        try:
+            version_parts = current_version.split('.')
+            if len(version_parts) >= 2:
+                major = int(version_parts[0])
+                minor = int(version_parts[1]) + 1
+                updated_hypothesis['version'] = f"{major}.{minor}"
+            else:
+                updated_hypothesis['version'] = "1.1"
+        except:
+            updated_hypothesis['version'] = "1.1"
+        
+        # Add update metadata
+        updated_hypothesis['last_updated'] = datetime.now().isoformat()
+        updated_hypothesis['update_type'] = 'abstracts_integration'
+        updated_hypothesis['abstracts_used'] = len(abstracts)
+        
+        if 'update_summary' in updated_data:
+            updated_hypothesis['update_summary'] = updated_data['update_summary']
+        
+        # Add to feedback history
+        if 'feedback_history' not in updated_hypothesis:
+            updated_hypothesis['feedback_history'] = []
+        
+        updated_hypothesis['feedback_history'].append({
+            "timestamp": datetime.now().isoformat(),
+            "feedback_type": "abstracts_integration",
+            "abstracts_count": len(abstracts),
+            "update_summary": updated_data.get('update_summary', 'Updated with information from abstracts')
+        })
+        
+        return updated_hypothesis
+        
+    except Exception as e:
+        return {"error": f"Error updating hypothesis: {str(e)}"}
+
 def fetch_papers_for_hypothesis(hypothesis, session_name, interface=None):
     """Fetch papers and abstracts for all references in a hypothesis"""
     references = hypothesis.get('references', [])
@@ -272,6 +831,9 @@ def fetch_papers_for_hypothesis(hypothesis, session_name, interface=None):
     
     # Get Semantic Scholar API key from environment
     ss_api_key = os.environ.get('SS_API_KEY') or os.environ.get('SEMANTIC_SCHOLAR_API_KEY')
+    if not ss_api_key and interface:
+        interface.draw_status_bar("Warning: No SS API key found. Using public rate limits...")
+        time.sleep(2)
     
     results = {
         "status": "success",
@@ -282,10 +844,18 @@ def fetch_papers_for_hypothesis(hypothesis, session_name, interface=None):
     
     total_refs = len(references)
     
+    # Initialize all references as pending
+    if interface:
+        hyp_id = hypothesis.get('hypothesis_number', 0)
+        for i in range(total_refs):
+            interface.update_reference_status(hyp_id, i+1, 'pending')
+    
     for i, ref in enumerate(references):
         if interface:
+            hyp_id = hypothesis.get('hypothesis_number', 0)
             status_msg = f"Fetching papers... ({i+1}/{total_refs})"
             interface.draw_status_bar(status_msg)
+            interface.update_reference_status(hyp_id, i+1, 'fetching')
             interface.stdscr.refresh()
         
         try:
@@ -296,6 +866,8 @@ def fetch_papers_for_hypothesis(hypothesis, session_name, interface=None):
             
             if not citation:
                 results["failed"].append({"index": i+1, "reason": "Empty citation"})
+                if interface:
+                    interface.update_reference_status(hyp_id, i+1, 'failed')
                 continue
             
             # Extract paper information from citation
@@ -328,12 +900,20 @@ def fetch_papers_for_hypothesis(hypothesis, session_name, interface=None):
                     "doi": best_paper.get('doi'),
                     "venue": best_paper.get('venue')
                 })
+                
+                # Update status to success
+                if interface:
+                    interface.update_reference_status(hyp_id, i+1, 'success')
             else:
                 results["failed"].append({
                     "index": i+1, 
                     "citation": citation,
                     "reason": "No papers found"
                 })
+                
+                # Update status to failed
+                if interface:
+                    interface.update_reference_status(hyp_id, i+1, 'failed')
         
         except Exception as e:
             results["failed"].append({
@@ -341,9 +921,15 @@ def fetch_papers_for_hypothesis(hypothesis, session_name, interface=None):
                 "citation": citation if 'citation' in locals() else "Unknown",
                 "reason": str(e)
             })
+            
+            # Update status to failed
+            if interface:
+                interface.update_reference_status(hyp_id, i+1, 'failed')
         
-        # Add a small delay between requests to be respectful to the API
-        time.sleep(1)
+        # Add delay between requests to be respectful to the API
+        # Use longer delay if no API key (public rate limits are stricter)
+        delay = 3 if not ss_api_key else 1
+        time.sleep(delay)
     
     return results
 
@@ -383,6 +969,10 @@ class CursesInterface:
         self.status_timeout = 3.0  # Status messages auto-clear after 3 seconds
         self.persistent_status = False  # Some statuses should persist until user action
         
+        # Progress tracking for operations
+        self.progress_operations = {}
+        # Format: {operation_id: {'type': 'generating', 'current': 2, 'total': 5, 'message': 'Generating hypotheses', 'start_time': time.time()}}
+        
         # Dirty flags for selective updates
         self.dirty_header = True
         self.dirty_list = True
@@ -391,6 +981,219 @@ class CursesInterface:
         self.last_hypothesis_count = 0
         self.last_current_idx = -1
         self.last_hypothesis_content = None
+        
+        # Focus management for left/right arrow navigation
+        self.focus_pane = "list"  # Can be "list" or "details"
+        self.list_scroll_offset = 0  # For scrolling in hypothesis list
+        
+        # Reference fetching status tracking
+        self.reference_status = {}  # {hypothesis_id: {ref_index: 'pending'|'fetching'|'success'|'failed'}}
+        
+        # Pending operations tracking
+        self.pending_operations = {
+            'generating_new': 0,      # Count of pending new hypothesis generations
+            'fetching_papers': 0,     # Count of pending paper fetch operations
+            'improving': 0,           # Count of pending improvements
+            'saving': 0,              # Count of pending save operations
+            'loading': 0              # Count of pending load operations
+        }
+        
+        # Status refresh thread management
+        self.status_refresh_active = True
+        self.status_refresh_thread = None
+        self.status_lock = threading.Lock()
+        self.start_status_refresh_thread()
+        
+    def start_status_refresh_thread(self):
+        """Start background thread to refresh status display"""
+        def refresh_status_loop():
+            import time
+            while self.status_refresh_active:
+                try:
+                    with self.status_lock:
+                        # Update any progress operations
+                        self.update_progress_display()
+                        
+                        # Refresh status if needed
+                        if self.dirty_status:
+                            self.draw_status_bar()
+                            try:
+                                self.status_win.refresh()
+                            except:
+                                pass  # Ignore refresh errors during shutdown
+                            self.dirty_status = False
+                    
+                    time.sleep(0.5)  # Update every 500ms
+                except Exception:
+                    pass  # Ignore errors during shutdown
+        
+        self.status_refresh_thread = threading.Thread(target=refresh_status_loop, daemon=True)
+        self.status_refresh_thread.start()
+        
+    def stop_status_refresh_thread(self):
+        """Stop the status refresh thread"""
+        self.status_refresh_active = False
+        if self.status_refresh_thread:
+            try:
+                self.status_refresh_thread.join(timeout=1.0)
+            except:
+                pass
+                
+    def add_progress_operation(self, operation_id, operation_type, total_items, message):
+        """Add a progress operation to track"""
+        with self.status_lock:
+            self.progress_operations[operation_id] = {
+                'type': operation_type,
+                'current': 0,
+                'total': total_items,
+                'message': message,
+                'start_time': time.time()
+            }
+            self.mark_dirty("status")
+            
+    def update_progress_operation(self, operation_id, current_item, message=None):
+        """Update progress for an operation"""
+        with self.status_lock:
+            if operation_id in self.progress_operations:
+                self.progress_operations[operation_id]['current'] = current_item
+                if message:
+                    self.progress_operations[operation_id]['message'] = message
+                self.mark_dirty("status")
+                
+    def remove_progress_operation(self, operation_id):
+        """Remove a completed progress operation"""
+        with self.status_lock:
+            if operation_id in self.progress_operations:
+                del self.progress_operations[operation_id]
+                self.mark_dirty("status")
+                
+    def update_progress_display(self):
+        """Update the progress display in status bar"""
+        if not self.progress_operations:
+            return
+            
+        # Build progress message
+        progress_messages = []
+        current_time = time.time()
+        
+        for op_id, op_data in self.progress_operations.items():
+            current = op_data['current']
+            total = op_data['total']
+            message = op_data['message']
+            elapsed = current_time - op_data['start_time']
+            
+            if total > 1:
+                # Show progress with countdown
+                progress_percent = (current / total) * 100 if total > 0 else 0
+                remaining = total - current
+                
+                # Estimate time remaining
+                if current > 0 and elapsed > 0:
+                    rate = current / elapsed
+                    eta_seconds = remaining / rate if rate > 0 else 0
+                    if eta_seconds < 60:
+                        eta_str = f"{eta_seconds:.0f}s"
+                    else:
+                        eta_str = f"{eta_seconds/60:.1f}m"
+                    progress_text = f"{message} ({current}/{total}) {progress_percent:.0f}% - ETA: {eta_str}"
+                else:
+                    progress_text = f"{message} ({current}/{total}) {progress_percent:.0f}%"
+            else:
+                # Simple operation with elapsed time
+                if elapsed < 60:
+                    elapsed_str = f"{elapsed:.0f}s"
+                else:
+                    elapsed_str = f"{elapsed/60:.1f}m"
+                progress_text = f"{message} - {elapsed_str}"
+            
+            progress_messages.append(progress_text)
+        
+        if progress_messages:
+            combined_message = " | ".join(progress_messages)
+            self.current_status = combined_message
+            self.persistent_status = True  # Keep showing until operation completes
+        
+    def get_reference_status_indicator(self, hypothesis_id, ref_index):
+        """Get status indicator for a specific reference"""
+        if hypothesis_id not in self.reference_status:
+            return " "  # No status available
+        
+        status = self.reference_status[hypothesis_id].get(ref_index, 'pending')
+        if status == 'pending':
+            return " "  # No indicator for pending
+        elif status == 'fetching':
+            try:
+                return "⏳"  # Hourglass for in-progress
+            except (UnicodeEncodeError, curses.error):
+                return "~"  # Fallback for in-progress
+        elif status == 'success':
+            try:
+                return "✓"  # Check mark for success
+            except (UnicodeEncodeError, curses.error):
+                return "+"  # Fallback for success
+        elif status == 'failed':
+            try:
+                return "✗"  # X mark for failure
+            except (UnicodeEncodeError, curses.error):
+                return "X"  # Fallback for failure
+        else:
+            return " "
+            
+    def update_reference_status(self, hypothesis_id, ref_index, status):
+        """Update the status of a specific reference"""
+        if hypothesis_id not in self.reference_status:
+            self.reference_status[hypothesis_id] = {}
+        self.reference_status[hypothesis_id][ref_index] = status
+        # Mark details pane for refresh
+        self.mark_dirty("details")
+        
+        # Force immediate refresh if currently displayed hypothesis matches
+        current_hyp_num = getattr(self, '_current_displayed_hypothesis_id', None)
+        if current_hyp_num == hypothesis_id:
+            try:
+                self.detail_win.refresh()
+            except:
+                pass  # Ignore refresh errors during threading
+                
+    def add_pending_operation(self, operation_type):
+        """Add a pending operation and update status display"""
+        self.pending_operations[operation_type] += 1
+        self.update_pending_status()
+        
+    def remove_pending_operation(self, operation_type):
+        """Remove a pending operation and update status display"""
+        if self.pending_operations[operation_type] > 0:
+            self.pending_operations[operation_type] -= 1
+        self.update_pending_status()
+        
+    def update_pending_status(self):
+        """Update status bar to show pending operations"""
+        pending_msgs = []
+        
+        if self.pending_operations['generating_new'] > 0:
+            count = self.pending_operations['generating_new']
+            pending_msgs.append(f"Generating {count} new hypothesis{'es' if count > 1 else ''}")
+            
+        if self.pending_operations['fetching_papers'] > 0:
+            count = self.pending_operations['fetching_papers']
+            pending_msgs.append(f"Fetching papers ({count} active)")
+            
+        if self.pending_operations['improving'] > 0:
+            count = self.pending_operations['improving']
+            pending_msgs.append(f"Improving {count} hypothesis{'es' if count > 1 else ''}")
+            
+        if self.pending_operations['saving'] > 0:
+            count = self.pending_operations['saving']
+            pending_msgs.append(f"Saving {count} file{'s' if count > 1 else ''}")
+            
+        if self.pending_operations['loading'] > 0:
+            count = self.pending_operations['loading']
+            pending_msgs.append(f"Loading {count} file{'s' if count > 1 else ''}")
+        
+        if pending_msgs:
+            status_msg = " • ".join(pending_msgs) + "..."
+            self.draw_status_bar(status_msg)
+            self.status_win.refresh()
         
     def init_colors(self):
         """Initialize curses color pairs"""
@@ -437,13 +1240,59 @@ class CursesInterface:
         self.list_win.scrollok(True)
         self.detail_win.scrollok(True)
         
+    def draw_border(self, window):
+        """Draw clean border using proper box-drawing characters"""
+        height, width = window.getmaxyx()
+        
+        try:
+            # Try to use Unicode box-drawing characters
+            # Top border
+            window.addch(0, 0, '┌')  # top-left corner
+            for x in range(1, width - 1):
+                window.addch(0, x, '─')  # horizontal line
+            window.addch(0, width - 1, '┐')  # top-right corner
+            
+            # Side borders
+            for y in range(1, height - 1):
+                window.addch(y, 0, '│')  # left vertical line
+                window.addch(y, width - 1, '│')  # right vertical line
+            
+            # Bottom border
+            window.addch(height - 1, 0, '└')  # bottom-left corner
+            for x in range(1, width - 1):
+                window.addch(height - 1, x, '─')  # horizontal line
+            window.addch(height - 1, width - 1, '┘')  # bottom-right corner
+            
+        except (curses.error, UnicodeEncodeError):
+            # Fallback to ASCII characters if Unicode fails
+            try:
+                # Top border
+                window.addch(0, 0, '+')
+                for x in range(1, width - 1):
+                    window.addch(0, x, '-')
+                window.addch(0, width - 1, '+')
+                
+                # Side borders
+                for y in range(1, height - 1):
+                    window.addch(y, 0, '|')
+                    window.addch(y, width - 1, '|')
+                
+                # Bottom border
+                window.addch(height - 1, 0, '+')
+                for x in range(1, width - 1):
+                    window.addch(height - 1, x, '-')
+                window.addch(height - 1, width - 1, '+')
+            except curses.error:
+                # Final fallback - use box() if all else fails
+                window.box()
+        
     def draw_header(self, research_goal, model_name):
         """Draw the header pane with research goal and model info"""
         self.header_win.clear()
         self.header_win.attron(curses.color_pair(5) | curses.A_BOLD)
         
         # Title line
-        title = f" WISTERIA v5 - Research Hypothesis Generator"
+        title = f" WISTERIA v6 - Research Hypothesis Generator"
         model_info = f"[Model: {model_name}] "
         title_line = title + " " * max(0, self.width - len(title) - len(model_info)) + model_info
         self.safe_addstr(self.header_win, 0, 0, title_line[:self.width])
@@ -467,12 +1316,18 @@ class CursesInterface:
     def draw_hypothesis_list(self, all_hypotheses):
         """Draw the hypothesis list pane"""
         self.list_win.clear()
-        self.list_win.box()
+        # Draw clean border
+        self.draw_border(self.list_win)
         
-        # Title
-        list_title = " Hypothesis List "
+        # Title with focus indicator
+        if self.focus_pane == "list":
+            list_title = " Hypothesis List [FOCUSED] "
+            title_attr = curses.A_BOLD | curses.A_REVERSE
+        else:
+            list_title = " Hypothesis List "
+            title_attr = curses.A_BOLD
         title_x = (self.LIST_WIDTH - len(list_title)) // 2
-        self.list_win.addstr(0, title_x, list_title, curses.A_BOLD)
+        self.list_win.addstr(0, title_x, list_title, title_attr)
         
         if not all_hypotheses:
             self.list_win.addstr(2, 2, "No hypotheses yet", curses.color_pair(4))
@@ -504,8 +1359,15 @@ class CursesInterface:
             title = latest_version.get("title", "Untitled")
             hyp_type = latest_version.get("type", "unknown")
             
-            # Truncate title to fit
-            max_title_len = self.LIST_WIDTH - 15
+            # Check if there are hallmark scores
+            score_indicator = ""
+            hallmark_scores = latest_version.get("hallmark_scores", {})
+            if hallmark_scores and "total_score" in hallmark_scores:
+                total_score = hallmark_scores["total_score"]
+                score_indicator = f" ({total_score}/25)"
+            
+            # Truncate title to fit (accounting for score display)
+            max_title_len = self.LIST_WIDTH - 15 - len(score_indicator)
             if len(title) > max_title_len:
                 title = title[:max_title_len-3] + "..."
             
@@ -515,7 +1377,7 @@ class CursesInterface:
             elif hyp_type == "new_alternative": 
                 type_indicator = " (alt)"
                 
-            line_text = f"{hyp_num}. [v{version}] {title}{type_indicator}"
+            line_text = f"{hyp_num}. [v{version}]{score_indicator} {title}{type_indicator}"
             
             # Highlight selected hypothesis
             attr = curses.A_REVERSE if hyp_num - 1 == self.current_hypothesis_idx else 0
@@ -534,17 +1396,26 @@ class CursesInterface:
     def draw_hypothesis_details(self, hypothesis, previous_hypothesis=None):
         """Draw the hypothesis details pane"""
         self.detail_win.clear()
-        self.detail_win.box()
+        # Draw clean border
+        self.draw_border(self.detail_win)
         
-        # Title
-        detail_title = " Current Hypothesis "
+        # Title with focus indicator
+        if self.focus_pane == "details":
+            detail_title = " Current Hypothesis [FOCUSED] "
+            title_attr = curses.A_BOLD | curses.A_REVERSE
+        else:
+            detail_title = " Current Hypothesis "
+            title_attr = curses.A_BOLD
         title_x = (self.DETAIL_WIDTH - len(detail_title)) // 2
-        self.detail_win.addstr(0, title_x, detail_title, curses.A_BOLD)
+        self.detail_win.addstr(0, title_x, detail_title, title_attr)
         
         if not hypothesis:
             self.detail_win.addstr(2, 2, "No hypothesis selected", curses.color_pair(4))
             # Refresh moved to single refresh cycle
             return
+            
+        # Track currently displayed hypothesis for status updates
+        self._current_displayed_hypothesis_id = hypothesis.get('hypothesis_number', 0)
             
         # Content area
         content_width = self.DETAIL_WIDTH - 4
@@ -603,6 +1474,26 @@ class CursesInterface:
                     if 2 <= display_y < max_y:
                         self.safe_addstr(self.detail_win, display_y, 2, line)
                 y_pos += 1
+            
+            # Theory and Computation section
+            theory_computation = hypothesis.get('theory_and_computation', '')
+            if theory_computation.strip():
+                y_pos += 1
+                if y_pos - 2 >= self.detail_scroll_offset and y_pos - self.detail_scroll_offset < max_y:
+                    display_y = y_pos - self.detail_scroll_offset
+                    if 2 <= display_y < max_y:
+                        self.safe_addstr(self.detail_win, display_y, 2, "Theory and Computation:", curses.A_UNDERLINE)
+                y_pos += 1
+                
+                wrapped_theory = textwrap.fill(theory_computation, content_width)
+                for line in wrapped_theory.split('\n'):
+                    if y_pos >= max_y + self.detail_scroll_offset + 20:  # Reasonable limit
+                        break
+                    if y_pos - 2 >= self.detail_scroll_offset:
+                        display_y = y_pos - self.detail_scroll_offset
+                        if 2 <= display_y < max_y:
+                            self.safe_addstr(self.detail_win, display_y, 2, line)
+                    y_pos += 1
             
             # Notes section
             notes = hypothesis.get('notes', '')
@@ -702,19 +1593,25 @@ class CursesInterface:
                 
                 references = hypothesis.get('references', [])
                 if references:
+                    # Get hypothesis ID for status lookup
+                    hyp_id = hypothesis.get('hypothesis_number', 0)
+                    
                     for i, ref in enumerate(references, 1):
                         if isinstance(ref, dict):
                             citation = ref.get('citation', 'No citation')
                             annotation = ref.get('annotation', 'No annotation')
                             
-                            # Display citation
-                            citation_text = f"{i}. {citation}"
+                            # Get status indicator for this reference
+                            status_indicator = self.get_reference_status_indicator(hyp_id, i)
+                            
+                            # Display citation with status indicator
+                            citation_text = f"{status_indicator} {i}. {citation}"
                             wrapped_citation = textwrap.fill(citation_text, content_width - 3)
                             for line in wrapped_citation.split('\n'):
                                 if y_pos - 2 >= self.detail_scroll_offset:
                                     display_y = y_pos - self.detail_scroll_offset
                                     if 2 <= display_y < max_y:
-                                        self.detail_win.addstr(display_y, 5, line[:content_width-3], curses.A_BOLD)
+                                        self.detail_win.addstr(display_y, 2, line[:content_width-3], curses.A_BOLD)
                                 y_pos += 1
                             
                             # Display annotation
@@ -773,7 +1670,7 @@ class CursesInterface:
         self.safe_addstr(self.status_win, 0, 0, status_line)
         
         # Commands - show on two lines if needed
-        commands_line1 = " f=Feedback n=New l=Load x=Save t=Notes s=Select v=View h=Toggle r=Refs p=PDF q=Quit "
+        commands_line1 = " f=Feedback n=New l=Load x=Save t=Notes s=Select v=View h=Toggle r=Refs a=Papers u=Update b=Browse c=Score p=PDF q=Quit "
         commands_line2 = " Up/Down=Navigate j/k=Scroll d/u=FastScroll "
         
         # Try to fit both lines, otherwise just show main commands
@@ -787,7 +1684,7 @@ class CursesInterface:
                 self.safe_addstr(self.status_win, 1, cmd2_start_x, commands_line2)
         else:
             # Shortened version for narrow terminals
-            commands_short = " f=Feedback n=New p=PDF q=Quit j/k=Scroll "
+            commands_short = " f=Feedback n=New a=Papers u=Update b=Browse c=Score p=PDF q=Quit j/k=Scroll "
             cmd_start_x = max(0, self.width - len(commands_short))
             if cmd_start_x > len(status_line):
                 self.safe_addstr(self.status_win, 0, cmd_start_x, commands_short)
@@ -836,14 +1733,17 @@ class CursesInterface:
         """Draw only the components that have changed"""
         if self.dirty_header:
             self.draw_header(research_goal, model_name)
+            self.header_win.refresh()
             self.dirty_header = False
         
         if self.dirty_list:
             self.draw_hypothesis_list(all_hypotheses)
+            self.list_win.refresh()
             self.dirty_list = False
         
         if self.dirty_details:
             self.draw_hypothesis_details(current_hypothesis)
+            self.detail_win.refresh()
             self.dirty_details = False
         
         if self.dirty_status or status_msg:
@@ -851,6 +1751,7 @@ class CursesInterface:
                 self.draw_status_bar(status_msg)
             else:
                 self.draw_status_bar()
+            self.status_win.refresh()
             self.dirty_status = False
         
     def handle_resize(self):
@@ -868,6 +1769,7 @@ class CursesInterface:
             self.list_scroll_offset += 1
         else:
             self.list_scroll_offset = max(0, self.list_scroll_offset - 1)
+        self.mark_dirty("list")
             
     def scroll_detail(self, direction):
         """Scroll the hypothesis details"""
@@ -1063,6 +1965,13 @@ def generate_hypothesis_pdf(hypothesis, research_goal, output_filename=None):
         story.append(Paragraph(validation, body_style))
         story.append(Spacer(1, 20))
         
+        # Theory and Computation
+        theory_computation = hypothesis.get('theory_and_computation', '')
+        if theory_computation.strip():
+            story.append(Paragraph("Theory and Computation", heading_style))
+            story.append(Paragraph(theory_computation, body_style))
+            story.append(Spacer(1, 20))
+        
         # Personal Notes
         notes = hypothesis.get('notes', '')
         if notes.strip():
@@ -1190,7 +2099,7 @@ def generate_hypothesis_pdf(hypothesis, research_goal, output_filename=None):
             textColor=HexColor('#7F8C8D'),
             alignment=1  # Center alignment
         )
-        story.append(Paragraph("Generated by Wisteria Research Hypothesis Generator v5.0", footer_style))
+        story.append(Paragraph("Generated by Wisteria Research Hypothesis Generator v6.0", footer_style))
         story.append(Paragraph(f"Document created on {datetime.now().strftime('%B %d, %Y')}", footer_style))
         
         # Build the PDF
@@ -1283,6 +2192,12 @@ def compare_hypothesis_sections(old_hypothesis, new_hypothesis):
     if old_desc != new_desc:
         result['description_highlighted'] = highlight_text_changes(old_desc, new_desc)
     
+    # Compare theory and computation
+    old_theory_computation = old_hypothesis.get('theory_and_computation', '')
+    new_theory_computation = new_hypothesis.get('theory_and_computation', '')
+    if old_theory_computation != new_theory_computation:
+        result['theory_and_computation_highlighted'] = highlight_text_changes(old_theory_computation, new_theory_computation)
+    
     # Compare hallmarks
     old_hallmarks = old_hypothesis.get('hallmarks', {})
     new_hallmarks = new_hypothesis.get('hallmarks', {})
@@ -1358,11 +2273,19 @@ def load_model_config(model_shortname):
     Load model configuration from the model_servers.yaml file.
     Returns a dictionary with api_key, api_base, and model_name.
     """
+    if not model_shortname or not model_shortname.strip():
+        print("Error: Model shortname cannot be empty")
+        sys.exit(1)
+        
     yaml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "model_servers.yaml")
     
     try:
         with open(yaml_path, 'r') as yaml_file:
             config = yaml.safe_load(yaml_file)
+            
+        if not config or 'servers' not in config:
+            print(f"Error: Invalid format in {yaml_path} - missing 'servers' section")
+            sys.exit(1)
             
         # Look for the model by shortname
         for server in config['servers']:
@@ -1437,8 +2360,9 @@ For each hypothesis, provide:
 1. TITLE: A concise, descriptive title for the hypothesis
 2. DESCRIPTION: A detailed paragraph explaining the hypothesis, its key predictions, and potential mechanisms
 3. EXPERIMENTAL_VALIDATION: A comprehensive plan for experimentally validating this hypothesis, including specific methods, controls, measurements, and expected outcomes
-4. ANALYSIS: Evaluate the hypothesis against each of the five hallmarks of strong scientific hypotheses:
-5. REFERENCES: Include relevant scientific references that support or relate to the hypothesis (3-5 references minimum)
+4. THEORY_AND_COMPUTATION: Describe theoretical frameworks, computational models, simulations, mathematical analyses, or computational approaches that could be developed to explore, predict, or validate aspects of this hypothesis
+5. ANALYSIS: Evaluate the hypothesis against each of the five hallmarks of strong scientific hypotheses:
+6. REFERENCES: Include relevant scientific references that support or relate to the hypothesis (3-5 references minimum)
 
 The Five Hallmarks of a Strong Scientific Hypothesis:
 
@@ -1462,6 +2386,7 @@ Please format your response as a JSON array where each hypothesis is an object w
   "title": "Hypothesis title",
   "description": "Detailed paragraph description",
   "experimental_validation": "Comprehensive experimental validation plan including specific methods, controls, measurements, timeline, and expected outcomes",
+  "theory_and_computation": "Detailed description of theoretical frameworks, computational models, simulations, mathematical analyses, or computational approaches that could be developed to explore, predict, or validate this hypothesis",
   "hallmarks": {{
     "testability": "Paragraph explaining how this hypothesis satisfies testability/falsifiability",
     "specificity": "Paragraph explaining how this hypothesis satisfies specificity and clarity",
@@ -1653,6 +2578,13 @@ def display_single_hypothesis(hypothesis, hypothesis_number, previous_hypothesis
         print(f"\n{Colors.BLUE}Improvements made based on feedback:{Colors.RESET}")
         print(f"{Colors.BLUE}{hypothesis.get('improvements_made')}{Colors.RESET}")
     
+    # Display Theory and Computation section
+    theory_computation = hypothesis.get('theory_and_computation', '')
+    if theory_computation.strip():
+        theory_computation_text = highlighted.get('theory_and_computation_highlighted', theory_computation)
+        print(f"\nTheory and Computation:")
+        print(f"{theory_computation_text}")
+    
     # Display hallmarks analysis only if show_hallmarks is True
     if show_hallmarks:
         hallmarks = hypothesis.get('hallmarks', {})
@@ -1717,12 +2649,15 @@ def get_user_feedback(all_hypotheses=None, current_hypothesis=None):
     print("\\h - Toggle hallmarks analysis display")
     print("\\r - Toggle references display")
     print("\\a - Fetch abstracts and papers from Semantic Scholar for current hypothesis references")
+    print("\\u - Update hypothesis with information from downloaded abstracts")
+    print("\\b - Browse and view downloaded abstracts")
+    print("\\c - Score hypothesis hallmarks (1-5 scale) using AI evaluation")
     print("\\p - Print current hypothesis to PDF document")
     print("\\q - Quit and save all hypotheses")
     print("-" * 60)
     
     while True:
-        choice = input("\nEnter your choice (\\f, \\n, \\l, \\x, \\t, \\v, \\s, \\h, \\r, \\a, \\p, or \\q): ").strip()
+        choice = input("\nEnter your choice (\\f, \\n, \\l, \\x, \\t, \\v, \\s, \\h, \\r, \\a, \\u, \\b, \\c, \\p, or \\q): ").strip()
         
         if choice == "\\f":
             print("\nPlease provide your feedback for improving this hypothesis:")
@@ -1770,11 +2705,49 @@ def get_user_feedback(all_hypotheses=None, current_hypothesis=None):
         elif choice == "\\a":
             return "FETCH_PAPERS"
             
+        elif choice == "\\u":
+            return "UPDATE_WITH_ABSTRACTS"
+            
+        elif choice == "\\b":
+            return "BROWSE_ABSTRACTS"
+            
+        elif choice == "\\c":
+            return "SCORE_HALLMARKS"
+            
+        elif choice == "\\x":
+            filename = input("\nEnter filename to save (without .json): ").strip()
+            if filename:
+                return f"SAVE_SESSION:{filename}"
+            else:
+                print("Please provide a filename or choose a different option.")
+                continue
+                
+        elif choice == "\\t":
+            if current_hypothesis:
+                current_notes = current_hypothesis.get("notes", "")
+                print(f"\nCurrent notes: {current_notes}")
+                new_notes = input("Enter new notes (or press Enter to keep current): ").strip()
+                if new_notes:
+                    return f"EDIT_NOTES:{new_notes}"
+                else:
+                    print("Notes unchanged.")
+                    continue
+            else:
+                print("No hypothesis selected for notes editing.")
+                continue
+                
+        elif choice == "\\p":
+            if PDF_AVAILABLE:
+                return "GENERATE_PDF"
+            else:
+                print("PDF generation not available. Install reportlab: pip install reportlab")
+                continue
+                
         elif choice == "\\q":
             return "QUIT"
             
         else:
-            print("Invalid choice. Please enter \\f, \\n, \\l, \\x, \\t, \\v, \\s, \\h, \\r, \\a, \\p, or \\q.")
+            print("Invalid choice. Please enter \\f, \\n, \\l, \\x, \\t, \\v, \\s, \\h, \\r, \\a, \\u, \\b, \\c, \\p, or \\q.")
 
 @backoff.on_exception(
     backoff.expo,
@@ -1835,6 +2808,7 @@ Please format your response as a JSON object with the following structure:
   "title": "Improved hypothesis title",
   "description": "Detailed paragraph description incorporating the feedback",
   "experimental_validation": "Comprehensive experimental validation plan including specific methods, controls, measurements, timeline, and expected outcomes",
+  "theory_and_computation": "Detailed description of theoretical frameworks, computational models, simulations, mathematical analyses, or computational approaches that could be developed to explore, predict, or validate this improved hypothesis",
   "hallmarks": {{
     "testability": "Paragraph explaining how this improved hypothesis satisfies testability/falsifiability",
     "specificity": "Paragraph explaining how this improved hypothesis satisfies specificity and clarity", 
@@ -2008,6 +2982,7 @@ Please format your response as a JSON object with the following structure:
   "title": "Hypothesis title",
   "description": "Detailed paragraph explanation of the hypothesis, its key predictions, and potential mechanisms",
   "experimental_validation": "Comprehensive experimental validation plan including specific methods, controls, measurements, timeline, and expected outcomes",
+  "theory_and_computation": "Detailed description of theoretical frameworks, computational models, simulations, mathematical analyses, or computational approaches that could be developed to explore, predict, or validate this hypothesis",
   "hallmarks": {{
     "testability": "Paragraph explaining how this hypothesis satisfies testability/falsifiability",
     "specificity": "Paragraph explaining how this hypothesis satisfies specificity and clarity",
@@ -2286,7 +3261,7 @@ def select_hypothesis(all_hypotheses):
 
 def parse_arguments():
     """Parse command line arguments."""
-    parser = argparse.ArgumentParser(description='Wisteria Research Hypothesis Generator v5.0 - Curses Multi-Pane Interface')
+    parser = argparse.ArgumentParser(description='Wisteria Research Hypothesis Generator v6.0 - Curses Multi-Pane Interface')
     
     # Create mutually exclusive group for goal input
     goal_group = parser.add_mutually_exclusive_group(required=False)
@@ -2318,6 +3293,13 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
     # Initialize curses interface
     interface = CursesInterface(stdscr)
     
+    # Show initial status
+    interface.draw_header(research_goal, model_config['model_name'])
+    interface.header_win.refresh()  # Force refresh for startup
+    interface.draw_status_bar("Initializing Wisteria interface...")
+    interface.status_win.refresh()  # Force refresh for startup
+    stdscr.refresh()
+    
     # Setup initial data
     if initial_hypotheses:
         all_hypotheses = initial_hypotheses.copy()
@@ -2348,10 +3330,20 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
         current_hypothesis = max(all_hypotheses, key=lambda h: h.get("generation_timestamp", ""))
         interface.current_hypothesis_idx = current_hypothesis.get("hypothesis_number", 1) - 1
         
+        # Show loading status for resumed session
+        interface.draw_status_bar("Loading resumed session... Press any key when ready.")
+        interface.status_win.refresh()  # Force refresh for startup
+        stdscr.refresh()
+        
     else:
         all_hypotheses = []
         hypothesis_counter = 0
         version_tracker = {}
+        
+        # Show preparation status
+        interface.draw_status_bar(f"Preparing to generate {num_initial_hypotheses} hypothesis{'es' if num_initial_hypotheses > 1 else ''}...")
+        interface.status_win.refresh()  # Force refresh for startup
+        stdscr.refresh()
         
         # Generate initial hypotheses with progress display
         if num_initial_hypotheses == 1:
@@ -2381,6 +3373,7 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                     anim_char = animation_chars[animation_counter % len(animation_chars)]
                     working_msg = f"Generating initial hypothesis {anim_char} Working..."
                     interface.draw_status_bar(working_msg)
+                    interface.status_win.refresh()
                     interface.stdscr.refresh()
                     time.sleep(0.3)  # Update animation every 300ms
                     animation_counter += 1
@@ -2392,8 +3385,10 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                 if generation_error:
                     raise generation_error
                 
-                initial_hypotheses = generated_hypothesis
-                if initial_hypotheses and not initial_hypotheses[0].get("error"):
+                initial_hypotheses = []
+                if generated_hypothesis and not generated_hypothesis[0].get("error"):
+                    # Only take the first hypothesis to be consistent with multi-hypothesis case
+                    initial_hypotheses.append(generated_hypothesis[0])
                     interface.draw_status_bar("Initial hypothesis completed!")
                     interface.stdscr.refresh()
                     time.sleep(0.5)
@@ -2443,6 +3438,7 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                         anim_char = animation_chars[animation_counter % len(animation_chars)]
                         working_msg = f"Generating hypothesis {i+1}/{num_initial_hypotheses} [{bar}] {anim_char} Working..."
                         interface.draw_status_bar(working_msg)
+                        interface.status_win.refresh()
                         interface.stdscr.refresh()
                         time.sleep(0.3)  # Update animation every 300ms
                         animation_counter += 1
@@ -2457,16 +3453,25 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                     single_hypothesis = generated_hypothesis
                     
                     if single_hypothesis and not single_hypothesis[0].get("error"):
-                        initial_hypotheses.extend(single_hypothesis)
+                        # Only take the first hypothesis from the list to avoid duplicates
+                        initial_hypotheses.append(single_hypothesis[0])
                         # Show completion for this hypothesis
                         completed_msg = f"Hypothesis {i+1}/{num_initial_hypotheses} completed! [{bar}]"
                         interface.draw_status_bar(completed_msg)
                         interface.stdscr.refresh()
                         time.sleep(0.5)  # Brief pause to show completion
+                    elif single_hypothesis:
+                        # Log error but continue with other hypotheses
+                        error_msg = f"Error in hypothesis {i+1}: {single_hypothesis[0].get('error', 'Unknown error')}"
+                        interface.draw_status_bar(error_msg)
+                        interface.status_win.refresh()
+                        interface.stdscr.refresh()
+                        time.sleep(1)
                     else:
                         # Show error but continue with others
                         error_msg = f"Error generating hypothesis {i+1}, continuing..."
                         interface.draw_status_bar(error_msg)
+                        interface.status_win.refresh()
                         interface.stdscr.refresh()
                         time.sleep(1)  # Brief pause to show error
                         
@@ -2474,6 +3479,7 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                     # Show error but continue with others
                     error_msg = f"Error on hypothesis {i+1}: {str(e)[:30]}"
                     interface.draw_status_bar(error_msg)
+                    interface.status_win.refresh()
                     interface.stdscr.refresh()
                     time.sleep(1)  # Brief pause to show error
         
@@ -2493,6 +3499,11 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
         else:
             interface.draw_status_bar("Processing generated hypothesis...")
             interface.stdscr.refresh()
+        
+        # Debug: verify hypothesis count
+        interface.draw_status_bar(f"Processing {len(initial_hypotheses)} generated hypotheses...")
+        interface.stdscr.refresh()
+        time.sleep(0.5)
         
         for i, hypothesis in enumerate(initial_hypotheses):
             if not hypothesis.get("error"):
@@ -2525,14 +3536,48 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
         interface.current_hypothesis_idx = 0
     
     # Main curses loop - improved for performance
-    # Use blocking input instead of nodelay to prevent busy waiting
-    stdscr.timeout(50)  # Short timeout for status updates but no busy loop
+    # Use longer timeout to reduce busy waiting and improve responsiveness
+    stdscr.timeout(200)  # 200ms timeout for better responsiveness
     
     waiting_for_feedback = False
     feedback_input = ""
     
     # Force initial draw
     interface.mark_dirty("all")
+    
+    # Get current hypothesis for initial display
+    current_hypothesis = None
+    if all_hypotheses:
+        # Simple approach: just get the first hypothesis for initial display
+        current_hypothesis = all_hypotheses[0] if all_hypotheses else None
+    
+    # Draw the complete interface immediately after generation
+    try:
+        # Force all components to be marked as dirty so they will actually draw
+        interface.dirty_header = True
+        interface.dirty_list = True
+        interface.dirty_details = True
+        interface.dirty_status = True
+        
+        # Draw all components
+        interface.draw_header(research_goal, model_config['model_name'])
+        interface.draw_hypothesis_list(all_hypotheses)
+        interface.draw_hypothesis_details(current_hypothesis)
+        interface.draw_status_bar("Ready to explore - press any key for commands")
+        
+        # Refresh all windows
+        interface.header_win.refresh()
+        interface.list_win.refresh()
+        interface.detail_win.refresh()
+        interface.status_win.refresh()
+        stdscr.refresh()
+        
+    except Exception as e:
+        # If initial draw fails, show error but continue
+        interface.draw_status_bar(f"Display error: {str(e)[:50]}")
+        interface.status_win.refresh()
+        stdscr.refresh()
+        time.sleep(3)  # Give time to see the error
     
     while True:
         try:
@@ -2587,51 +3632,80 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                             # Submit feedback
                             if feedback_input.strip():
                                 waiting_for_feedback = False
-                                interface.set_status("Processing feedback...", persistent=True)
-                                interface.draw_status_bar()
+                                
+                                # Show progress operation
+                                operation_id = f"improve_{time.time()}"
+                                interface.add_progress_operation(operation_id, "improving", 1, "Improving hypothesis with feedback")
                                 stdscr.refresh()
                                 
-                                try:
-                                    improved_hypothesis = improve_hypothesis(
-                                        research_goal, current_hypothesis, feedback_input.strip(), model_config
-                                    )
-                                    if improved_hypothesis.get("error"):
-                                        interface.set_status("Error improving hypothesis")
-                                    else:
-                                        # Add improved hypothesis
-                                        hypothesis_number = current_hypothesis["hypothesis_number"]
-                                        version_tracker[hypothesis_number] += 1
-                                        improved_hypothesis["hypothesis_number"] = hypothesis_number
-                                        improved_hypothesis["version"] = f"1.{version_tracker[hypothesis_number]}"
-                                        improved_hypothesis["type"] = "improvement"
-                                        improved_hypothesis["original_hypothesis_id"] = current_hypothesis.get("hypothesis_number")
-                                        improved_hypothesis["user_feedback"] = feedback_input.strip()
+                                # Process improvement in background thread
+                                def improve_thread():
+                                    try:
+                                        improved_hypothesis = improve_hypothesis(
+                                            research_goal, current_hypothesis, feedback_input.strip(), model_config
+                                        )
                                         
-                                        # Initialize or copy feedback history
-                                        feedback_history = current_hypothesis.get("feedback_history", [])
-                                        feedback_entry = {
-                                            "feedback": feedback_input.strip(),
-                                            "timestamp": datetime.now().isoformat(),
-                                            "version_before": current_hypothesis.get("version", "1.0"),
-                                            "version_after": f"1.{version_tracker[hypothesis_number]}"
-                                        }
-                                        feedback_history.append(feedback_entry)
-                                        improved_hypothesis["feedback_history"] = feedback_history
+                                        interface.remove_progress_operation(operation_id)
                                         
-                                        # Copy notes from current hypothesis
-                                        improved_hypothesis["notes"] = current_hypothesis.get("notes", "")
-                                        
-                                        improved_hypothesis["generation_timestamp"] = datetime.now().isoformat()
-                                        all_hypotheses.append(improved_hypothesis)
-                                        interface.set_status("Hypothesis improved!")
-                                        
-                                except Exception as e:
-                                    interface.set_status(f"Error: {str(e)[:50]}")
+                                        if improved_hypothesis.get("error"):
+                                            interface.draw_status_bar("Error improving hypothesis")
+                                            interface.status_win.refresh()
+                                            stdscr.refresh()
+                                        else:
+                                            # Add improved hypothesis
+                                            nonlocal hypothesis_counter, version_tracker
+                                            hypothesis_number = current_hypothesis["hypothesis_number"]
+                                            version_tracker[hypothesis_number] += 1
+                                            improved_hypothesis["hypothesis_number"] = hypothesis_number
+                                            improved_hypothesis["version"] = f"1.{version_tracker[hypothesis_number]}"
+                                            improved_hypothesis["type"] = "improvement"
+                                            improved_hypothesis["original_hypothesis_id"] = current_hypothesis.get("hypothesis_number")
+                                            improved_hypothesis["user_feedback"] = feedback_input.strip()
+                                            
+                                            # Initialize or copy feedback history
+                                            feedback_history = current_hypothesis.get("feedback_history", [])
+                                            feedback_entry = {
+                                                "feedback": feedback_input.strip(),
+                                                "timestamp": datetime.now().isoformat(),
+                                                "version_before": current_hypothesis.get("version", "1.0"),
+                                                "version_after": f"1.{version_tracker[hypothesis_number]}"
+                                            }
+                                            feedback_history.append(feedback_entry)
+                                            improved_hypothesis["feedback_history"] = feedback_history
+                                            
+                                            # Copy notes from current hypothesis
+                                            improved_hypothesis["notes"] = current_hypothesis.get("notes", "")
+                                            
+                                            improved_hypothesis["generation_timestamp"] = datetime.now().isoformat()
+                                            all_hypotheses.append(improved_hypothesis)
+                                            interface.draw_status_bar("Hypothesis improved!")
+                                            interface.status_win.refresh()
+                                            # Force refresh of all panes to show updated hypothesis
+                                            interface.dirty_list = True
+                                            interface.dirty_details = True
+                                            interface.draw_hypothesis_list(all_hypotheses)
+                                            interface.draw_hypothesis_details(improved_hypothesis)
+                                            interface.list_win.refresh()
+                                            interface.detail_win.refresh()
+                                            stdscr.refresh()
+                                            
+                                    except Exception as e:
+                                        interface.remove_progress_operation(operation_id)
+                                        interface.draw_status_bar(f"Error: {str(e)[:50]}")
+                                        interface.status_win.refresh()
+                                        stdscr.refresh()
+                                
+                                # Start improvement in background
+                                improve_thread = threading.Thread(target=improve_thread)
+                                improve_thread.daemon = True
+                                improve_thread.start()
                                 
                                 feedback_input = ""
                             else:
                                 waiting_for_feedback = False
-                                interface.set_status("Feedback cancelled")
+                                interface.draw_status_bar("Feedback cancelled")
+                                interface.status_win.refresh()
+                                stdscr.refresh()
                                 feedback_input = ""
                                 
                         elif key == 27:  # ESC key
@@ -2646,93 +3720,272 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                     else:
                         # Handle normal commands
                         if key == ord('q') or key == ord('Q'):
+                            # Debug: confirm q command is reached
+                            interface.draw_status_bar("Quitting application...")
+                            interface.status_win.refresh()
+                            stdscr.refresh()
+                            time.sleep(1)
                             break
                         elif key == ord('f') or key == ord('F'):
                             interface.clear_status_on_action()
                             if current_hypothesis:
                                 waiting_for_feedback = True
                                 feedback_input = ""
-                                interface.set_status("Enter feedback (Enter to submit, ESC to cancel)", persistent=True)
+                                interface.draw_status_bar("Enter feedback (Enter to submit, ESC to cancel)")
+                                interface.status_win.refresh()
+                                stdscr.refresh()
                             else:
-                                interface.set_status("No hypothesis selected")
+                                interface.draw_status_bar("No hypothesis selected")
+                                interface.status_win.refresh()
+                                stdscr.refresh()
                         elif key == ord('n') or key == ord('N'):
                             interface.clear_status_on_action()
-                            interface.set_status("Generating new hypothesis...", persistent=True)
-                            interface.draw_status_bar()
+                            
+                            # Show progress operation
+                            operation_id = f"generate_{time.time()}"
+                            interface.add_progress_operation(operation_id, "generating", 1, "Generating new hypothesis")
                             stdscr.refresh()
                             
-                            try:
-                                new_hypothesis = generate_new_hypothesis(research_goal, all_hypotheses, model_config)
-                                if new_hypothesis.get("error"):
-                                    interface.set_status("Error generating new hypothesis")
-                                else:
-                                    hypothesis_counter += 1
-                                    version_tracker[hypothesis_counter] = 0
-                                    new_hypothesis["hypothesis_number"] = hypothesis_counter
-                                    new_hypothesis["version"] = "1.0"
-                                    new_hypothesis["type"] = "new_alternative"
-                                    new_hypothesis["generation_timestamp"] = datetime.now().isoformat()
-                                    all_hypotheses.append(new_hypothesis)
-                                    interface.current_hypothesis_idx = hypothesis_counter - 1
-                                    interface.set_status("New hypothesis generated!")
-                                    
-                            except Exception as e:
-                                interface.set_status(f"Error: {str(e)[:50]}")
+                            # Generate in background thread
+                            def generate_new_thread():
+                                try:
+                                    new_hypothesis = generate_new_hypothesis(research_goal, all_hypotheses, model_config)
+                                    if new_hypothesis.get("error"):
+                                        interface.remove_progress_operation(operation_id)
+                                        interface.draw_status_bar("Error generating new hypothesis")
+                                        interface.status_win.refresh()
+                                        stdscr.refresh()
+                                    else:
+                                        nonlocal hypothesis_counter, version_tracker
+                                        hypothesis_counter += 1
+                                        version_tracker[hypothesis_counter] = 0
+                                        new_hypothesis["hypothesis_number"] = hypothesis_counter
+                                        new_hypothesis["version"] = "1.0"
+                                        new_hypothesis["type"] = "new_alternative"
+                                        new_hypothesis["generation_timestamp"] = datetime.now().isoformat()
+                                        all_hypotheses.append(new_hypothesis)
+                                        interface.current_hypothesis_idx = hypothesis_counter - 1
+                                        
+                                        interface.remove_progress_operation(operation_id)
+                                        interface.draw_status_bar("New hypothesis generated!")
+                                        interface.status_win.refresh()
+                                        # Force refresh of list and details panes to show new hypothesis
+                                        interface.dirty_list = True
+                                        interface.dirty_details = True
+                                        interface.draw_hypothesis_list(all_hypotheses)
+                                        interface.draw_hypothesis_details(new_hypothesis)
+                                        interface.list_win.refresh()
+                                        interface.detail_win.refresh()
+                                        stdscr.refresh()
+                                        
+                                except Exception as e:
+                                    interface.remove_progress_operation(operation_id)
+                                    interface.draw_status_bar(f"Error: {str(e)[:50]}")
+                                    interface.status_win.refresh()
+                                    stdscr.refresh()
+                            
+                            # Start generation in background
+                            generation_thread = threading.Thread(target=generate_new_thread)
+                            generation_thread.daemon = True
+                            generation_thread.start()
                                 
                         elif key == ord('h') or key == ord('H'):
                             interface.clear_status_on_action()
                             interface.show_hallmarks = not interface.show_hallmarks
                             status = "enabled" if interface.show_hallmarks else "disabled"
-                            interface.set_status(f"Hallmarks display {status}")
+                            interface.draw_status_bar(f"Hallmarks display {status}")
+                            interface.status_win.refresh()
+                            # Force redraw of details pane to show/hide hallmarks
+                            interface.dirty_details = True
+                            interface.draw_hypothesis_details(current_hypothesis)
+                            interface.detail_win.refresh()
+                            stdscr.refresh()
                             
                         elif key == ord('r') or key == ord('R'):
                             interface.clear_status_on_action()
                             interface.show_references = not interface.show_references
                             status = "enabled" if interface.show_references else "disabled"
-                            interface.set_status(f"References display {status}")
+                            interface.draw_status_bar(f"References display {status}")
+                            interface.status_win.refresh()
+                            # Force redraw of details pane to show/hide references
+                            interface.dirty_details = True
+                            interface.draw_hypothesis_details(current_hypothesis)
+                            interface.detail_win.refresh()
+                            stdscr.refresh()
+                            
+                        elif key == ord('u') or key == ord('U'):
+                            # Update hypothesis with abstracts
+                            interface.clear_status_on_action()
+                            if current_hypothesis:
+                                # Show progress operation
+                                operation_id = f"update_{time.time()}"
+                                interface.add_progress_operation(operation_id, "updating", 1, "Updating hypothesis with abstracts")
+                                stdscr.refresh()
+                                
+                                # Update hypothesis in background thread
+                                def update_with_abstracts_thread():
+                                    try:
+                                        updated_hypothesis = update_hypothesis_with_abstracts(current_hypothesis, model_config)
+                                        
+                                        interface.remove_progress_operation(operation_id)
+                                        
+                                        if "error" in updated_hypothesis:
+                                            interface.set_status(f"Update error: {updated_hypothesis['error']}")
+                                        else:
+                                            # Add updated hypothesis to the list
+                                            nonlocal hypothesis_counter, version_tracker
+                                            hypothesis_number = current_hypothesis["hypothesis_number"]
+                                            
+                                            # The update function already increments the version
+                                            all_hypotheses.append(updated_hypothesis)
+                                            
+                                            # Update version tracker
+                                            current_version = updated_hypothesis.get('version', '1.1')
+                                            try:
+                                                version_parts = current_version.split('.')
+                                                if len(version_parts) >= 2:
+                                                    minor_version = int(version_parts[1])
+                                                    version_tracker[hypothesis_number] = minor_version
+                                            except:
+                                                pass
+                                            
+                                            # Set update metadata
+                                            updated_hypothesis["hypothesis_number"] = hypothesis_number
+                                            updated_hypothesis["type"] = "improvement"
+                                            updated_hypothesis["original_hypothesis_id"] = hypothesis_number
+                                            
+                                            interface.set_status(f"Hypothesis updated with {updated_hypothesis.get('abstracts_used', 0)} abstracts!")
+                                            
+                                            # Force refresh of all panes
+                                            interface.dirty_list = True
+                                            interface.dirty_details = True
+                                            interface.draw_hypothesis_list(all_hypotheses)
+                                            interface.draw_hypothesis_details(updated_hypothesis)
+                                            interface.list_win.refresh()
+                                            interface.detail_win.refresh()
+                                            stdscr.refresh()
+                                            
+                                    except Exception as e:
+                                        interface.remove_progress_operation(operation_id)
+                                        interface.set_status(f"Update error: {str(e)[:50]}")
+                                
+                                # Start update in background
+                                update_thread = threading.Thread(target=update_with_abstracts_thread)
+                                update_thread.daemon = True
+                                update_thread.start()
+                            else:
+                                interface.set_status("No hypothesis selected for updating")
+                            
+                        elif key == ord('c') or key == ord('C'):
+                            # Score hypothesis hallmarks
+                            interface.clear_status_on_action()
+                            if current_hypothesis:
+                                # Show progress operation
+                                operation_id = f"score_{time.time()}"
+                                interface.add_progress_operation(operation_id, "scoring", 1, "Scoring hypothesis hallmarks")
+                                stdscr.refresh()
+                                
+                                # Score hypothesis in background thread
+                                def score_hallmarks_thread():
+                                    try:
+                                        scoring_result = score_hypothesis_hallmarks(current_hypothesis, model_config)
+                                        
+                                        interface.remove_progress_operation(operation_id)
+                                        
+                                        if "error" in scoring_result:
+                                            interface.set_status(f"Scoring error: {scoring_result['error']}")
+                                        else:
+                                            # Store scoring results in the hypothesis
+                                            hyp_num = current_hypothesis.get("hypothesis_number", 0)
+                                            total_score = scoring_result.get('total_score', 0)
+                                            
+                                            # Update all versions of this hypothesis with the scoring
+                                            for hyp in all_hypotheses:
+                                                if hyp.get("hypothesis_number") == hyp_num:
+                                                    hyp["hallmark_scores"] = scoring_result
+                                            
+                                            # Display the results briefly
+                                            interface.set_status(f"Hallmarks scored! Total: {total_score}/25 - Press any key to continue")
+                                            
+                                            # Force refresh of all panes to show updated scoring
+                                            interface.dirty_list = True
+                                            interface.dirty_details = True
+                                            interface.draw_hypothesis_list(all_hypotheses)
+                                            interface.draw_hypothesis_details(current_hypothesis)
+                                            interface.list_win.refresh()
+                                            interface.detail_win.refresh()
+                                            stdscr.refresh()
+                                            
+                                    except Exception as e:
+                                        interface.remove_progress_operation(operation_id)
+                                        interface.set_status(f"Scoring error: {str(e)[:50]}")
+                                
+                                # Start scoring in background
+                                score_thread = threading.Thread(target=score_hallmarks_thread)
+                                score_thread.daemon = True
+                                score_thread.start()
+                            else:
+                                interface.set_status("No hypothesis selected for scoring")
+                            
+                        elif key == ord('b') or key == ord('B'):
+                            # Browse and view downloaded abstracts
+                            interface.clear_status_on_action()
+                            browse_abstracts_interface(stdscr, interface)
+                            # Force full redraw after returning from abstract browser
+                            interface.mark_dirty("all")
                             
                         elif key == ord('a') or key == ord('A'):
                             # Fetch abstracts and papers for current hypothesis
                             interface.clear_status_on_action()
                             if current_hypothesis:
-                                interface.set_status("Fetching papers from Semantic Scholar...")
-                                interface.draw_status_bar()
+                                # Show progress operation
+                                operation_id = f"fetch_{time.time()}"
+                                interface.add_progress_operation(operation_id, "fetching", 1, "Fetching papers and abstracts")
                                 stdscr.refresh()
                                 
-                                # Generate session name from output filename
-                                if output_filename:
-                                    session_name = os.path.splitext(os.path.basename(output_filename))[0]
-                                else:
-                                    session_name = f"session_{int(time.time())}"
+                                # Generate session name based on current time and model
+                                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                                model_name = model_config.get('model_name', 'unknown_model')
+                                session_name = f"papers_{model_name}_{timestamp}"
                                 
                                 # Fetch papers in a separate thread to avoid blocking UI
                                 def fetch_papers_thread():
                                     results = fetch_papers_for_hypothesis(current_hypothesis, session_name, interface)
                                     
-                                    # Update status with results
+                                    # Remove operation and update status with results
+                                    interface.remove_progress_operation(operation_id)
+                                    
                                     if results["status"] == "no_references":
                                         interface.set_status("No references found in current hypothesis")
                                     elif results["status"] == "success":
                                         fetched_count = len(results["fetched"])
                                         failed_count = len(results["failed"])
                                         if fetched_count > 0:
-                                            interface.set_status(f"Fetched {fetched_count} papers, {failed_count} failed. Saved to: {results['papers_dir']}")
+                                            # Show brief directory name instead of full path
+                                            dir_name = os.path.basename(results['papers_dir'])
+                                            interface.set_status(f"✓ Papers fetched: {fetched_count} succeeded, {failed_count} failed → papers/{dir_name}/")
                                         else:
-                                            interface.set_status(f"No papers could be fetched. {failed_count} failed.")
+                                            interface.set_status(f"Papers fetch completed: 0 succeeded, {failed_count} failed")
                                     else:
-                                        interface.set_status(f"Error fetching papers: {results.get('message', 'Unknown error')}")
+                                        interface.set_status(f"Papers fetch error: {results.get('message', 'Unknown error')}")
+                                    
+                                    # Force a refresh to show the result
+                                    interface.draw_status_bar()
+                                    interface.status_win.refresh()
+                                    stdscr.refresh()
                                 
                                 # Start fetch in background
                                 fetch_thread = threading.Thread(target=fetch_papers_thread)
                                 fetch_thread.daemon = True
                                 fetch_thread.start()
                             else:
-                                interface.set_status("No hypothesis selected")
+                                interface.draw_status_bar("No hypothesis selected")
+                                interface.status_win.refresh()
+                                stdscr.refresh()
                             
                         elif key == ord('l') or key == ord('L'):
                             # Load session - prompt for filename
-                            interface.set_status("Enter filename to load (ESC to cancel):")
-                            interface.draw_status_bar()
+                            interface.draw_status_bar("Enter filename to load (ESC to cancel):")
                             stdscr.refresh()
                             
                             # Get filename input
@@ -2812,8 +4065,7 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                             
                         elif key == ord('x') or key == ord('X'):
                             # Save session - prompt for filename
-                            interface.set_status("Enter filename to save (ESC to cancel):")
-                            interface.draw_status_bar()
+                            interface.draw_status_bar("Enter filename to save (ESC to cancel):")
                             stdscr.refresh()
                             
                             # Get filename input
@@ -2878,57 +4130,48 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                                     stdscr.refresh()
                             
                         elif key == ord('t') or key == ord('T'):
-                            # Notes - add/edit notes for current hypothesis
+                            # Notes - simple single-line editor in status bar
+                            interface.clear_status_on_action()
                             if current_hypothesis:
                                 current_notes = current_hypothesis.get("notes", "")
-                                interface.set_status("Enter notes (Enter to save, ESC to cancel):")
-                                interface.draw_status_bar()
+                                interface.draw_status_bar("Enter notes (Enter to save, ESC to cancel):")
                                 stdscr.refresh()
                                 
-                                # Get notes input - allow multi-line editing
+                                # Get notes input
                                 notes_input = current_notes
-                                editing_notes = True
-                                cursor_pos = len(notes_input)
+                                notes_editing = True
                                 
-                                while editing_notes:
-                                    # Display current notes input with cursor
-                                    display_notes = notes_input[:cursor_pos] + "_" + notes_input[cursor_pos:] if len(notes_input) < 100 else notes_input[-97:] + "..."
-                                    interface.draw_status_bar(f"Notes: {display_notes}")
+                                while notes_editing:
+                                    # Show current input
+                                    display_input = notes_input if len(notes_input) <= 60 else "..." + notes_input[-57:]
+                                    interface.draw_status_bar(f"Notes: {display_input}")
+                                    interface.status_win.refresh()
                                     stdscr.refresh()
                                     
                                     key_notes = stdscr.getch()
                                     if key_notes == 27:  # ESC
                                         interface.set_status("Notes editing cancelled")
-                                        editing_notes = False
+                                        notes_editing = False
                                     elif key_notes == ord('\n') or key_notes == curses.KEY_ENTER or key_notes == 10:
-                                        # Save notes
-                                        current_hypothesis["notes"] = notes_input
-                                        # Update notes in all hypothesis versions with same number
+                                        # Save notes to current hypothesis and all versions with same number
                                         hyp_num = current_hypothesis["hypothesis_number"]
                                         for hyp in all_hypotheses:
                                             if hyp.get("hypothesis_number") == hyp_num:
-                                                hyp["notes"] = notes_input
-                                        interface.set_status(f"Notes saved for hypothesis #{hyp_num}")
-                                        editing_notes = False
+                                                hyp["notes"] = notes_input.strip()
+                                        
+                                        interface.draw_status_bar(f"Notes saved for hypothesis #{hyp_num}")
+                                        interface.status_win.refresh()
+                                        stdscr.refresh()
+                                        notes_editing = False
                                     elif key_notes == curses.KEY_BACKSPACE or key_notes == 127 or key_notes == 8:
-                                        if cursor_pos > 0:
-                                            notes_input = notes_input[:cursor_pos-1] + notes_input[cursor_pos:]
-                                            cursor_pos -= 1
-                                    elif key_notes == curses.KEY_LEFT:
-                                        if cursor_pos > 0:
-                                            cursor_pos -= 1
-                                    elif key_notes == curses.KEY_RIGHT:
-                                        if cursor_pos < len(notes_input):
-                                            cursor_pos += 1
-                                    elif key_notes == curses.KEY_HOME:
-                                        cursor_pos = 0
-                                    elif key_notes == curses.KEY_END:
-                                        cursor_pos = len(notes_input)
+                                        if notes_input:
+                                            notes_input = notes_input[:-1]
                                     elif 32 <= key_notes <= 126:  # Printable characters
-                                        notes_input = notes_input[:cursor_pos] + chr(key_notes) + notes_input[cursor_pos:]
-                                        cursor_pos += 1
+                                        notes_input += chr(key_notes)
                             else:
-                                interface.set_status("No hypothesis selected for notes")
+                                interface.draw_status_bar("No hypothesis selected for notes")
+                                interface.status_win.refresh()
+                                stdscr.refresh()
                             
                         elif key == ord('s') or key == ord('S'):
                             # Select hypothesis - prompt for hypothesis number
@@ -2942,8 +4185,7 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                                     hypothesis_groups[hyp_num] = True
                                 available_numbers = sorted(hypothesis_groups.keys())
                                 
-                                interface.set_status(f"Enter hypothesis number ({min(available_numbers)}-{max(available_numbers)}, ESC to cancel):")
-                                interface.draw_status_bar()
+                                interface.draw_status_bar(f"Enter hypothesis number ({min(available_numbers)}-{max(available_numbers)}, ESC to cancel):")
                                 stdscr.refresh()
                                 
                                 # Get hypothesis number input
@@ -3088,31 +4330,68 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                             interface.mark_dirty("list")
                             interface.mark_dirty("details")
                             
-                        elif key == curses.KEY_PPAGE:  # Page Up - scroll detail up
-                            interface.scroll_detail(-5)
+                        elif key == curses.KEY_LEFT:  # Switch focus to list pane
+                            interface.clear_status_on_action()
+                            if interface.focus_pane != "list":
+                                interface.focus_pane = "list"
+                                interface.draw_status_bar("Focus: Hypothesis List (↑↓ to navigate, j/k to scroll)")
+                                interface.status_win.refresh()
+                                interface.mark_dirty("list")
+                                interface.mark_dirty("details")
+                                stdscr.refresh()
                             
-                        elif key == curses.KEY_NPAGE:  # Page Down - scroll detail down
-                            interface.scroll_detail(5)
+                        elif key == curses.KEY_RIGHT:  # Switch focus to details pane
+                            interface.clear_status_on_action()
+                            if interface.focus_pane != "details":
+                                interface.focus_pane = "details"
+                                interface.draw_status_bar("Focus: Hypothesis Details (j/k/d/u to scroll)")
+                                interface.status_win.refresh()
+                                interface.mark_dirty("list")
+                                interface.mark_dirty("details")
+                                stdscr.refresh()
+                            
+                        elif key == curses.KEY_PPAGE:  # Page Up - scroll focused pane up
+                            if interface.focus_pane == "list":
+                                interface.scroll_list(-5)
+                            else:
+                                interface.scroll_detail(-5)
+                            
+                        elif key == curses.KEY_NPAGE:  # Page Down - scroll focused pane down
+                            if interface.focus_pane == "list":
+                                interface.scroll_list(5)
+                            else:
+                                interface.scroll_detail(5)
                             
                         # Mac-friendly scrolling alternatives
                         elif key == ord('j') or key == ord('J'):  # j = scroll down (vim-style)
-                            interface.scroll_detail(1)
+                            if interface.focus_pane == "list":
+                                interface.scroll_list(1)
+                            else:
+                                interface.scroll_detail(1)
                             
                         elif key == ord('k') or key == ord('K'):  # k = scroll up (vim-style)
-                            interface.scroll_detail(-1)
+                            if interface.focus_pane == "list":
+                                interface.scroll_list(-1)
+                            else:
+                                interface.scroll_detail(-1)
                             
                         elif key == ord('d') or key == ord('D'):  # d = scroll down faster
-                            interface.scroll_detail(5)
+                            if interface.focus_pane == "list":
+                                interface.scroll_list(5)
+                            else:
+                                interface.scroll_detail(5)
                             
                         elif key == ord('u') or key == ord('U'):  # u = scroll up faster
-                            interface.scroll_detail(-5)
+                            if interface.focus_pane == "list":
+                                interface.scroll_list(-5)
+                            else:
+                                interface.scroll_detail(-5)
                             
                         elif key == ord('p') or key == ord('P'):  # p = print to PDF
                             interface.clear_status_on_action()
                             if current_hypothesis:
                                 if PDF_AVAILABLE:
-                                    interface.set_status("Generating PDF...", persistent=True)
-                                    interface.draw_status_bar()
+                                    interface.draw_status_bar("Generating PDF...")
                                     stdscr.refresh()
                                     
                                     try:
@@ -3196,7 +4475,7 @@ def test_feedback_tracking():
         "improvements_made": "Enhanced specificity, added experimental details, and included additional references based on user feedback."
     }
     
-    research_goal = "Test the feedback tracking and PDF generation functionality in Wisteria v5.0"
+    research_goal = "Test the feedback tracking and PDF generation functionality in Wisteria v6.0"
     
     print("\nTesting feedback tracking and PDF generation...")
     pdf_path = generate_hypothesis_pdf(test_hypothesis, research_goal, "test_feedback_tracking.pdf")
@@ -3232,7 +4511,7 @@ def main():
     # Load model config
     model_config = load_model_config(args.model)
     
-    print(f"Wisteria Research Hypothesis Generator v5.0 - Curses Multi-Pane Interface")
+    print(f"Wisteria Research Hypothesis Generator v6.0 - Curses Multi-Pane Interface")
     print(f"Using model: {args.model} ({model_config['model_name']})")
     
     # Check PDF availability
