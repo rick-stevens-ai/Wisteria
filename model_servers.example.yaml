@@ -39,4 +39,4 @@ servers:
     shortname: "scout"
     openai_api_key: "${SCOUT_API_KEY}"
     openai_api_base: "http://localhost:9999/v1"
-    openai_model: "scout"
+    openai_model: "scout" 
