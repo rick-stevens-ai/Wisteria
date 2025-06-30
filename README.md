@@ -1,10 +1,28 @@
-# Wisteria Research Hypothesis Generator v5.0
+# Wisteria Research Hypothesis Generator v6.0
 
 Wisteria is an interactive research hypothesis generation tool that uses AI models to create, refine, and analyze scientific hypotheses based on research goals.
 
-## What's New in v5.0
+## What's New in v6.0
 
-- **🖥️ Curses Multi-Pane Interface**: Complete redesign with professional terminal interface
+- **🎯 Focus Navigation System**: Revolutionary interface control with visual feedback
+  - Left/Right arrows switch between hypothesis list and details pane
+  - Visual [FOCUSED] indicators show active pane
+  - Independent scrolling and navigation for each pane
+  - Intuitive pane management for enhanced productivity
+
+- **⚡ Performance Optimizations**: Eliminated screen flicker with selective rendering
+  - Dirty flag system for intelligent component updates
+  - Single refresh cycle prevents visual artifacts
+  - 200ms timeout reduces CPU usage and improves responsiveness
+  - Smooth, professional interface experience
+
+- **📚 Semantic Scholar Integration**: Automated paper and abstract fetching
+  - 'a' command fetches abstracts and PDFs for hypothesis references
+  - Organized papers/abstracts directory structure
+  - Progress tracking during paper retrieval
+  - Seamless integration with research workflow
+
+- **🖥️ Enhanced Curses Interface**: Refined multi-pane design from v5.0
   - Header pane with research goal and model information
   - Left pane for hypothesis navigation and selection
   - Right pane for detailed hypothesis viewing with scrolling
@@ -21,20 +39,11 @@ Wisteria is an interactive research hypothesis generation tool that uses AI mode
   - Version change tracking
   - Professional styling and formatting
 
-- **⚡ Real-time Progress Tracking**: Live updates during hypothesis generation
-  - Animated progress indicators
-  - Threaded generation for non-blocking interface
-  - Batch hypothesis generation with progress display
-
-- **🧪 Experimental Validation Planning**: Dedicated section for each hypothesis
-  - Specific experimental methodology
-  - Controls and measurements
-  - Timeline and expected outcomes
-
-- **⌨️ Enhanced Navigation**: Vim-style and arrow key navigation
+- **⌨️ Advanced Navigation**: Vim-style and arrow key navigation with focus control
   - Cross-platform keyboard compatibility
   - Intuitive scrolling and selection
   - Mac keyboard support (j/k/d/u keys)
+  - Pane-specific navigation commands
 
 ## Features
 
@@ -116,13 +125,15 @@ During a session, use these keyboard commands:
 - `s` - Select a hypothesis to continue to refine
 - `h` - Toggle hallmarks analysis display
 - `r` - Toggle references display
+- `a` - Fetch abstracts and papers from Semantic Scholar for current hypothesis references
 - `p` - Print current hypothesis to professional PDF document
 - `q` - Quit and save all hypotheses
 
 ### Navigation Commands
 
-- `↑/↓` or `j/k` - Navigate between hypotheses
-- `Page Up/Page Down` or `d/u` - Scroll within hypothesis details
+- `←/→` - Switch focus between hypothesis list and details pane
+- `↑/↓` or `j/k` - Navigate between hypotheses (when list focused) or scroll details (when details focused)
+- `Page Up/Page Down` or `d/u` - Scroll within focused pane
 - `Enter` - Select highlighted hypothesis
 - `Esc` - Cancel current operation
 
@@ -222,6 +233,7 @@ The feedback history shows:
 
 ## Version History
 
+- **v6.0**: Focus navigation system, performance optimizations, Semantic Scholar integration
 - **v5.0**: Curses multi-pane interface, comprehensive feedback tracking, enhanced PDF export
 - **v4.0**: Enhanced visual feedback, toggle controls, improved session management
 - **v3.0**: Interactive mode, session management, hypothesis refinement

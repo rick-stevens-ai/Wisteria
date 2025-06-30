@@ -1,15 +1,17 @@
-# Wisteria v5.0 Curses Interface - User Guide
+# Wisteria v6.0 Curses Interface - User Guide
 
 ## Table of Contents
 1. [Getting Started](#getting-started)
 2. [Interface Overview](#interface-overview)
-3. [Basic Usage](#basic-usage)
-4. [Navigation Guide](#navigation-guide)
-5. [Interactive Commands](#interactive-commands)
-6. [Feedback System](#feedback-system)
-7. [PDF Export](#pdf-export)
-8. [Session Management](#session-management)
-9. [Tips and Best Practices](#tips-and-best-practices)
+3. [Focus Navigation System](#focus-navigation-system)
+4. [Basic Usage](#basic-usage)
+5. [Navigation Guide](#navigation-guide)
+6. [Interactive Commands](#interactive-commands)
+7. [Paper and Abstract Fetching](#paper-and-abstract-fetching)
+8. [Feedback System](#feedback-system)
+9. [PDF Export](#pdf-export)
+10. [Session Management](#session-management)
+11. [Tips and Best Practices](#tips-and-best-practices)
 
 ## Getting Started
 
@@ -31,7 +33,50 @@ python curses_wisteria_v5.py --goal "Your research question" --model gpt41
 
 ## Interface Overview
 
-Wisteria v5.0 features a professional multi-pane curses interface:
+Wisteria v6.0 features a professional multi-pane curses interface with focus navigation:
+
+## Focus Navigation System
+
+### Revolutionary Interface Control
+
+Wisteria v6.0 introduces a revolutionary focus navigation system that allows you to control which pane is active and responsive to your keyboard input. This system provides:
+
+#### Visual Focus Indicators
+- **[FOCUSED] Labels**: Active panes show `[FOCUSED]` in their title bars
+- **Clear Visual Feedback**: Always know which pane will respond to your commands
+- **Instant Recognition**: No guessing which area is currently active
+
+#### Independent Pane Control
+- **Left Arrow (←)**: Switch focus to the hypothesis list pane
+- **Right Arrow (→)**: Switch focus to the details pane
+- **Context-Sensitive Keys**: Up/Down arrows work differently based on focused pane
+- **Isolated Operations**: Actions only affect the currently focused pane
+
+#### Enhanced Productivity
+- **Rapid Navigation**: Quickly jump between list browsing and content reading
+- **Parallel Workflows**: Browse hypotheses while maintaining reading position
+- **Efficient Scrolling**: Navigate long content without losing list position
+- **Intuitive Control**: Natural left/right metaphor matches visual layout
+
+### How Focus Works
+
+```
+List Focused:                    Details Focused:
+┌─────────────────────┐         ┌─────────────────────┐
+│ Hypothesis List     │         │ Hypothesis List     │
+│     [FOCUSED]       │         │                     │
+│                     │         │                     │
+│ ► Hypothesis 1      │         │   Hypothesis 1      │
+│   Hypothesis 2      │         │   Hypothesis 2      │
+│   Hypothesis 3      │    ←→   │   Hypothesis 3      │
+└─────────────────────┘         └─────────────────────┘
+┌─────────────────────┐         ┌─────────────────────┐
+│ Current Hypothesis  │         │ Current Hypothesis  │
+│                     │         │     [FOCUSED]       │
+│ ↑↓ = Navigate list  │         │ ↑↓ = Scroll content │
+│ j/k = Navigate list │         │ j/k = Scroll content│
+└─────────────────────┘         └─────────────────────┘
+```
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
@@ -112,22 +157,29 @@ python curses_wisteria_v5.py --resume previous_session.json --model gpt41
 
 ## Navigation Guide
 
-### Hypothesis Navigation
+### Focus Control
 | Key | Action |
 |-----|--------|
-| `↑` or `k` | Move to previous hypothesis |
-| `↓` or `j` | Move to next hypothesis |
-| `Enter` | Select current hypothesis |
-| `Home` | Go to first hypothesis |
-| `End` | Go to last hypothesis |
+| `←` | Switch focus to hypothesis list pane |
+| `→` | Switch focus to details pane |
+| Visual [FOCUSED] indicator shows active pane |
 
-### Detail Pane Scrolling
+### Context-Sensitive Navigation
+| Key | List Focused | Details Focused |
+|-----|-------------|----------------|
+| `↑` or `k` | Move to previous hypothesis | Scroll content up |
+| `↓` or `j` | Move to next hypothesis | Scroll content down |
+| `Enter` | Select current hypothesis | (No effect) |
+| `Home` | Go to first hypothesis | Go to top of content |
+| `End` | Go to last hypothesis | Go to bottom of content |
+
+### Pane Scrolling (Works on Focused Pane)
 | Key | Action |
 |-----|--------|
-| `Page Up` or `u` | Scroll up in details |
-| `Page Down` or `d` | Scroll down in details |
-| `Ctrl+Home` | Scroll to top of details |
-| `Ctrl+End` | Scroll to bottom of details |
+| `Page Up` or `u` | Scroll up by page |
+| `Page Down` or `d` | Scroll down by page |
+| `Ctrl+Home` | Scroll to top |
+| `Ctrl+End` | Scroll to bottom |
 
 ### Cross-Platform Keys
 - **Mac Users**: Use `j/k` for up/down, `d/u` for page up/down
@@ -217,10 +269,163 @@ python curses_wisteria_v5.py --resume previous_session.json --model gpt41
 - Includes citations and annotations
 - Valuable for research validation
 
+#### `a` - Fetch Papers and Abstracts ⭐ New in v6.0
+- Automatically fetches papers and abstracts from Semantic Scholar
+- Downloads PDFs when available
+- Creates organized directory structure
+- Shows progress during fetching process
+
 #### `q` - Quit and Save
 - Saves current session to JSON file
 - Preserves all hypotheses and feedback history
 - Shows final save location
+
+## Paper and Abstract Fetching
+
+### Semantic Scholar Integration ⭐ New in v6.0
+
+Wisteria v6.0 introduces powerful integration with Semantic Scholar, allowing you to automatically fetch research papers and abstracts referenced in your hypotheses.
+
+### How to Use Paper Fetching
+
+1. **Select a Hypothesis with References**
+   - Navigate to a hypothesis that contains scientific references
+   - Ensure the hypothesis has citations in its references section
+
+2. **Initiate Fetching**
+   - Press `a` to start the paper fetching process
+   - The system will show: "Fetching papers... (1/5)"
+
+3. **Monitor Progress**
+   - Real-time progress indicator shows current paper being processed
+   - Status updates show success/failure for each reference
+
+4. **Review Results**
+   - Final status shows total papers fetched successfully
+   - Failed fetches are reported with reasons
+
+### What Gets Downloaded
+
+#### Directory Structure
+The system creates an organized directory structure:
+```
+papers/
+└── [session_name]/
+    ├── abstracts/
+    │   ├── abstract_01_paper_id.txt
+    │   ├── abstract_02_paper_id.txt
+    │   └── ...
+    └── papers/
+        ├── paper_01_paper_id.pdf
+        ├── paper_02_paper_id.pdf
+        └── ...
+```
+
+#### Abstract Files (.txt)
+Each abstract file contains:
+- **Title**: Full paper title
+- **Authors**: Complete author list
+- **Published**: Publication year
+- **Venue**: Journal or conference name
+- **Semantic Scholar ID**: Unique paper identifier
+- **DOI**: Digital Object Identifier (when available)
+- **arXiv ID**: arXiv identifier (when available)
+- **PDF URL**: Direct link to PDF (when available)
+- **Abstract**: Full abstract text
+
+#### PDF Files (.pdf)
+- **Open Access PDFs**: Downloaded when freely available
+- **Original Quality**: High-resolution documents
+- **Organized Naming**: Consistent with abstract files
+
+### Search and Matching Process
+
+#### How Papers Are Found
+1. **Citation Analysis**: Extracts author, title, and year from citations
+2. **Smart Searching**: Uses title or author+year combinations
+3. **Relevance Ranking**: Selects most relevant matches
+4. **Metadata Enrichment**: Adds comprehensive paper information
+
+#### Handling Challenges
+- **Partial Information**: Works with incomplete citations
+- **Multiple Matches**: Selects most relevant paper
+- **Missing Papers**: Gracefully handles unfound references
+- **API Limits**: Respects rate limits with delays
+
+### Configuration and Requirements
+
+#### Required Setup
+- **Internet Connection**: Active connection for Semantic Scholar API
+- **Disk Space**: Sufficient space for downloaded papers
+- **Python Packages**: requests library (automatically installed)
+
+#### Optional Configuration
+- **API Key**: Set `SS_API_KEY` or `SEMANTIC_SCHOLAR_API_KEY` environment variable
+  ```bash
+  export SS_API_KEY="your_api_key_here"
+  ```
+- **Rate Limits**: Higher limits with API key (1000+ requests/5min vs 100/5min)
+
+#### Environment Variables
+```bash
+# Optional: Semantic Scholar API key for higher rate limits
+export SS_API_KEY="your_semantic_scholar_api_key"
+export SEMANTIC_SCHOLAR_API_KEY="your_semantic_scholar_api_key"  # Alternative name
+```
+
+### Error Handling and Troubleshooting
+
+#### Common Issues
+1. **No Internet Connection**
+   - Error: "Failed to fetch papers - check internet connection"
+   - Solution: Ensure stable internet access
+
+2. **No References Found**
+   - Error: "No references found in hypothesis"
+   - Solution: Select hypothesis with scientific citations
+
+3. **Rate Limit Exceeded**
+   - Error: "API rate limit exceeded"
+   - Solution: Wait and retry, or add API key for higher limits
+
+4. **Papers Not Found**
+   - Status: "No papers found" for specific citations
+   - Reason: Citations may be incomplete or papers not in Semantic Scholar
+
+#### Success Indicators
+- **Progress Updates**: Real-time fetching status
+- **Completion Summary**: "Fetched X papers, Y failed"
+- **File Creation**: Visible files in papers directory
+- **Status Messages**: Clear success/failure reporting
+
+### Best Practices
+
+#### For Better Results
+1. **Quality Citations**: Use complete, well-formatted references
+2. **Standard Format**: Follow academic citation conventions
+3. **Recent Papers**: Newer papers more likely to be found
+4. **Popular Venues**: Papers from major journals/conferences more available
+
+#### Managing Downloads
+1. **Regular Cleanup**: Remove unneeded paper directories
+2. **Selective Fetching**: Only fetch for important hypotheses
+3. **Backup Important Papers**: Save critical papers separately
+4. **Check Disk Space**: Monitor available storage
+
+### Integration with Workflow
+
+#### Research Process
+1. **Generate Hypothesis**: Create hypothesis with AI model
+2. **Review References**: Check generated scientific citations
+3. **Fetch Papers**: Use `a` command to download supporting material
+4. **Deep Research**: Read abstracts and full papers offline
+5. **Refine Hypothesis**: Provide feedback based on paper insights
+
+#### Offline Access
+- **Abstract Reading**: Review paper summaries without internet
+- **PDF Access**: Read full papers when downloaded
+- **Citation Verification**: Check reference accuracy
+- **Research Validation**: Verify hypothesis claims against literature
 
 ## Feedback System
 
@@ -407,15 +612,19 @@ Feedback History:
 
 | Command | Key | Description |
 |---------|-----|-------------|
-| **Navigation** | | |
-| Move Up | `↑` or `k` | Previous hypothesis |
-| Move Down | `↓` or `j` | Next hypothesis |
-| Scroll Up | `Page Up` or `u` | Scroll details up |
-| Scroll Down | `Page Down` or `d` | Scroll details down |
+| **Focus Navigation** | | |
+| Focus List Pane | `←` | Switch focus to hypothesis list |
+| Focus Details Pane | `→` | Switch focus to details pane |
+| Context Move Up | `↑` or `k` | Previous hypothesis (list) / Scroll up (details) |
+| Context Move Down | `↓` or `j` | Next hypothesis (list) / Scroll down (details) |
+| Scroll Up | `Page Up` or `u` | Scroll focused pane up |
+| Scroll Down | `Page Down` or `d` | Scroll focused pane down |
 | **Actions** | | |
 | Feedback | `f` | Provide improvement feedback |
 | New Hypothesis | `n` | Generate new hypothesis |
 | PDF Export | `p` | Export to PDF document |
+| **Research** | | |
+| Fetch Papers | `a` | Download papers and abstracts from Semantic Scholar |
 | **Session** | | |
 | Load Session | `l` | Load previous session |
 | Save Session | `x` | Save current session with custom filename |

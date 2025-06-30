@@ -1,16 +1,18 @@
-# Wisteria v5.0 - Keyboard Reference
+# Wisteria v6.0 - Keyboard Reference
 
 ## Quick Reference Card
 
 ### Navigation Commands
 | Key | Alternative | Action | Description |
 |-----|-------------|---------|-------------|
-| `↑` | `k` | Move Up | Navigate to previous hypothesis |
-| `↓` | `j` | Move Down | Navigate to next hypothesis |
-| `Page Up` | `u` | Scroll Up | Scroll hypothesis details up |
-| `Page Down` | `d` | Scroll Down | Scroll hypothesis details down |
-| `Home` | `g` | Go to Top | Jump to first hypothesis |
-| `End` | `G` | Go to Bottom | Jump to last hypothesis |
+| `←` | | Focus Left | Switch focus to hypothesis list pane |
+| `→` | | Focus Right | Switch focus to details pane |
+| `↑` | `k` | Move Up | Navigate to previous hypothesis (list) or scroll up (details) |
+| `↓` | `j` | Move Down | Navigate to next hypothesis (list) or scroll down (details) |
+| `Page Up` | `u` | Scroll Up | Scroll focused pane up |
+| `Page Down` | `d` | Scroll Down | Scroll focused pane down |
+| `Home` | `g` | Go to Top | Jump to first hypothesis (list) or top of content (details) |
+| `End` | `G` | Go to Bottom | Jump to last hypothesis (list) or bottom of content (details) |
 | `Enter` | `Space` | Select | Select highlighted hypothesis |
 
 ### Action Commands
@@ -35,6 +37,7 @@
 |-----|---------|-------------|
 | `h` | Hallmarks | Toggle hallmarks analysis display |
 | `r` | References | Toggle references display |
+| `a` | Abstracts | Fetch papers and abstracts from Semantic Scholar |
 
 ### System Commands
 | Key | Action | Description |
@@ -46,26 +49,43 @@
 
 ### Navigation Commands
 
+#### Focus Management
+- **Left Arrow (`←`)**: Switch focus to hypothesis list pane
+  - Shows [FOCUSED] indicator in pane title
+  - Arrow keys now control list navigation
+  - j/k keys control list navigation
+  - Visual feedback shows active pane
+
+- **Right Arrow (`→`)**: Switch focus to details pane
+  - Shows [FOCUSED] indicator in pane title
+  - Arrow keys now control detail scrolling
+  - j/k keys control detail scrolling
+  - Independent navigation from list pane
+
 #### Basic Movement
-- **Up Arrow (`↑`) / `k`**: Move selection to previous hypothesis
-  - Wraps to bottom when at top
-  - Updates detail pane automatically
-  - Clears non-persistent status messages
+- **Up Arrow (`↑`) / `k`**: Context-sensitive movement
+  - **List focused**: Move selection to previous hypothesis
+  - **Details focused**: Scroll content up by one line
+  - Wraps appropriately in list mode
+  - Updates detail pane automatically in list mode
 
-- **Down Arrow (`↓`) / `j`**: Move selection to next hypothesis
-  - Wraps to top when at bottom
-  - Updates detail pane automatically
-  - Clears non-persistent status messages
+- **Down Arrow (`↓`) / `j`**: Context-sensitive movement
+  - **List focused**: Move selection to next hypothesis
+  - **Details focused**: Scroll content down by one line
+  - Wraps appropriately in list mode
+  - Updates detail pane automatically in list mode
 
-#### Detail Scrolling
-- **Page Up / `u`**: Scroll hypothesis details up one page
-  - Works within the right pane only
-  - Useful for long descriptions and feedback history
+#### Pane Scrolling
+- **Page Up / `u`**: Scroll focused pane up one page
+  - **List focused**: Scroll through hypothesis list
+  - **Details focused**: Scroll through hypothesis content
+  - Fast navigation for long content
   - Mac users: Use `u` if Page Up not available
 
-- **Page Down / `d`**: Scroll hypothesis details down one page
-  - Works within the right pane only
-  - Essential for viewing complete hypothesis content
+- **Page Down / `d`**: Scroll focused pane down one page
+  - **List focused**: Scroll through hypothesis list
+  - **Details focused**: Scroll through hypothesis content
+  - Essential for viewing complete content
   - Mac users: Use `d` if Page Down not available
 
 #### Quick Navigation
@@ -312,6 +332,34 @@ Press any key to continue...
 - Setting preserved during session
 - Helpful for cleaner hypothesis view
 
+#### `a` - Fetch Papers and Abstracts
+**Purpose**: Automatically fetch papers and abstracts from Semantic Scholar for current hypothesis references
+
+**Usage Flow**:
+1. Select hypothesis with references
+2. Press `a` to start fetching
+3. Shows progress: "Fetching papers... (1/5)"
+4. Creates papers/[session_name] directory structure
+5. Downloads abstracts and PDFs when available
+6. Shows completion status with success/failure count
+
+**What It Creates**:
+- `papers/[session]/abstracts/` - Text files with paper abstracts
+- `papers/[session]/papers/` - PDF files when available
+- Organized by citation index number
+- Includes metadata (DOI, authors, venue, etc.)
+
+**Requirements**:
+- Internet connection for Semantic Scholar API
+- Optional: SS_API_KEY environment variable for higher rate limits
+- Sufficient disk space for downloaded papers
+
+**Technical Notes**:
+- Respects API rate limits with 1-second delays
+- Handles errors gracefully (some papers may not be found)
+- Creates detailed logs of successful and failed fetches
+- Filenames include paper IDs for easy reference
+
 ### System Commands
 
 #### `Esc` - Cancel Operation
@@ -414,23 +462,24 @@ Press any key to continue...
 ## Keyboard Shortcuts Summary Card
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    WISTERIA v5.0 KEYS                      │
-├─────────────────────────────────────────────────────────────┤
-│ NAVIGATION           │ ACTIONS              │ DISPLAY       │
-│ ↑/k  - Previous      │ f - Feedback         │ h - Hallmarks │
-│ ↓/j  - Next          │ n - New hypothesis   │ r - References│
-│ PgUp/u - Scroll up   │ p - Export PDF       │               │
-│ PgDn/d - Scroll down │ q - Quit & save      │               │
-│ Enter - Select       │                      │               │
-├─────────────────────────────────────────────────────────────┤
-│ SESSION              │ SYSTEM               │               │
-│ l - Load session     │ Esc - Cancel         │               │
-│ x - Save session     │ Ctrl+C - Force quit  │               │
-│ t - Notes            │                      │               │
-│ s - Select by #      │                      │               │
-│ v - View titles      │                      │               │
-└─────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────┐
+│                      WISTERIA v6.0 KEYS                        │
+├─────────────────────────────────────────────────────────────────────────┤
+│ FOCUS & NAVIGATION   │ ACTIONS              │ DISPLAY & RESEARCH  │
+│ ←/→ - Switch panes   │ f - Feedback         │ h - Hallmarks       │
+│ ↑/k  - Up (context)   │ n - New hypothesis   │ r - References      │
+│ ↓/j  - Down (context) │ p - Export PDF       │ a - Fetch papers    │
+│ PgUp/u - Page up     │ q - Quit & save      │                     │
+│ PgDn/d - Page down   │                      │                     │
+│ Enter - Select       │                      │                     │
+├─────────────────────────────────────────────────────────────────────────┤
+│ SESSION              │ SYSTEM               │                     │
+│ l - Load session     │ Esc - Cancel         │                     │
+│ x - Save session     │ Ctrl+C - Force quit  │                     │
+│ t - Notes            │                      │                     │
+│ s - Select by #      │                      │                     │
+│ v - View titles      │                      │                     │
+└─────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
