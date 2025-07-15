@@ -1,0 +1,11 @@
+Title: Millisecond Coherence Time in a Tunable Molecular Electronic Spin Qubit
+Authors: Joseph M. Zadrozny, J. Niklas, O. Poluektov, D. Freedman
+Published: 2015
+Venue: ACS Central Science
+Semantic Scholar ID: f3cfb30991a752fe31227c0cb1fb6058638a61d8
+DOI: 10.1021/acscentsci.5b00338
+arXiv ID: 
+PDF URL: https://doi.org/10.1021/acscentsci.5b00338
+
+Abstract:
+Quantum information processing (QIP) could revolutionize areas ranging from chemical modeling to cryptography. One key figure of merit for the smallest unit for QIP, the qubit, is the coherence time (T2), which establishes the lifetime for the qubit. Transition metal complexes offer tremendous potential as tunable qubits, yet their development is hampered by the absence of synthetic design principles to achieve a long T2. We harnessed molecular design to create a series of qubits, (Ph4P)2[V(C8S8)3] (1), (Ph4P)2[V(β-C3S5)3] (2), (Ph4P)2[V(α-C3S5)3] (3), and (Ph4P)2[V(C3S4O)3] (4), with T2s of 1–4 μs at 80 K in protiated and deuterated environments. Crucially, through chemical tuning of nuclear spin content in the vanadium(IV) environment we realized a T2 of ∼1 ms for the species (d20-Ph4P)2[V(C8S8)3] (1′) in CS2, a value that surpasses the coordination complex record by an order of magnitude. This value even eclipses some prominent solid-state qubits. Electrochemical and continuous wave electron paramagnetic resonance (EPR) data reveal variation in the electronic influence of the ligands on the metal ion across 1–4. However, pulsed measurements indicate that the most important influence on decoherence is nuclear spins in the protiated and deuterated solvents utilized herein. Our results illuminate a path forward in synthetic design principles, which should unite CS2 solubility with nuclear spin free ligand fields to develop a new generation of molecular qubits.

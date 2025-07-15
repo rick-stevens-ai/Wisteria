@@ -1,0 +1,11 @@
+Title: Enhancing coherence in molecular spin qubits via atomic clock transitions
+Authors: M. Shiddiq, Dorsa Komijani, Yan Duan, A. Gaita-Ariño, E. Coronado, S. Hill
+Published: 2016
+Venue: Nature
+Semantic Scholar ID: 89721280784e5437f5e805437914ab20bafdb99c
+DOI: 10.1038/nature16984
+arXiv ID: 
+PDF URL: https://roderic.uv.es/bitstream/10550/79231/1/114072.pdf
+
+Abstract:
+No abstract available

@@ -1,0 +1,11 @@
+Title: Molecular spins for quantum computation
+Authors: A. Gaita-Ariño, F. Luis, S. Hill, E. Coronado
+Published: 2019
+Venue: Nature Chemistry
+Semantic Scholar ID: a5b4eb1b213c931f1641cbf39600c4f5f4c5a3cd
+DOI: 10.1038/s41557-019-0232-y
+arXiv ID: 
+PDF URL: https://digital.csic.es/bitstream/10261/202302/1/molecomputa.pdf
+
+Abstract:
+No abstract available

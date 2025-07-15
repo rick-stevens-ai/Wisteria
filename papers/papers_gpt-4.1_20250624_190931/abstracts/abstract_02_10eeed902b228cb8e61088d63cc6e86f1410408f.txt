@@ -1,0 +1,11 @@
+Title: The Second Quantum Revolution: Role and Challenges of Molecular Chemistry.
+Authors: M. Atzori, R. Sessoli
+Published: 2019
+Venue: Journal of the American Chemical Society
+Semantic Scholar ID: 10eeed902b228cb8e61088d63cc6e86f1410408f
+DOI: 10.1021/jacs.9b00984
+arXiv ID: 
+PDF URL: https://flore.unifi.it/bitstream/2158/1177032/3/Jacs_2019_perspective_preprint.pdf
+
+Abstract:
+Implementation of modern Quantum Technologies might benefit from the remarkable quantum properties shown by molecular spin systems. In this Perspective, we highlight the role that molecular chemistry can have in the current second quantum revolution, i.e., the use of quantum physics principles to create new quantum technologies, in this specific case by means of molecular components. Herein, we briefly review the current status of the field by identifying the key advances recently made by the molecular chemistry community, such as for example the design of molecular spin qubits with long spin coherence and the realization of multiqubit architectures for quantum gates implementation. With a critical eye to the current state-of-the-art, we also highlight the main challenges needed for the further advancement of the field toward quantum technologies development.

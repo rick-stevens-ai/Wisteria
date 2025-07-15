@@ -1,0 +1,11 @@
+Title: 2D Metal-Organic Frameworks: Properties, Synthesis, and Applications in Electrochemical and Optical Biosensors
+Authors: Anamika Ghosh, Sana Fathima Thanutty Kallungal, S. Ramaprabhu
+Published: 2023
+Venue: Biosensors
+Semantic Scholar ID: 4d463733442aa49c0f7983a3b4f61700c54d3f90
+DOI: 10.3390/bios13010123
+arXiv ID: 
+PDF URL: https://www.mdpi.com/2079-6374/13/1/123/pdf?version=1673431866
+
+Abstract:
+Two-dimensional (2D) nanomaterials like graphene, layered double hydroxides, etc., have received increasing attention owing to their unique properties imparted by their 2D structure. The newest member in this family is based on metal-organic frameworks (MOFs), which have been long known for their exceptional physicochemical properties—high surface area, tunable pore size, catalytic properties, etc., to list a few. 2D MOFs are promising materials for various applications as they combine the exciting properties of 2D materials and MOFs. Recently, they have been extensively used in biosensors by virtue of their enormous surface area and abundant, accessible active sites. In this review, we provide a synopsis of the recent progress in the field of 2D MOFs for sensor applications. Initially, the properties and synthesis techniques of 2D MOFs are briefly outlined with examples. Further, electrochemical and optical biosensors based on 2D MOFs are summarized, and the associated challenges are outlined.

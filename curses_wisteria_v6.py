@@ -446,17 +446,11 @@ def browse_abstracts_interface(stdscr, interface):
                 # Highlight current selection
                 attr = curses.A_REVERSE if i == current_abstract_idx else 0
                 
-                try:
-                    stdscr.addstr(line_y, 2, display_text[:list_width-3], attr)
-                except curses.error:
-                    pass
+                interface.safe_addstr(stdscr, line_y, 2, display_text, attr)
             
             # Draw vertical separator
             for y in range(list_y_start, list_y_end):
-                try:
-                    stdscr.addstr(y, list_width, "│")
-                except curses.error:
-                    pass
+                interface.safe_addstr(stdscr, y, list_width, "│")
             
             # Draw abstract content (right panel)
             detail_x_start = list_width + 1
@@ -494,7 +488,7 @@ def browse_abstracts_interface(stdscr, interface):
                             break
                         
                         try:
-                            stdscr.addstr(wrapped_y, detail_x_start + 1, wrapped_line[:detail_width-2])
+                            interface.safe_addstr(stdscr, wrapped_y, detail_x_start + 1, wrapped_line)
                         except curses.error:
                             pass
             
@@ -502,7 +496,7 @@ def browse_abstracts_interface(stdscr, interface):
             cmd_y = interface.height - 2
             commands = " ↑↓=Navigate j/k=Scroll abstract d/u=Fast scroll ESC/q=Exit "
             try:
-                stdscr.addstr(cmd_y, 0, commands[:interface.width], curses.A_REVERSE)
+                interface.safe_addstr(stdscr, cmd_y, 0, commands, curses.A_REVERSE)
                 if len(commands) < interface.width:
                     stdscr.addstr(cmd_y, len(commands), " " * (interface.width - len(commands)), curses.A_REVERSE)
             except curses.error:
@@ -512,7 +506,7 @@ def browse_abstracts_interface(stdscr, interface):
             if current_abstract:
                 status_text = f" File: {current_abstract['filename']} | Session: {current_abstract['session']} "
                 try:
-                    stdscr.addstr(cmd_y + 1, 0, status_text[:interface.width])
+                    interface.safe_addstr(stdscr, cmd_y + 1, 0, status_text)
                 except curses.error:
                     pass
             
@@ -986,6 +980,9 @@ class CursesInterface:
         self.focus_pane = "list"  # Can be "list" or "details"
         self.list_scroll_offset = 0  # For scrolling in hypothesis list
         
+        # Sorting management
+        self.sort_mode = "numerical"  # Can be "numerical" or "score"
+        
         # Reference fetching status tracking
         self.reference_status = {}  # {hypothesis_id: {ref_index: 'pending'|'fetching'|'success'|'failed'}}
         
@@ -1304,7 +1301,7 @@ class CursesInterface:
         
         # Research goal (wrapped)
         goal_text = f"Research Goal: {research_goal}"
-        wrapped_goal = textwrap.fill(goal_text, self.width - 2)
+        wrapped_goal = self.safe_wrap_text(goal_text, self.width - 2)
         goal_lines = wrapped_goal.split('\n')
         
         for i, line in enumerate(goal_lines[:2]):  # Max 2 lines for goal
@@ -1320,11 +1317,12 @@ class CursesInterface:
         self.draw_border(self.list_win)
         
         # Title with focus indicator
+        sort_indicator = f" [{self.sort_mode.upper()}]"
         if self.focus_pane == "list":
-            list_title = " Hypothesis List [FOCUSED] "
+            list_title = f" Hypothesis List{sort_indicator} [FOCUSED] "
             title_attr = curses.A_BOLD | curses.A_REVERSE
         else:
-            list_title = " Hypothesis List "
+            list_title = f" Hypothesis List{sort_indicator} "
             title_attr = curses.A_BOLD
         title_x = (self.LIST_WIDTH - len(list_title)) // 2
         self.list_win.addstr(0, title_x, list_title, title_attr)
@@ -1346,7 +1344,20 @@ class CursesInterface:
         y_pos = 2
         list_height = self.list_win.getmaxyx()[0] - 3  # Account for borders
         
-        for hyp_num in sorted(hypothesis_groups.keys()):
+        # Sort hypothesis numbers based on current sort mode
+        if self.sort_mode == "score":
+            # Sort by score (descending), then by hypothesis number
+            def get_sort_key(hyp_num):
+                latest_version = max(hypothesis_groups[hyp_num], key=lambda h: h.get("version", "1.0"))
+                hallmark_scores = latest_version.get("hallmark_scores", {})
+                total_score = hallmark_scores.get("total_score", -1)  # -1 for unscored
+                return (-total_score, hyp_num)  # Negative for descending order
+            sorted_hyp_nums = sorted(hypothesis_groups.keys(), key=get_sort_key)
+        else:
+            # Default numerical sorting
+            sorted_hyp_nums = sorted(hypothesis_groups.keys())
+        
+        for hyp_num in sorted_hyp_nums:
             if y_pos - 2 < self.list_scroll_offset:
                 continue
             if y_pos >= list_height + self.list_scroll_offset:
@@ -1385,7 +1396,7 @@ class CursesInterface:
             try:
                 display_y = y_pos - self.list_scroll_offset
                 if 1 <= display_y < list_height:
-                    self.list_win.addstr(display_y, 2, line_text[:self.LIST_WIDTH-4], attr)
+                    self.safe_addstr(self.list_win, display_y, 2, line_text, attr)
             except curses.error:
                 pass  # Ignore if line doesn't fit
                 
@@ -1426,7 +1437,7 @@ class CursesInterface:
             # Title
             version = hypothesis.get("version", "1.0")
             hyp_title = f"Title (v{version}): {hypothesis.get('title', 'Untitled')}"
-            wrapped_title = textwrap.fill(hyp_title, content_width)
+            wrapped_title = self.safe_wrap_text(hyp_title, content_width)
             for line in wrapped_title.split('\n'):
                 if y_pos >= max_y:
                     break
@@ -1446,7 +1457,7 @@ class CursesInterface:
             y_pos += 1
             
             description = hypothesis.get('description', 'No description provided.')
-            wrapped_desc = textwrap.fill(description, content_width)
+            wrapped_desc = self.safe_wrap_text(description, content_width)
             for line in wrapped_desc.split('\n'):
                 if y_pos >= max_y + self.detail_scroll_offset + 20:  # Reasonable limit
                     break
@@ -1465,7 +1476,7 @@ class CursesInterface:
             y_pos += 1
             
             experimental_validation = hypothesis.get('experimental_validation', 'No experimental validation plan provided.')
-            wrapped_validation = textwrap.fill(experimental_validation, content_width)
+            wrapped_validation = self.safe_wrap_text(experimental_validation, content_width)
             for line in wrapped_validation.split('\n'):
                 if y_pos >= max_y + self.detail_scroll_offset + 20:  # Reasonable limit
                     break
@@ -1485,7 +1496,7 @@ class CursesInterface:
                         self.safe_addstr(self.detail_win, display_y, 2, "Theory and Computation:", curses.A_UNDERLINE)
                 y_pos += 1
                 
-                wrapped_theory = textwrap.fill(theory_computation, content_width)
+                wrapped_theory = self.safe_wrap_text(theory_computation, content_width)
                 for line in wrapped_theory.split('\n'):
                     if y_pos >= max_y + self.detail_scroll_offset + 20:  # Reasonable limit
                         break
@@ -1505,7 +1516,7 @@ class CursesInterface:
                         self.safe_addstr(self.detail_win, display_y, 2, "Personal Notes:", curses.A_UNDERLINE)
                 y_pos += 1
                 
-                wrapped_notes = textwrap.fill(notes, content_width)
+                wrapped_notes = self.safe_wrap_text(notes, content_width)
                 for line in wrapped_notes.split('\n'):
                     if y_pos >= max_y + self.detail_scroll_offset + 20:  # Reasonable limit
                         break
@@ -1532,12 +1543,12 @@ class CursesInterface:
                 y_pos += 1
                 
                 improvements = hypothesis.get("improvements_made", "")
-                wrapped_imp = textwrap.fill(improvements, content_width)
+                wrapped_imp = self.safe_wrap_text(improvements, content_width)
                 for line in wrapped_imp.split('\n'):
                     if y_pos - 2 >= self.detail_scroll_offset:
                         display_y = y_pos - self.detail_scroll_offset
                         if 2 <= display_y < max_y:
-                            self.detail_win.addstr(display_y, 2, line[:content_width], curses.color_pair(4))
+                            self.safe_addstr(self.detail_win, display_y, 2, line, curses.color_pair(4))
                     y_pos += 1
             
             # Hallmarks (if enabled)
@@ -1566,12 +1577,12 @@ class CursesInterface:
                     y_pos += 1
                     
                     text = hallmarks.get(key, 'No analysis provided.')
-                    wrapped_text = textwrap.fill(text, content_width - 3)
+                    wrapped_text = self.safe_wrap_text(text, content_width - 3)
                     for line in wrapped_text.split('\n'):
                         if y_pos - 2 >= self.detail_scroll_offset:
                             display_y = y_pos - self.detail_scroll_offset
                             if 2 <= display_y < max_y:
-                                self.detail_win.addstr(display_y, 5, line[:content_width-3])
+                                self.safe_addstr(self.detail_win, display_y, 5, line)
                         y_pos += 1
                     y_pos += 1  # Blank line between hallmarks
             else:
@@ -1579,7 +1590,7 @@ class CursesInterface:
                 if y_pos - 2 >= self.detail_scroll_offset and y_pos - self.detail_scroll_offset < max_y:
                     display_y = y_pos - self.detail_scroll_offset
                     if 2 <= display_y < max_y:
-                        self.detail_win.addstr(display_y, 2, "[Hallmarks hidden - press 'h' to toggle]", curses.color_pair(4))
+                        self.safe_addstr(self.detail_win, display_y, 2, "[Hallmarks hidden - press 'h' to toggle]", curses.color_pair(4))
                 y_pos += 1
             
             # References (if enabled)
@@ -1606,32 +1617,32 @@ class CursesInterface:
                             
                             # Display citation with status indicator
                             citation_text = f"{status_indicator} {i}. {citation}"
-                            wrapped_citation = textwrap.fill(citation_text, content_width - 3)
+                            wrapped_citation = self.safe_wrap_text(citation_text, content_width - 3)
                             for line in wrapped_citation.split('\n'):
                                 if y_pos - 2 >= self.detail_scroll_offset:
                                     display_y = y_pos - self.detail_scroll_offset
                                     if 2 <= display_y < max_y:
-                                        self.detail_win.addstr(display_y, 2, line[:content_width-3], curses.A_BOLD)
+                                        self.safe_addstr(self.detail_win, display_y, 2, line, curses.A_BOLD)
                                 y_pos += 1
                             
                             # Display annotation
-                            wrapped_annotation = textwrap.fill(annotation, content_width - 6)
+                            wrapped_annotation = self.safe_wrap_text(annotation, content_width - 6)
                             for line in wrapped_annotation.split('\n'):
                                 if y_pos - 2 >= self.detail_scroll_offset:
                                     display_y = y_pos - self.detail_scroll_offset
                                     if 2 <= display_y < max_y:
-                                        self.detail_win.addstr(display_y, 8, line[:content_width-6])
+                                        self.safe_addstr(self.detail_win, display_y, 8, line)
                                 y_pos += 1
                             y_pos += 1  # Blank line between references
                         else:
                             # Handle string references
                             ref_text = f"{i}. {str(ref)}"
-                            wrapped_ref = textwrap.fill(ref_text, content_width - 3)
+                            wrapped_ref = self.safe_wrap_text(ref_text, content_width - 3)
                             for line in wrapped_ref.split('\n'):
                                 if y_pos - 2 >= self.detail_scroll_offset:
                                     display_y = y_pos - self.detail_scroll_offset
                                     if 2 <= display_y < max_y:
-                                        self.detail_win.addstr(display_y, 5, line[:content_width-3])
+                                        self.safe_addstr(self.detail_win, display_y, 5, line)
                                 y_pos += 1
                             y_pos += 1  # Blank line
                 else:
@@ -1645,7 +1656,7 @@ class CursesInterface:
                 if y_pos - 2 >= self.detail_scroll_offset and y_pos - self.detail_scroll_offset < max_y:
                     display_y = y_pos - self.detail_scroll_offset
                     if 2 <= display_y < max_y:
-                        self.detail_win.addstr(display_y, 2, "[References hidden - press 'r' to toggle]", curses.color_pair(4))
+                        self.safe_addstr(self.detail_win, display_y, 2, "[References hidden - press 'r' to toggle]", curses.color_pair(4))
                 y_pos += 1
                 
         except curses.error:
@@ -1843,6 +1854,20 @@ class CursesInterface:
             except (curses.error, UnicodeEncodeError, ValueError):
                 pass
             return False
+
+    def safe_wrap_text(self, text, width, max_length=10000):
+        """Safely wrap text with length limits to prevent memory issues"""
+        if not text:
+            return ""
+        
+        # Limit text length to prevent memory issues
+        safe_text = str(text)[:max_length]
+        
+        try:
+            return textwrap.fill(safe_text, width)
+        except (MemoryError, OverflowError):
+            # Fallback: return truncated text without wrapping
+            return safe_text[:width]
 
 # ---------------------------------------------------------------------
 # PDF Generation Functions
@@ -2268,7 +2293,7 @@ def compare_hypothesis_sections(old_hypothesis, new_hypothesis):
     
     return result
 
-def load_model_config(model_shortname):
+def load_model_config(model_shortname, config_path=None):
     """
     Load model configuration from the model_servers.yaml file.
     Returns a dictionary with api_key, api_base, and model_name.
@@ -2277,7 +2302,10 @@ def load_model_config(model_shortname):
         print("Error: Model shortname cannot be empty")
         sys.exit(1)
         
-    yaml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "model_servers.yaml")
+    if config_path:
+        yaml_path = config_path
+    else:
+        yaml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "model_servers.yaml")
     
     try:
         with open(yaml_path, 'r') as yaml_file:
@@ -2927,6 +2955,206 @@ Please format your response as a JSON object with the following structure:
     giveup=lambda e: "Invalid authentication" in str(e),
     max_time=300
 )
+def revise_hypothesis(research_goal, current_hypothesis, config):
+    """
+    Generate a revised and improved version of a hypothesis using the complete hypothesis content as input.
+    This creates a new version that improves upon the existing hypothesis.
+    
+    Args:
+        research_goal (str): The original research goal
+        current_hypothesis (dict): The current hypothesis to revise
+        config (dict): Configuration for the model API
+        
+    Returns:
+        dict: Revised hypothesis object
+    """
+    # Configure the OpenAI client
+    api_key = config['api_key']
+    api_base = config['api_base']
+    model_name = config['model_name']
+    
+    # System prompt for hypothesis revision
+    system_message = (
+        "You are an expert research scientist who excels at revising and enhancing scientific hypotheses. "
+        "You take existing hypotheses and create improved versions that strengthen the scientific reasoning, "
+        "enhance testability, improve clarity, and advance the theoretical framework while maintaining the core insights."
+    )
+    
+    # Get all relevant content from the current hypothesis
+    title = current_hypothesis.get('title', 'Untitled')
+    description = current_hypothesis.get('description', 'No description')
+    experimental_validation = current_hypothesis.get('experimental_validation', 'No validation plan provided')
+    theory_computation = current_hypothesis.get('theory_and_computation', 'No theoretical framework provided')
+    hallmarks = current_hypothesis.get('hallmarks', {})
+    references = current_hypothesis.get('references', [])
+    
+    # Format existing hallmarks
+    hallmarks_text = ""
+    for key, value in hallmarks.items():
+        hallmarks_text += f"- {key.title()}: {value}\n"
+    
+    # Format existing references
+    references_text = ""
+    for ref in references:
+        citation = ref.get('citation', 'No citation')
+        annotation = ref.get('annotation', 'No annotation')
+        references_text += f"- {citation}\n  Annotation: {annotation}\n"
+    
+    # User prompt with detailed instructions
+    user_message = f"""
+Based on the original research goal and the complete current hypothesis provided below, please create a revised and improved version that enhances the scientific quality, clarity, and impact.
+
+ORIGINAL RESEARCH GOAL:
+{research_goal}
+
+CURRENT HYPOTHESIS CONTENT:
+Title: {title}
+
+Description: {description}
+
+Experimental Validation: {experimental_validation}
+
+Theory and Computation: {theory_computation}
+
+Current Hallmarks:
+{hallmarks_text}
+
+Current References:
+{references_text}
+
+Please create a REVISED and IMPROVED version that:
+1. Strengthens the scientific reasoning and theoretical foundation
+2. Enhances the experimental design and validation approach
+3. Improves clarity and specificity of the hypothesis
+4. Strengthens the theoretical and computational framework
+5. Maintains the core insights while advancing the overall quality
+6. Adds new relevant scientific references (aim for 5-7 high-quality references)
+7. Ensures all hallmarks demonstrate the highest scientific standards
+
+Please format your response as a JSON object with the following structure:
+{{
+  "title": "Revised and improved hypothesis title",
+  "description": "Enhanced detailed paragraph description with improved scientific reasoning",
+  "experimental_validation": "Strengthened experimental validation plan with more rigorous methods, better controls, enhanced measurements, realistic timeline, and clearer expected outcomes",
+  "theory_and_computation": "Enhanced theoretical frameworks, improved computational models, more sophisticated simulations, advanced mathematical analyses, or cutting-edge computational approaches",
+  "hallmarks": {{
+    "testability": "Enhanced paragraph explaining superior testability/falsifiability with specific measurable predictions",
+    "specificity": "Enhanced paragraph explaining improved specificity and clarity with precise definitions", 
+    "grounded_knowledge": "Enhanced paragraph explaining stronger grounding in established scientific knowledge with better integration",
+    "predictive_power": "Enhanced paragraph explaining stronger predictive power and more significant novel insights",
+    "parsimony": "Enhanced paragraph explaining how the revised hypothesis achieves greater elegance and simplicity"
+  }},
+  "references": [
+    {{
+      "citation": "Author, A. (Year). Title of paper. Journal Name, Volume(Issue), pages.",
+      "annotation": "Detailed explanation of how this reference supports or advances the revised hypothesis"
+    }}
+  ],
+  "revision_improvements": "Detailed explanation of the specific enhancements and improvements made in this revision"
+}}
+"""
+    
+    try:
+        # Add a small random delay to avoid overloading the API
+        jitter = random.uniform(0.1, 1.0)
+        time.sleep(jitter)
+        
+        # Create a new client instance
+        import openai as openai_module
+        client = openai_module.OpenAI(
+            api_key=api_key,
+            base_url=api_base,
+            timeout=180.0  # 3 minute timeout for longer generation
+        )
+        
+        # Check if we need to skip temperature (for reasoning models like o3 and o4mini)
+        skip_temperature = any(name in model_name.lower() for name in ["o3", "o4-mini", "o4mini"])
+        
+        # Prepare parameters
+        params = {
+            "model": model_name,
+            "messages": [
+                {"role": "system", "content": system_message},
+                {"role": "user", "content": user_message},
+            ]
+        }
+        
+        # Add temperature only for models that support it
+        if not skip_temperature:
+            params["temperature"] = 0.7  # Higher temperature for creativity
+        
+        # Call the API with the prepared parameters
+        response = client.chat.completions.create(**params)
+        
+        # Handle the response based on the OpenAI client version
+        if hasattr(response, 'choices'):
+            # New OpenAI client
+            generated_text = response.choices[0].message.content.strip()
+        else:
+            # Legacy dict-style response
+            generated_text = response["choices"][0]["message"]["content"].strip()
+        
+        # Try to parse the JSON response
+        try:
+            # Extract JSON from the response (handle cases where model adds extra text)
+            json_start = generated_text.find('{')
+            json_end = generated_text.rfind('}') + 1
+            if json_start != -1 and json_end != 0:
+                json_text = generated_text[json_start:json_end]
+                # Clean control characters before parsing
+                json_text = clean_json_string(json_text)
+                revised_hypothesis = json.loads(json_text)
+                # Initialize feedback history if not present
+                if "feedback_history" not in revised_hypothesis:
+                    revised_hypothesis["feedback_history"] = []
+                # Initialize notes if not present
+                if "notes" not in revised_hypothesis:
+                    revised_hypothesis["notes"] = ""
+                return revised_hypothesis
+            else:
+                # Fallback: try to parse the entire response as JSON
+                cleaned_text = clean_json_string(generated_text)
+                revised_hypothesis = json.loads(cleaned_text)
+                # Initialize feedback history if not present
+                if "feedback_history" not in revised_hypothesis:
+                    revised_hypothesis["feedback_history"] = []
+                # Initialize notes if not present
+                if "notes" not in revised_hypothesis:
+                    revised_hypothesis["notes"] = ""
+                return revised_hypothesis
+                
+        except json.JSONDecodeError as je:
+            print(f"Error parsing JSON response from model: {je}")
+            print(f"Raw response: {generated_text[:500]}...")
+            # Return an error structure
+            return {
+                "title": "Error: Could not parse model response",
+                "description": f"The model returned a response that could not be parsed as JSON: {str(je)}",
+                "hallmarks": {
+                    "testability": "N/A",
+                    "specificity": "N/A", 
+                    "grounded_knowledge": "N/A",
+                    "predictive_power": "N/A",
+                    "parsimony": "N/A"
+                },
+                "references": [],
+                "revision_improvements": "N/A",
+                "error": True,
+                "raw_response": generated_text
+            }
+            
+    except Exception as e:
+        # Propagate the exception to trigger backoff
+        print(f"Error in revise_hypothesis (will retry): {str(e)}")
+        raise
+
+@backoff.on_exception(
+    backoff.expo,
+    (Exception),
+    max_tries=5,
+    giveup=lambda e: "Invalid authentication" in str(e),
+    max_time=300
+)
 def generate_new_hypothesis(research_goal, previous_hypotheses, config):
     """
     Generate a new hypothesis that is different from previous ones.
@@ -3269,6 +3497,7 @@ def parse_arguments():
     goal_group.add_argument('--goal', help='Research goal specified directly as text')
     
     parser.add_argument('--model', help='Model shortname from model_servers.yaml')
+    parser.add_argument('--config', help='Path to model_servers.yaml file (default: model_servers.yaml in script directory)')
     parser.add_argument('--output', help='Output JSON file (default: hypotheses_<timestamp>.json)')
     parser.add_argument('--resume', help='Resume from a previous session JSON file')
     parser.add_argument('--num-hypotheses', type=int, default=1, 
@@ -3326,9 +3555,9 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                     pass
             version_tracker[hyp_num] = max_version
         
-        # Start with the most recent hypothesis
-        current_hypothesis = max(all_hypotheses, key=lambda h: h.get("generation_timestamp", ""))
-        interface.current_hypothesis_idx = current_hypothesis.get("hypothesis_number", 1) - 1
+        # Start with the first hypothesis (for consistent behavior)
+        interface.current_hypothesis_idx = 0
+        interface.focus_pane = "list"  # Ensure focus is on hypothesis list
         
         # Show loading status for resumed session
         interface.draw_status_bar("Loading resumed session... Press any key when ready.")
@@ -3550,6 +3779,9 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
     if all_hypotheses:
         # Simple approach: just get the first hypothesis for initial display
         current_hypothesis = all_hypotheses[0] if all_hypotheses else None
+        # Ensure focus is on list pane and cursor on first hypothesis
+        interface.current_hypothesis_idx = 0
+        interface.focus_pane = "list"
     
     # Draw the complete interface immediately after generation
     try:
@@ -3927,6 +4159,73 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                             else:
                                 interface.set_status("No hypothesis selected for scoring")
                             
+                        elif key == ord('z') or key == ord('Z'):
+                            # Batch score all hypotheses
+                            interface.clear_status_on_action()
+                            if not all_hypotheses:
+                                interface.set_status("No hypotheses available for batch scoring")
+                            else:
+                                # Get unique hypothesis numbers
+                                hypothesis_groups = {}
+                                for hyp in all_hypotheses:
+                                    hyp_num = hyp.get("hypothesis_number", 0)
+                                    if hyp_num not in hypothesis_groups:
+                                        hypothesis_groups[hyp_num] = []
+                                    hypothesis_groups[hyp_num].append(hyp)
+                                
+                                # Get latest version of each hypothesis for scoring
+                                hypotheses_to_score = []
+                                for hyp_num, hyp_versions in hypothesis_groups.items():
+                                    latest_version = max(hyp_versions, key=lambda h: h.get("version", "1.0"))
+                                    hypotheses_to_score.append(latest_version)
+                                
+                                # Show progress operation
+                                operation_id = f"batch_score_{time.time()}"
+                                interface.add_progress_operation(operation_id, "scoring", len(hypotheses_to_score), "Batch scoring all hypotheses")
+                                stdscr.refresh()
+                                
+                                # Score hypotheses in background thread
+                                def batch_score_thread():
+                                    try:
+                                        scored_count = 0
+                                        total_count = len(hypotheses_to_score)
+                                        
+                                        for i, hyp_to_score in enumerate(hypotheses_to_score):
+                                            # Update progress
+                                            interface.update_progress_operation(operation_id, i + 1, f"Scoring hypothesis {i+1}/{total_count}")
+                                            
+                                            scoring_result = score_hypothesis_hallmarks(hyp_to_score, model_config)
+                                            
+                                            if "error" not in scoring_result:
+                                                # Store scoring results in all versions of this hypothesis
+                                                hyp_num = hyp_to_score.get("hypothesis_number", 0)
+                                                for hyp in all_hypotheses:
+                                                    if hyp.get("hypothesis_number") == hyp_num:
+                                                        hyp["hallmark_scores"] = scoring_result
+                                                scored_count += 1
+                                        
+                                        interface.remove_progress_operation(operation_id)
+                                        interface.set_status(f"Batch scoring complete! Scored {scored_count}/{total_count} hypotheses")
+                                        
+                                        # Force refresh of all panes to show updated scoring
+                                        interface.dirty_list = True
+                                        interface.dirty_details = True
+                                        interface.draw_hypothesis_list(all_hypotheses)
+                                        if current_hypothesis:
+                                            interface.draw_hypothesis_details(current_hypothesis)
+                                        interface.list_win.refresh()
+                                        interface.detail_win.refresh()
+                                        stdscr.refresh()
+                                        
+                                    except Exception as e:
+                                        interface.remove_progress_operation(operation_id)
+                                        interface.set_status(f"Batch scoring error: {str(e)[:50]}")
+                                
+                                # Start batch scoring in background
+                                score_thread = threading.Thread(target=batch_score_thread)
+                                score_thread.daemon = True
+                                score_thread.start()
+                            
                         elif key == ord('b') or key == ord('B'):
                             # Browse and view downloaded abstracts
                             interface.clear_status_on_action()
@@ -4231,6 +4530,97 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                                         interface.draw_status_bar(f"Enter hypothesis number: {number_input}")
                                         stdscr.refresh()
                                         
+                        elif key == ord('o') or key == ord('O'):
+                            # Sort hypothesis list by score
+                            interface.clear_status_on_action()
+                            interface.sort_mode = "score"
+                            interface.set_status("Sorted by score (highest first)")
+                            # Force refresh of hypothesis list
+                            interface.dirty_list = True
+                            interface.draw_hypothesis_list(all_hypotheses)
+                            interface.list_win.refresh()
+                            stdscr.refresh()
+                            
+                        elif key == ord('1'):
+                            # Sort hypothesis list by numerical order (default)
+                            interface.clear_status_on_action()
+                            interface.sort_mode = "numerical"
+                            interface.set_status("Sorted by numerical order")
+                            # Force refresh of hypothesis list
+                            interface.dirty_list = True
+                            interface.draw_hypothesis_list(all_hypotheses)
+                            interface.list_win.refresh()
+                            stdscr.refresh()
+                            
+                        elif key == ord('g') or key == ord('G'):
+                            # Generate revised hypothesis version from current one
+                            interface.clear_status_on_action()
+                            if current_hypothesis:
+                                # Show progress operation
+                                operation_id = f"revise_{time.time()}"
+                                interface.add_progress_operation(operation_id, "revising", 1, "Generating revised hypothesis version")
+                                stdscr.refresh()
+                                
+                                # Revise hypothesis in background thread
+                                def revise_thread():
+                                    try:
+                                        revised_hypothesis = revise_hypothesis(
+                                            research_goal, current_hypothesis, model_config
+                                        )
+                                        
+                                        interface.remove_progress_operation(operation_id)
+                                        
+                                        if revised_hypothesis.get("error"):
+                                            interface.set_status("Error generating revised hypothesis")
+                                        else:
+                                            # Add revised hypothesis
+                                            nonlocal hypothesis_counter, version_tracker
+                                            hypothesis_number = current_hypothesis["hypothesis_number"]
+                                            version_tracker[hypothesis_number] += 1
+                                            revised_hypothesis["hypothesis_number"] = hypothesis_number
+                                            revised_hypothesis["version"] = f"1.{version_tracker[hypothesis_number]}"
+                                            revised_hypothesis["type"] = "revision"
+                                            revised_hypothesis["original_hypothesis_id"] = current_hypothesis.get("hypothesis_number")
+                                            revised_hypothesis["generation_timestamp"] = datetime.now().isoformat()
+                                            
+                                            # Initialize or copy feedback history
+                                            feedback_history = current_hypothesis.get("feedback_history", [])
+                                            revision_entry = {
+                                                "revision_type": "automated_improvement",
+                                                "timestamp": datetime.now().isoformat(),
+                                                "version_before": current_hypothesis.get("version", "1.0"),
+                                                "version_after": f"1.{version_tracker[hypothesis_number]}",
+                                                "improvements": revised_hypothesis.get("revision_improvements", "General revision and improvement")
+                                            }
+                                            feedback_history.append(revision_entry)
+                                            revised_hypothesis["feedback_history"] = feedback_history
+                                            
+                                            # Copy notes from current hypothesis
+                                            revised_hypothesis["notes"] = current_hypothesis.get("notes", "")
+                                            
+                                            all_hypotheses.append(revised_hypothesis)
+                                            interface.set_status("Revised hypothesis generated!")
+                                            
+                                            # Force refresh of all panes to show revised hypothesis
+                                            interface.dirty_list = True
+                                            interface.dirty_details = True
+                                            interface.draw_hypothesis_list(all_hypotheses)
+                                            interface.draw_hypothesis_details(revised_hypothesis)
+                                            interface.list_win.refresh()
+                                            interface.detail_win.refresh()
+                                            stdscr.refresh()
+                                            
+                                    except Exception as e:
+                                        interface.remove_progress_operation(operation_id)
+                                        interface.set_status(f"Error: {str(e)[:50]}")
+                                
+                                # Start revision in background
+                                revise_thread = threading.Thread(target=revise_thread)
+                                revise_thread.daemon = True
+                                revise_thread.start()
+                            else:
+                                interface.set_status("No hypothesis selected for revision")
+                            
                         elif key == ord('v') or key == ord('V'):
                             # View hypothesis titles - show in a popup-like manner
                             if not all_hypotheses:
@@ -4288,7 +4678,7 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                                         attr = curses.A_REVERSE if hyp_num - 1 == interface.current_hypothesis_idx else 0
                                         
                                         if y_pos < interface.height - 1:
-                                            stdscr.addstr(y_pos, 2, line_text[:interface.width-4], attr)
+                                            interface.safe_addstr(stdscr, y_pos, 2, line_text, attr)
                                         y_pos += 1
                                         line_count += 1
                                     
@@ -4296,7 +4686,7 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                                     if y_pos < interface.height - 1:
                                         total_hypotheses = len(hypothesis_groups)
                                         footer = f"Showing {min(line_count, max_display_lines)} of {total_hypotheses} hypotheses"
-                                        stdscr.addstr(interface.height - 2, 2, footer)
+                                        interface.safe_addstr(stdscr, interface.height - 2, 2, footer)
                                     
                                     stdscr.refresh()
                                     
@@ -4509,7 +4899,7 @@ def main():
         sys.exit(1)
     
     # Load model config
-    model_config = load_model_config(args.model)
+    model_config = load_model_config(args.model, args.config)
     
     print(f"Wisteria Research Hypothesis Generator v6.0 - Curses Multi-Pane Interface")
     print(f"Using model: {args.model} ({model_config['model_name']})")

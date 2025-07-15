@@ -1,0 +1,11 @@
+Title: Symmetry strategies for high performance lanthanide-based single-molecule magnets.
+Authors: Jun‐Liang Liu, Yan‐Cong Chen, M. Tong
+Published: 2018
+Venue: Chemical Society Reviews
+Semantic Scholar ID: b06c9a5853102b2a81f20d3216b9d8305f31739d
+DOI: 10.1039/c7cs00266a
+arXiv ID: 
+PDF URL: https://doi.org/10.1039/c7cs00266a
+
+Abstract:
+Toward promising candidates of quantum information processing, the rapid development of lanthanide-based single-molecule magnets (Ln-SMMs) highlights design strategies in consideration of the local symmetry of lanthanide ions. In this review, crystal-field theory is employed to demonstrate the electronic structures according to the semiquantitative electrostatic model. Then, specific symmetry elements are analysed for the elimination of transverse crystal fields and quantum tunnelling of magnetization (QTM). In this way, high-performance Ln-SMMs can be designed to enable extremely slow relaxation of magnetization, namely magnetic blocking; however, their practical magnetic characterization becomes increasingly challenging. Therefore, we will attempt to interpret the experimental behaviours and clarify some issues in detail. Finally, representative Ln-SMMs with specific local symmetries are summarized in combination with the discussion on the symmetry strategies, and some of the underlying questions are put forward.

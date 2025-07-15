@@ -1,0 +1,11 @@
+Title: Two Heterometallic Ionic Compounds with Isolated [3d] and [4f] Complex Units: Field‐Induced Single‐Ion Magnet (SIM) Behavior Observed from a Mononuclear Dysprosium(III) Complex
+Authors: S. Nayak, G. Novitchi, M. Hołyńska, S. Dehnen
+Published: 2014
+Venue: 
+Semantic Scholar ID: 0bcb6cfe343eeabb2678f6812dfa2af1b874d818
+DOI: 10.1002/EJIC.201402114
+arXiv ID: 
+PDF URL: None
+
+Abstract:
+Two new complexes, [Fe3(μ3-O)(inicH)6(H2O)3][Gd(NO3)6]·(NO3)4·nH2O (1) and [Fe3(μ3-O)(inicH)6(H2O)3][Dy(NO3)5 (H2O)]·(NO3)5·n(H2O) (2) with two isolated complex moieties, were generated when isonicotinic acid was treated with iron(III) nitrate and the corresponding lanthanide(III) nitrate in water. The structures were determined by single-crystal X-ray diffraction studies. In these compounds, the anionic lanthanide complexes are encapsulated by trinuclear [Fe3(μ3-O)(inicH)6(H2O)3]7+ cationic cluster units, which is facilitated by hydrogen-bonding interactions. Investigation of the magnetic properties reveals that 2 shows slow relaxation of magnetization at low magnetic field (Hdc = 1.0 kOe), with an energy barrier of 23 K originating from a single [Dy(NO3)5(H2O)]2– anion.

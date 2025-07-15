@@ -1,0 +1,11 @@
+Title: Spintronics and chirality: spin selectivity in electron transport through chiral molecules.
+Authors: R. Naaman, D. Waldeck
+Published: 2015
+Venue: Annual review of physical chemistry (Print)
+Semantic Scholar ID: 00ade4fa48e12fa0a7a47a7e73d9fbaac38a075e
+DOI: 10.1146/annurev-physchem-040214-121554
+arXiv ID: 
+PDF URL: https://www.annualreviews.org/doi/pdf/10.1146/annurev-physchem-040214-121554
+
+Abstract:
+Recent experiments have demonstrated that the electron transmission yield through chiral molecules depends on the electron spin orientation. This phenomenon has been termed the chiral-induced spin selectivity (CISS) effect, and it provides a challenge to theory and promise for organic molecule-based spintronic devices. This article reviews recent developments in our understanding of CISS. Different theoretical models have been used to describe the effect; however, they all presume an unusually large spin-orbit coupling in chiral molecules for the effect to display the magnitudes seen in experiments. A simplified model for an electron's transport through a chiral potential suggests that these large couplings can be manifested. Techniques for measuring spin-selective electron transport through molecules are overviewed, and some examples of recent experiments are described. Finally, we present results obtained by studying several systems, and we describe the possible application of the CISS effect for memory devices.

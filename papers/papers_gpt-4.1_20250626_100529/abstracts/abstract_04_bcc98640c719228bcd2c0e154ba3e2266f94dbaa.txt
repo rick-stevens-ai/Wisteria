@@ -1,0 +1,11 @@
+Title: Spin specific electron conduction through DNA oligomers.
+Authors: Zuoti Xie, T. Markus, Sidney R. Cohen, Z. Vager, R. Gutierrez, R. Naaman
+Published: 2011
+Venue: Nano letters (Print)
+Semantic Scholar ID: bcc98640c719228bcd2c0e154ba3e2266f94dbaa
+DOI: 10.1021/nl2021637
+arXiv ID: 
+PDF URL: None
+
+Abstract:
+Spin-based properties, applications, and devices are commonly related to magnetic effects and to magnetic materials. Most of the development in spintronics is currently based on inorganic materials. Despite the fact that the magnetoresistance effect has been observed in organic materials, until now spin selectivity of organic based spintronics devices originated from an inorganic ferromagnetic electrode and was not determined by the organic molecules themselves. Here we show that conduction through double-stranded DNA oligomers is spin selective, demonstrating a true organic spin filter. The selectivity exceeds that of any known system at room temperature. The spin dependent resistivity indicates that the effect cannot result solely from the atomic spin-orbit coupling and must relate to a special property resulting from the chirality symmetry. The results may reflect on the importance of spin in determining electron transfer rates through biological systems.

@@ -1,0 +1,11 @@
+Title: Electric Field Effects on Magnetic and Polarizability Properties of Clusters with Two-Electron Transfer.
+Authors: M. Roman, S. Klokishner
+Published: 2018
+Venue: Journal of Physical Chemistry A
+Semantic Scholar ID: 305f2e5dd807cc3f5fd335203d8816983d9b473b
+DOI: 10.1021/acs.jpca.8b09822
+arXiv ID: 
+PDF URL: None
+
+Abstract:
+A possibility to manipulate the magnetic and polarizability characteristics of systems containing mobile electrons by means of external fields opens new perspectives for molecular electronics. From this point of view mixed valence clusters d1-d3 with two-electron transfer are a challenging subject, since under the action of the constant external electric field, it is possible not only to manipulate with the spin of the ground state of the cluster and, consequently, with its magnetic properties but also to produce a pronounced significant polarizability due to the suppression of the two-electron tunneling by this field. The intracluster Heisenberg exchange interaction, the difference in Coulomb interaction for possible cluster configurations, and the coupling with an external electric field are taken into consideration in the model, which predicts spin transitions that are induced by this field and accompanied by appreciable changes in the magnetic properties and polarizability.

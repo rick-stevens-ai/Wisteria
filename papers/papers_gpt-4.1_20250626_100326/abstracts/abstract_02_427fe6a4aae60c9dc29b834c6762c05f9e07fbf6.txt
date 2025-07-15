@@ -1,0 +1,11 @@
+Title: Molecular spintronics using single-molecule magnets.
+Authors: L. Bogani, W. Wernsdorfer
+Published: 2008
+Venue: Nature Materials
+Semantic Scholar ID: 427fe6a4aae60c9dc29b834c6762c05f9e07fbf6
+DOI: 10.1038/nmat2133
+arXiv ID: 
+PDF URL: None
+
+Abstract:
+No abstract available

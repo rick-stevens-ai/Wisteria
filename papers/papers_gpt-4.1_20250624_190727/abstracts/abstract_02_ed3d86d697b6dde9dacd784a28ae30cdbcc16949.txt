@@ -1,0 +1,11 @@
+Title: Photoswitching of the dielectric constant of the spin-crossover complex [Fe(L)(CN)2]H2O.
+Authors: S. Bonhommeau, Thomas Guillon, L. M. Lawson Daku, P. Demont, José Sánchez Costa, J. Létard, G. Molnár, A. Bousseksou
+Published: 2006
+Venue: Angewandte Chemie
+Semantic Scholar ID: ed3d86d697b6dde9dacd784a28ae30cdbcc16949
+DOI: 10.1002/ANIE.200503252
+arXiv ID: 
+PDF URL: https://access.archive-ouverte.unige.ch/access/metadata/fc74c5cb-db82-4fac-ba47-4e20cb78390a/download
+
+Abstract:
+The interest in bistable molecular materials for information processing has been discussed by several authors.Iron(ii) spin-crossover (SCO) compounds are particularly promising in this respect, because the conversion between the highspin (HS) (S=2) and low-spin (LS) (S=0) states can be triggered not only by temperature, pressure,and pulsed magnetic fields,but also by irradiation with light.This latter phenomenon—usually called light-induced excitedspin- state trapping (LIESST)—was discovered by Decurtins et al.,who observed a light-induced LS!HS transition involving quantitative trapping of the molecules in the excited HS state at low temperatures (typically below 50 K). Our recent investigations demonstrated that it was feasible to trigger SCOby light even at room temperature by using a nanosecond laser pulse,and potential applications of SCO compounds as active elements in optical devices were also discussed.

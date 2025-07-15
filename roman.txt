@@ -1,0 +1,32 @@
+Why 2 000-year-old Roman concrete is still holding together
+
+What the Romans did	How it works	Why it matters today
+Mixed lime with volcanic ash (pozzolana)	The free lime (CaO/Ca(OH)₂) reacts with the silica- and alumina-rich ash to form a calcium-aluminum-silicate-hydrate (C-A-S-H) binder instead of the calcium-silicate-hydrate (C-S-H) phase that dominates modern Portland cement. The C-A-S-H gel incorporates more aluminum, is less soluble, and resists chemical attack far better than C-S-H.  ￼ ￼	Gives the mortar an inherently low permeability and excellent resistance to chloride, sulfate, and magnesium attack—the main culprits that destroy modern reinforced concrete in coastal settings.
+Used “hot-mixing” with unslaked quicklime	Romans often tossed dry CaO directly into a damp sand-ash mix. The violent exothermic reaction (“hot mixing”) left millimetre-to-centimetre-scale lime clasts—bright-white lumps of partially reacted CaO—distributed through the mortar.  ￼ ￼	Those clasts act as calcium reservoirs. When a crack reaches a clast, water dissolves Ca²⁺, which rapidly re-precipitates as calcium carbonate or fresh C-A-S-H, sealing the crack. Laboratory replicas show complete crack closure within weeks, confirming a genuine self-healing mechanism.  ￼ ￼
+Chose reactive volcanic aggregates	Tuff and glassy pumice fragments still contain amorphous aluminosilicate. In seawalls, alkaline pore water leaches Si, Al, and Ca from these particles; over decades it crystallises as Al-tobermorite and phillipsite—rare, interlocking needle- and plate-shaped minerals.  ￼ ￼	The crystals grow after construction, tightening the microstructure, blocking pores and gluing aggregate to matrix—hence marine breakwaters such as the harbour at Cosa (ca. 40 BCE) are stronger now than when first poured.
+Kept the mix lean and let it cure slowly	A very low water-to-binder ratio, no steel reinforcement, and decades-long wet curing (rain, seawater splash) meant the concrete continued to hydrate and carbonate for centuries.	Less cracking from drying shrinkage, no corrosion of rebar, and progressive strength gain instead of strength loss.
+Optimised the macro-scale structure	Rubble-sized stone blocks (caementa) form a skeleton that limits shrinkage and distributes loads; the mortar only has to bind rather than carry the whole structural stress.	Massive blocks—some >6 m thick—can accommodate thermal gradients and seismic movement without catastrophic failure.
+
+
+
+⸻
+
+Putting the pieces together
+	1.	Chemistry from the start
+The pozzolanic reaction produces a chemically stable C-A-S-H matrix, locking in calcium and aluminium and resisting ion ingress better than Portland cement.  ￼
+	2.	Built-in maintenance kit
+Hot-mix lime clasts behave like time-release capsules: when a micro-crack forms, the clast preferentially fractures, water mobilises Ca²⁺, and the crack heals autonomously. Experiments at MIT and elsewhere demonstrated full sealing of 0.5 mm cracks within 30 days.  ￼
+	3.	Minerals that grow with age
+In marine structures, continuous ion exchange with seawater supplies Mg²⁺ and additional Si, fuelling the slow crystallisation of Al-tobermorite and phillipsite that densify and toughen the concrete over centuries.  ￼ ￼
+On land, atmospheric CO₂ gradually carbonates the remaining lime, further blocking pores.
+	4.	Favourable mechanics
+The resulting composite is quasi-ductile: cracks form but are quickly stitched, preventing long, connected fracture paths. Tri-axial creep tests show Roman marine mortars bend rather than snap under sustained load.  ￼
+
+⸻
+
+Lessons for modern engineers
+	•	Self-healing materials – Embedding fast-reacting lime or other mineral capsules is now an active research area for low-maintenance infrastructure.
+	•	Low-carbon binders – Roman-style pozzolanic lime mortars cure at ambient temperature, emitting far less CO₂ than high-temperature clinker.
+	•	Durability by design – Selecting reactive aggregates and giving concrete enough moisture and time to mature can outlast the quick-turnaround schedules of today’s construction industry.
+
+In short, Roman concrete’s legendary longevity is not due to a single “secret ingredient” but to a carefully orchestrated combination of materials chemistry, hot-mix processing, reactive aggregates, and long-term environmental interaction—a holistic approach that modern concrete technology is only now beginning to revisit.

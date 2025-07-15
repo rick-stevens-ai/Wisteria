@@ -1,0 +1,11 @@
+Title: Spin-Transition Polymers: From Molecular Materials Toward Memory Devices
+Authors: O. Kahn, C. Martínez
+Published: 1998
+Venue: 
+Semantic Scholar ID: 46a58370b3d2b410b8fc1fe798804421e4c341fc
+DOI: 10.1126/SCIENCE.279.5347.44
+arXiv ID: 
+PDF URL: None
+
+Abstract:
+Some 3dn (4 ≤ n ≤ 7) transition metal compounds exhibit a cooperative transition between a low-spin (LS) and a high-spin (HS) state. This transition is abrupt and occurs with a thermal hysteresis, which confers a memory effect on the system. The intersite interactions and thus the cooperativity are magnified in polymeric compounds such as [Fe(Rtrz)3]A2·nH2O in which the Fe2+ ions are triply bridged by 4-R-substituted-1,2,4-triazole molecules. Moreover, in these compounds, the spin transition is accompanied by a well-pronounced change of color between violet in the LS state and white in the HS state. The transition temperatures of these materials can be fine tuned, using an approach based on the concept of a molecular alloy. In particular, it is possible to design a compound for which room temperature falls in the middle of the thermal hysteresis loop. These materials have many potential applications, for example, as temperature sensors, as active elements of various types of displays, and in information storage and retrieval.

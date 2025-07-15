@@ -1,0 +1,11 @@
+Title: Will spin-relaxation times in molecular magnets permit quantum information processing?
+Authors: A. Ardavan, Olivier Rival, J. Morton, S. Blundell, A. Tyryshkin, G. Timco, R. Winpenny
+Published: 2006
+Venue: Physical Review Letters
+Semantic Scholar ID: 0120abe77d768a5a226d3d9d1c47ef91541de0c1
+DOI: 10.1103/PhysRevLett.98.057201
+arXiv ID: quant-ph/0609143
+PDF URL: https://discovery.ucl.ac.uk/1362738/1/1362738.pdf
+
+Abstract:
+Using X-band pulsed electron-spin resonance, we report the intrinsic spin-lattice (T1) and phase-coherence (T2) relaxation times in molecular nanomagnets for the first time. In Cr7M heterometallic wheels, with M=Ni and Mn, phase-coherence relaxation is dominated by the coupling of the electron spin to protons within the molecule. In deuterated samples T2 reaches 3 micros at low temperatures, which is several orders of magnitude longer than the duration of spin manipulations, satisfying a prerequisite for the deployment of molecular nanomagnets in quantum information applications.

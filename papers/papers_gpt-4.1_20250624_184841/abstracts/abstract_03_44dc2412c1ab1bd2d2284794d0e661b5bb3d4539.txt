@@ -1,0 +1,11 @@
+Title: Room temperature quantum coherence in a potential molecular qubit
+Authors: K. Bader, D. Dengler, S. Lenz, B. Endeward, Shangda Jiang, P. Neugebauer, J. van Slageren
+Published: 2014
+Venue: Nature Communications
+Semantic Scholar ID: 44dc2412c1ab1bd2d2284794d0e661b5bb3d4539
+DOI: 10.1038/ncomms6304
+arXiv ID: 
+PDF URL: https://www.nature.com/articles/ncomms6304.pdf
+
+Abstract:
+No abstract available

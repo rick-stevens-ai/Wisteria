@@ -1,0 +1,11 @@
+Title: Photophysics Modulation in Photoswitchable Metal-Organic Frameworks.
+Authors: Allison M. Rice, Corey R Martin, Vladimir A Galitskiy, A. Berseneva, Gabrielle A. Leith, N. Shustova
+Published: 2020
+Venue: Chemical Reviews
+Semantic Scholar ID: 946a4bd7ae6374e8afb72660bf6db999a8e2e76b
+DOI: 10.1021/acs.chemrev.9b00350
+arXiv ID: 
+PDF URL: None
+
+Abstract:
+In this Review, we showcase the upsurge in the development and fundamental photophysical studies of more than 100 metal-organic frameworks (MOFs) as versatile stimuli-responsive platforms. The goal is to provide a comprehensive analysis of the field of photoresponsive MOFs while delving into the underlying photophysical properties of various classes of photochromic molecules including diarylethene, azobenzene, and spiropyran as well as naphthalenediimide and viologen derivatives integrated inside a MOF matrix as part of a framework backbone, as a ligand side group, or as a guest. In particular, the geometrical constraints, photoisomerization rates, and electronic structures of photochromic molecules integrated inside a rigid MOF scaffold are discussed. Thus, this Review reflects on the challenges and opportunities of using photoswitchable MOFs in next-generation multifunctional stimuli-responsive materials while highlighting their use in optoelectronics, erasable inks, or as the next generation of sensing devices.

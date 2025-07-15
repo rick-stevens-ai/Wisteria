@@ -1,0 +1,11 @@
+Title: Chemical tuning of quantum spin-electric coupling in molecular nanomagnets
+Authors: Mikhail V. Vaganov, N. Suaud, François Lambert, Benjamin Cahier, Christian Herrero, Régis Guillot, Anne-Laure Barra, N. Guihéry, T. Mallah, A. Ardavan, Junjie Liu
+Published: 2024
+Venue: 
+Semantic Scholar ID: 69f2acd2097feaab396535fb6fb8ea03f7c2bf5c
+DOI: 
+arXiv ID: 2409.01982
+PDF URL: None
+
+Abstract:
+Controlling quantum spins using electric rather than magnetic fields promises significant architectural advantages for developing quantum technologies. In this context, spins in molecular nanomagnets offer tunability of spin-electric couplings (SEC) by rational chemical design. Here we demonstrate systematic control of SECs in a family of Mn(II)-containing molecules via chemical engineering. The trigonal bipyramidal (tbp) molecular structure with C3 symmetry leads to a significant molecular electric dipole moment that is directly connected to its magnetic anisotropy. The interplay between these two features gives rise to significant experimentally observed SECs, which can be rationalised by wavefunction theoretical calculations. Our findings guide strategies for the development of electrically controllable molecular spin qubits for quantum technologies.
