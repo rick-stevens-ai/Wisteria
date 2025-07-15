@@ -1,10 +1,28 @@
-# Wisteria Research Hypothesis Generator v5.0
+# Wisteria Research Hypothesis Generator v6.0
 
 Wisteria is an interactive research hypothesis generation tool that uses AI models to create, refine, and analyze scientific hypotheses based on research goals.
 
-## What's New in v5.0
+## What's New in v6.0
 
-- **🖥️ Curses Multi-Pane Interface**: Complete redesign with professional terminal interface
+- **🎯 Focus Navigation System**: Revolutionary interface control with visual feedback
+  - Left/Right arrows switch between hypothesis list and details pane
+  - Visual [FOCUSED] indicators show active pane
+  - Independent scrolling and navigation for each pane
+  - Intuitive pane management for enhanced productivity
+
+- **⚡ Performance Optimizations**: Eliminated screen flicker with selective rendering
+  - Dirty flag system for intelligent component updates
+  - Single refresh cycle prevents visual artifacts
+  - 200ms timeout reduces CPU usage and improves responsiveness
+  - Smooth, professional interface experience
+
+- **📚 Semantic Scholar Integration**: Automated paper and abstract fetching
+  - 'a' command fetches abstracts and PDFs for hypothesis references
+  - Organized papers/abstracts directory structure
+  - Progress tracking during paper retrieval
+  - Seamless integration with research workflow
+
+- **🖥️ Enhanced Curses Interface**: Refined multi-pane design from v5.0
   - Header pane with research goal and model information
   - Left pane for hypothesis navigation and selection
   - Right pane for detailed hypothesis viewing with scrolling
@@ -31,10 +49,11 @@ Wisteria is an interactive research hypothesis generation tool that uses AI mode
   - Controls and measurements
   - Timeline and expected outcomes
 
-- **⌨️ Enhanced Navigation**: Vim-style and arrow key navigation
+- **⌨️ Advanced Navigation**: Vim-style and arrow key navigation with focus control
   - Cross-platform keyboard compatibility
   - Intuitive scrolling and selection
   - Mac keyboard support (j/k/d/u keys)
+  - Pane-specific navigation commands
 
 ## Features
 
@@ -110,22 +129,22 @@ Configure your AI models in `model_servers.yaml`. The file supports various mode
 
 Generate hypotheses from a research goal file:
 ```bash
-python curses_wisteria_v5.py research_goal.txt --model gpt41
+python curses_wisteria_v6.py research_goal.txt --model gpt41
 ```
 
 Generate hypotheses with direct text input:
 ```bash
-python curses_wisteria_v5.py --goal "How can we improve renewable energy storage efficiency?" --model scout
+python curses_wisteria_v6.py --goal "How can we improve renewable energy storage efficiency?" --model scout
 ```
 
 Generate multiple hypotheses at startup:
 ```bash
-python curses_wisteria_v5.py --goal "What causes neurodegenerative diseases?" --model gpt41 --num-hypotheses 5
+python curses_wisteria_v6.py --goal "What causes neurodegenerative diseases?" --model gpt41 --num-hypotheses 5
 ```
 
 Resume a previous session:
 ```bash
-python curses_wisteria_v5.py --resume hypotheses_interactive_gpt41_20250531_165238.json --model gpt41
+python curses_wisteria_v6.py --resume hypotheses_interactive_gpt41_20250531_165238.json --model gpt41
 ```
 
 ### Interactive Commands
@@ -134,17 +153,24 @@ During a session, use these keyboard commands:
 - `f` - Provide feedback to improve the current hypothesis
 - `n` - Generate a new hypothesis different from previous ones
 - `l` - Load from a JSON file a previous session log
+- `x` - Save current session to a JSON file with custom filename
+- `t` - Add/edit personal notes for the current hypothesis
 - `v` - View the titles of hypotheses in current session
 - `s` - Select a hypothesis to continue to refine
 - `h` - Toggle hallmarks analysis display
 - `r` - Toggle references display
-- `p` - Print current hypothesis to professional PDF document
+- `a` - Fetch abstracts and papers from Semantic Scholar for current hypothesis references
+- `u` - Update hypothesis with information from downloaded abstracts
+- `b` - Browse and view downloaded abstracts
+- `c` - Score hypothesis hallmarks (1-5 scale) using AI evaluation
+- `p` - Print current hypothesis to PDF document
 - `q` - Quit and save all hypotheses
 
 ### Navigation Commands
 
-- `↑/↓` or `j/k` - Navigate between hypotheses
-- `Page Up/Page Down` or `d/u` - Scroll within hypothesis details
+- `←/→` - Switch focus between hypothesis list and details pane
+- `↑/↓` - Navigate between hypotheses (when list focused) or scroll details (when details focused)
+- `Page Up/Page Down` - Scroll within focused pane
 - `Enter` - Select highlighted hypothesis
 - `Esc` - Cancel current operation
 
@@ -152,7 +178,7 @@ During a session, use these keyboard commands:
 
 Test the feedback tracking functionality:
 ```bash
-python curses_wisteria_v5.py --test-feedback
+python curses_wisteria_v6.py --test-feedback
 ```
 
 ### Command Line Options
@@ -169,19 +195,19 @@ python curses_wisteria_v5.py --test-feedback
 
 ```bash
 # Generate hypotheses from file
-python curses_wisteria_v5.py research_goal.txt --model gpt41
+python curses_wisteria_v6.py research_goal.txt --model gpt41
 
 # Direct goal input with multiple hypotheses
-python curses_wisteria_v5.py --goal "What causes neurodegenerative diseases?" --model scout --num-hypotheses 3
+python curses_wisteria_v6.py --goal "What causes neurodegenerative diseases?" --model scout --num-hypotheses 3
 
 # Resume previous session
-python curses_wisteria_v5.py --resume previous_session.json --model gpt41
+python curses_wisteria_v6.py --resume previous_session.json --model gpt41
 
 # Custom output file with batch generation
-python curses_wisteria_v5.py --goal "Climate change mitigation strategies" --model llama --num-hypotheses 5 --output climate_hypotheses.json
+python curses_wisteria_v6.py --goal "Climate change mitigation strategies" --model llama --num-hypotheses 5 --output climate_hypotheses.json
 
 # Test feedback functionality
-python curses_wisteria_v5.py --test-feedback
+python curses_wisteria_v6.py --test-feedback
 ```
 
 ## Output
@@ -220,7 +246,7 @@ pip install openai pyyaml backoff reportlab
 
 ## Feedback Tracking Feature
 
-Version 5.0 introduces comprehensive feedback tracking:
+Version 5.0 introduced comprehensive feedback tracking, enhanced in v6.0:
 
 - **Complete History**: Every piece of user feedback is preserved with timestamps
 - **Version Tracking**: See exactly how feedback led to specific improvements
@@ -244,6 +270,7 @@ The feedback history shows:
 
 ## Version History
 
+- **v6.0**: Focus navigation system, performance optimizations, Semantic Scholar integration
 - **v5.0**: Curses multi-pane interface, comprehensive feedback tracking, enhanced PDF export
 - **v4.0**: Enhanced visual feedback, toggle controls, improved session management
 - **v3.0**: Interactive mode, session management, hypothesis refinement
