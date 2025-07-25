@@ -1,0 +1,29 @@
+
+1	Longitudinal single‑cell multi‑omics of paired pre‑/post‑progression biopsies and plasma	Captures co‑evolving on‑target (e.g., C797S) and off‑target (e.g., MET, HER2, KRAS) resistance clones plus microenvironment shifts at single‑cell resolution.	Combine 10x Genomics scDNA+scRNA with CITE‑seq and ultra‑deep ctDNA every 6 weeks during osimertinib; integrate with lineage‑tracing to reconstruct clonal trees.
+2	Spatial transcriptomics on transmural core biopsies	Detects regional heterogeneity and small‑cell lung cancer (SCLC) histologic transformation zones after 3rd‑generation TKI failure  ￼	Apply Slide‑seq‑v3 or NanoString CosMx; co‑register EGFR/TP53/RB1 IHC to link spatial gene programs with morphologic change.
+3	High‑throughput phospho‑proteomic atlas of resistant biopsies	Many bypass tracks activate at the signaling‑protein level rather than mutation.	Use mass‑spec–based phospho‑tyrosine enrichment and kinase‑substrate inference; map druggable nodes.
+B. Advanced pre‑clinical platforms			
+4	Patient‑derived organoid (PDO) “biobank + barcoding”	Maintains intra‑tumor heterogeneity lost in 2‑D cell lines; barcoding tracks subclonal dynamics under drug pressure.	Establish 100 EGFR mut⁺ PDOs (ex19del, L858R, uncommon mutants); CRISPR‑barcode and expose to serial drug escalation & combinations.
+5	Humanized microfluidic “lung‑on‑chip” with autologous immune & stromal compartments	Models how cancer‑associated fibroblasts (CAFs), endothelial cells, and myeloid cells blunt TKI response.	Seed chip with matched patient PDO, CAFs, TAMs; quantify permeability, EMT markers, cytokines during therapy.
+6	In vivo CRISPR‑dropout screens in orthotopic PDXs	Identifies synthetic‑lethal partners of osimertinib in a physiologic lung environment.	Deliver genome‑wide CRISPR libraries via AAV; monitor sgRNA depletion in treated vs. control mice.
+
+7	Fourth‑generation covalent allosteric TKIs (e.g., JIN‑A02) + brain‑penetrant design	Show early activity against C797S & L718Q resistance mutations  ￼ ￼	Fund medicinal‑chem refinement for CSF exposure; launch adaptive phase Ib for patients progressing in CNS.
+8	EGFR/MET bispecific or biparatopic antibodies + antibody‑drug conjugates (ADCs)	Amivantamab and telisotuzumab‑vedotin combinations prolong PFS after TKI failure  ￼ ￼	Explore tri‑specific EGFR/MET/AXL format to pre‑empt emergent bypass nodes.
+9	Proteolysis‑Targeting Chimeras (PROTACs) that degrade mutant EGFR	Eliminates both kinase‑dependent and scaffold functions; may avoid gatekeeper resistance.	Use cereblon‑recruiting PROTACs selective for ex19del/L858R and C797S; test in resistant PDOs.
+10	Small‑molecule “molecular glues” to re‑sensitize C797S EGFR to osimertinib	Forces misfolding or abnormal dimerization that restores drug binding.	Screen covalent fragments by NanoBRET in cells expressing mutant EGFR.
+D. Combination & sequencing strategies			
+11	Rational upfront triplets: EGFR‑TKI + VEGF/angiopoietin blocker + CDK4/6 inhibitor	Simultaneously tackles micro‑environmental survival signals and cell‑cycle escape; afatinib‑bevacizumab post‑progression shows promise  ￼	Launch window‑of‑opportunity trial with serial biopsies to test pathway shutdown.
+12	“On‑demand” MET or HER3 ADC add‑on triggered by rising plasma ctDNA	Uses minimal residual disease (MRD) monitoring to intercept bypass pathways early.	Validate 2‑log ctDNA rise as trigger; prospective study adding telisotuzumab‑vedotin or patritumab‑deruxtecan at MRD.
+13	Sequential TKI rotation guided by deep mutational learning	AI model predicts evolutionary trajectories under each TKI; schedule drugs to steer toward fitness dead‑ends.	Train on >3,000 serial ctDNA datasets; simulate in barcoded PDOs.
+
+14	LncRNA or circRNA nanoparticle therapeutics	Specific ncRNAs propagate osimertinib resistance  ￼; silencing could re‑sensitize tumors.	Use lipid nanoparticles delivering GapmeRs against validated lncRNA panel; test in PDXs.
+15	Epigenetic “re‑programming” with LSD1 or EZH2 degraders during drug holiday	Blocks epigenetic plasticity that enables phenotype switching (EMT, SCLC transformation).	3‑day pulse of degrader between TKI cycles in PDOs; track morphological state with live imaging.
+F. Exploiting immune & stromal interplay			
+16	Engineered NK‑cell engager targeting EGFRvIII‑like neoepitopes arising in resistant clones	Avoids T‑cell exhaustion seen in prior EGFR CAR‑T efforts; can be combined with TKIs.	Develop CD16a x neo‑EGFR engager; assess cytotoxicity against osimertinib‑resistant cells.
+17	Re‑educating tumor‑associated macrophages (TAMs) with CD47/SIRPα blockade + TKI	TAMs promote EMT and drug tolerance; CD47 blockade may synergize with TKIs.	Orthotopic PDX trial of CD47 antibody + osimertinib; monitor macrophage polarization by CyTOF.
+
+18	Real‑time “Resistance Map” registry integrating imaging, ctDNA, and treatment history	Accelerates hypothesis generation and adaptive trials.	Deploy REDCap‑based platform across DOE‑affiliated centers; auto‑populate from EHR and radiomics pipelines.
+19	Large‑language‑model–powered literature & trial recommender (“Aurora‑EGFR”)	Rapidly surfaces mechanistic links and novel combos from 100k+ papers; prioritizes for bench validation.	Fine‑tune on curated EGFR corpus; dock to Slack for weekly hypothesis drops.
+H. Early‑stage prevention of resistance			
+20	Adjuvant osimer ± Rybrevant/Lazertinib regimen in early‑stage resected disease	FDA recently approved Rybrevant + Lazertinib as chemotherapy‑free first‑line therapy  ￼; studying adjuvant setting could eradicate resistant clones before they emerge.	Design phase II randomizing osimertinib vs. triplet in stage IB‑IIIA EGFR mut⁺ patients, with serial MRD data.
+

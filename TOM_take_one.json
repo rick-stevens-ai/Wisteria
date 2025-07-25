@@ -1,0 +1,726 @@
+{
+  "metadata": {
+    "session_type": "interactive",
+    "research_goal": "1\tLongitudinal single‑cell multi‑omics of paired pre‑/post‑progression biopsies and plasma\tCaptures co‑evolving on‑target (e.g., C797S) and off‑target (e.g., MET, HER2, KRAS) resistance clones plus microenvironment shifts at single‑cell resolution.\tCombine 10x Genomics scDNA+scRNA with CITE‑seq and ultra‑deep ctDNA every 6 weeks during osimertinib; integrate with lineage‑tracing to reconstruct clonal trees.\n2\tSpatial transcriptomics on transmural core biopsies\tDetects regional heterogeneity and small‑cell lung cancer (SCLC) histologic transformation zones after 3rd‑generation TKI failure  ￼\tApply Slide‑seq‑v3 or NanoString CosMx; co‑register EGFR/TP53/RB1 IHC to link spatial gene programs with morphologic change.\n3\tHigh‑throughput phospho‑proteomic atlas of resistant biopsies\tMany bypass tracks activate at the signaling‑protein level rather than mutation.\tUse mass‑spec–based phospho‑tyrosine enrichment and kinase‑substrate inference; map druggable nodes.\nB. Advanced pre‑clinical platforms\t\t\t\n4\tPatient‑derived organoid (PDO) “biobank + barcoding”\tMaintains intra‑tumor heterogeneity lost in 2‑D cell lines; barcoding tracks subclonal dynamics under drug pressure.\tEstablish 100 EGFR mut⁺ PDOs (ex19del, L858R, uncommon mutants); CRISPR‑barcode and expose to serial drug escalation & combinations.\n5\tHumanized microfluidic “lung‑on‑chip” with autologous immune & stromal compartments\tModels how cancer‑associated fibroblasts (CAFs), endothelial cells, and myeloid cells blunt TKI response.\tSeed chip with matched patient PDO, CAFs, TAMs; quantify permeability, EMT markers, cytokines during therapy.\n6\tIn vivo CRISPR‑dropout screens in orthotopic PDXs\tIdentifies synthetic‑lethal partners of osimertinib in a physiologic lung environment.\tDeliver genome‑wide CRISPR libraries via AAV; monitor sgRNA depletion in treated vs. control mice.\n\n7\tFourth‑generation covalent allosteric TKIs (e.g., JIN‑A02) + brain‑penetrant design\tShow early activity against C797S & L718Q resistance mutations  ￼ ￼\tFund medicinal‑chem refinement for CSF exposure; launch adaptive phase Ib for patients progressing in CNS.\n8\tEGFR/MET bispecific or biparatopic antibodies + antibody‑drug conjugates (ADCs)\tAmivantamab and telisotuzumab‑vedotin combinations prolong PFS after TKI failure  ￼ ￼\tExplore tri‑specific EGFR/MET/AXL format to pre‑empt emergent bypass nodes.\n9\tProteolysis‑Targeting Chimeras (PROTACs) that degrade mutant EGFR\tEliminates both kinase‑dependent and scaffold functions; may avoid gatekeeper resistance.\tUse cereblon‑recruiting PROTACs selective for ex19del/L858R and C797S; test in resistant PDOs.\n10\tSmall‑molecule “molecular glues” to re‑sensitize C797S EGFR to osimertinib\tForces misfolding or abnormal dimerization that restores drug binding.\tScreen covalent fragments by NanoBRET in cells expressing mutant EGFR.\nD. Combination & sequencing strategies\t\t\t\n11\tRational upfront triplets: EGFR‑TKI + VEGF/angiopoietin blocker + CDK4/6 inhibitor\tSimultaneously tackles micro‑environmental survival signals and cell‑cycle escape; afatinib‑bevacizumab post‑progression shows promise  ￼\tLaunch window‑of‑opportunity trial with serial biopsies to test pathway shutdown.\n12\t“On‑demand” MET or HER3 ADC add‑on triggered by rising plasma ctDNA\tUses minimal residual disease (MRD) monitoring to intercept bypass pathways early.\tValidate 2‑log ctDNA rise as trigger; prospective study adding telisotuzumab‑vedotin or patritumab‑deruxtecan at MRD.\n13\tSequential TKI rotation guided by deep mutational learning\tAI model predicts evolutionary trajectories under each TKI; schedule drugs to steer toward fitness dead‑ends.\tTrain on >3,000 serial ctDNA datasets; simulate in barcoded PDOs.\n\n14\tLncRNA or circRNA nanoparticle therapeutics\tSpecific ncRNAs propagate osimertinib resistance  ￼; silencing could re‑sensitize tumors.\tUse lipid nanoparticles delivering GapmeRs against validated lncRNA panel; test in PDXs.\n15\tEpigenetic “re‑programming” with LSD1 or EZH2 degraders during drug holiday\tBlocks epigenetic plasticity that enables phenotype switching (EMT, SCLC transformation).\t3‑day pulse of degrader between TKI cycles in PDOs; track morphological state with live imaging.\nF. Exploiting immune & stromal interplay\t\t\t\n16\tEngineered NK‑cell engager targeting EGFRvIII‑like neoepitopes arising in resistant clones\tAvoids T‑cell exhaustion seen in prior EGFR CAR‑T efforts; can be combined with TKIs.\tDevelop CD16a x neo‑EGFR engager; assess cytotoxicity against osimertinib‑resistant cells.\n17\tRe‑educating tumor‑associated macrophages (TAMs) with CD47/SIRPα blockade + TKI\tTAMs promote EMT and drug tolerance; CD47 blockade may synergize with TKIs.\tOrthotopic PDX trial of CD47 antibody + osimertinib; monitor macrophage polarization by CyTOF.\n\n18\tReal‑time “Resistance Map” registry integrating imaging, ctDNA, and treatment history\tAccelerates hypothesis generation and adaptive trials.\tDeploy REDCap‑based platform across DOE‑affiliated centers; auto‑populate from EHR and radiomics pipelines.\n19\tLarge‑language‑model–powered literature & trial recommender (“Aurora‑EGFR”)\tRapidly surfaces mechanistic links and novel combos from 100k+ papers; prioritizes for bench validation.\tFine‑tune on curated EGFR corpus; dock to Slack for weekly hypothesis drops.\nH. Early‑stage prevention of resistance\t\t\t\n20\tAdjuvant osimer ± Rybrevant/Lazertinib regimen in early‑stage resected disease\tFDA recently approved Rybrevant + Lazertinib as chemotherapy‑free first‑line therapy  ￼; studying adjuvant setting could eradicate resistant clones before they emerge.\tDesign phase II randomizing osimertinib vs. triplet in stage IB‑IIIA EGFR mut⁺ patients, with serial MRD data.",
+    "model": "argo:gpt-4.1",
+    "model_name": "argo:gpt-4.1",
+    "num_unique_hypotheses": 20,
+    "total_hypothesis_versions": 20,
+    "timestamp": "2025-07-23T18:03:44.542784",
+    "hypothesis_types": {
+      "original": 20,
+      "improvements": 0,
+      "new_alternatives": 0
+    }
+  },
+  "hypotheses": [
+    {
+      "title": "Temporal Crosstalk between Tumor Microenvironment Remodeling and Emergence of Off-target Resistance Mutations Drives Heterogeneity in Osimertinib Resistance",
+      "description": "This hypothesis posits that, in EGFR-mutant NSCLC treated with osimertinib, dynamic shifts in the tumor microenvironment (TME)—specifically, the influx and activation of cancer-associated fibroblasts (CAFs) and myeloid-derived suppressor cells (MDSCs)—create localized niches that selectively promote the survival and clonal expansion of cancer cells harboring off-target resistance mutations (such as MET, HER2, or KRAS alterations). The hypothesis further predicts that these TME-driven niches are spatially and temporally associated with increased regional heterogeneity and the emergence of small-cell lung cancer (SCLC) transformation zones post-TKI failure, as detected by spatial transcriptomics and phospho-proteomics. The key mechanism suggested is that paracrine signaling from stromal and immune cells activates bypass signaling pathways and epithelial-mesenchymal transition (EMT) programs, which in turn provide a survival advantage to off-target resistant clones and facilitate phenotypic plasticity.",
+      "experimental_validation": "To validate this hypothesis, paired pre- and post-progression core biopsies from EGFR-mutant NSCLC patients treated with osimertinib will be subjected to: (1) single-cell multi-omics (scDNA+scRNA+CITE-seq) to map the co-evolution of on- and off-target resistance clones; (2) spatial transcriptomics (using Slide-seq-v3 or NanoString CosMx) to identify regional microenvironmental changes and SCLC transformation zones; (3) phospho-proteomic profiling to detect activation of bypass tracks. These data will be integrated with immunohistochemistry (IHC) for CAF, MDSC, EMT, and SCLC markers. Controls will include biopsies from treatment-naive and stable disease cases. Longitudinal plasma ctDNA and cytokine profiling will provide systemic correlates. In PDO and lung-on-chip models, CAFs and MDSCs will be added or depleted to test their effect on resistance clone emergence under osimertinib. Expected outcomes: (a) regions of microenvironmental remodeling correlate with local expansion of off-target resistant clones; (b) experimental depletion of CAFs/MDSCs reduces emergence of off-target resistance in preclinical models.",
+      "theory_and_computation": "An agent-based spatial model will be constructed to simulate tumor evolution under TKI pressure, incorporating microenvironmental cell types, paracrine signaling, and mutation acquisition. Machine learning algorithms (e.g., graph convolutional networks) will integrate multi-modal omics and spatial data to predict the emergence and location of resistance clones. Mathematical modeling of clonal dynamics in varying microenvironmental contexts will yield quantitative predictions that can be tested against single-cell lineage tracing data.",
+      "hallmarks": {
+        "testability": "This hypothesis is testable by correlating spatially resolved microenvironmental features with the frequency and phenotype of resistance clones in patient biopsies, as well as by experimentally modulating TME components in preclinical models to observe impacts on resistance emergence.",
+        "specificity": "It precisely defines the cell types (CAFs, MDSCs), mutations (MET, HER2, KRAS), spatial relationships, and expected downstream signaling events (bypass pathway activation, EMT, SCLC transformation), minimizing ambiguity.",
+        "grounded_knowledge": "Prior studies have shown TME components can influence drug resistance and that stromal signaling can promote bypass pathway activation. This hypothesis extends these findings to integrate spatial and longitudinal dynamics, using cutting-edge single-cell and spatial omics.",
+        "predictive_power": "It predicts non-obvious, spatially localized emergence of off-target resistance and SCLC transformation zones, offering testable forecasts for patient stratification and novel therapeutic targeting of the TME.",
+        "parsimony": "The hypothesis links two major drivers of resistance (microenvironment and genetic evolution) via direct, mechanistically plausible crosstalk, requiring no extraneous assumptions."
+      },
+      "references": [
+        {
+          "citation": "Suda, K., & Mitsudomi, T. (2019). Mechanisms of resistance to EGFR tyrosine kinase inhibitors and potential therapeutic strategies: A clinical perspective. Lung Cancer, 134, 79-87.",
+          "annotation": "Reviews known resistance mechanisms, including the role of bypass signaling, providing foundational context."
+        },
+        {
+          "citation": "Zhang, Q., et al. (2018). The microenvironmental landscape of EGFR-mutant lung adenocarcinoma after tyrosine kinase inhibitor therapy. Cancer Cell, 33(1), 34-50.e6.",
+          "annotation": "Demonstrates microenvironmental remodeling during TKI therapy, supporting the link between stroma and resistance."
+        },
+        {
+          "citation": "Marjanovic, N. D., et al. (2020). Emergence of a High-Plasticity Cell State during Lung Cancer Evolution. Cancer Cell, 38(2), 229-246.e13.",
+          "annotation": "Shows how phenotypic plasticity and EMT are associated with drug resistance and microenvironmental cues."
+        },
+        {
+          "citation": "Kim, N., et al. (2020). Single-cell RNA sequencing demonstrates the molecular and cellular reprogramming of metastatic lung adenocarcinoma. Nature Communications, 11(1), 2285.",
+          "annotation": "Illustrates the power of single-cell omics in resolving clonal evolution and TME changes in lung cancer."
+        }
+      ],
+      "hypothesis_number": 1,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:01:04.269419"
+    },
+    {
+      "title": "Early Emergence of Epigenetically Plastic Subclones Predicts Phenotypic Switching to Small Cell Lung Cancer Under Osimertinib Pressure",
+      "description": "This hypothesis posits that a small subset of EGFR-mutant non-small cell lung cancer (NSCLC) cells with high baseline chromatin accessibility and expression of plasticity-associated long non-coding RNAs (lncRNAs) exist prior to osimertinib therapy. These subclones are poised for phenotypic transition, and their proportion and spatial localization in pre-treatment biopsies predict the likelihood and timing of histologic transformation to SCLC upon TKI resistance. The hypothesis suggests that single-cell multi-omic and spatial transcriptomic profiling will reveal early, regionally clustered, epigenetically plastic clones expressing markers such as SOX2, ASCL1, and select lncRNAs. These clones will expand and dominate the tumor architecture upon osimertinib-induced selective pressure, preceding detectable SCLC transformation and associated with specific microenvironmental cues.",
+      "experimental_validation": "1. Prospectively enroll EGFR-mutant NSCLC patients scheduled for osimertinib and obtain paired core biopsies pre-therapy and at progression. 2. Perform 10x Genomics scRNA+scATAC-seq, CITE-seq, and spatial transcriptomics (Slide-seq v3) on biopsies, mapping chromatin accessibility, lncRNA expression, and plasticity markers (e.g., SOX2, ASCL1, NEUROD1, ZEB2, HOTAIR, MALAT1) at single-cell and spatial resolution. 3. Integrate lineage tracing via CRISPR barcoding if possible. 4. Correlate the abundance and spatial patterning of plastic subclones in pre-treatment samples with the timing and extent of SCLC transformation (confirmed by IHC for EGFR, TP53, RB1, and neuroendocrine markers) at progression. 5. Validate functional plasticity by isolating plastic and non-plastic subclones from patient-derived organoids, exposing them to osimertinib, and monitoring for phenotypic switching in vitro. Controls: Non-plastic subclones, non-EGFR mutant samples, and matched normal tissue. Measurements: Single-cell chromatin accessibility, lncRNA and plasticity marker expression, spatial mapping, timing to transformation. Expected outcomes: Pre-existing, spatially clustered, epigenetically plastic subclones predict early SCLC transformation under therapy.",
+      "theory_and_computation": "Develop a mathematical model of clonal evolution incorporating epigenetic plasticity states as latent variables. Use agent-based or stochastic simulations to predict expansion dynamics of plastic subclones under selective pressure, parameterized with single-cell multi-omic input. Employ machine learning (e.g., random forest or deep learning) to classify spatial transcriptomic patterns that best predict phenotypic switching. Use spatial statistics to quantify clustering of plastic subclones and model their microenvironmental interactions. Computationally simulate interventions targeting lncRNA or chromatin modifiers, predicting impact on phenotypic evolution.",
+      "hallmarks": {
+        "testability": "The hypothesis predicts that the presence, proportion, and spatial distribution of epigenetically plastic subclones pre-therapy empirically correlates with later SCLC transformation. This can be directly tested by comparing multi-omic profiles of pre- and post-progression biopsies and assessing phenotypic switching in vitro.",
+        "specificity": "It clearly defines the relevant variables (plastic subclones, lncRNA expression, chromatin accessibility, spatial clustering) and the predicted relationship (early abundance and clustering predict transformation timing and pattern), making the hypothesis precise.",
+        "grounded_knowledge": "This builds on knowledge of phenotypic plasticity and histologic transformation in TKI resistance, integrating recent evidence that epigenetic states and lncRNAs drive lineage plasticity, yet provides a novel longitudinal, spatially resolved predictive framework.",
+        "predictive_power": "It predicts non-obvious, quantifiable relationships between pre-existing subclonal plasticity, spatial architecture, and transformation outcome, enabling stratification of high-risk patients and early intervention targets.",
+        "parsimony": "The hypothesis requires only the existence of pre-existing, plastic subclones and their detection, without invoking unnecessary mechanisms, offering a simple yet powerful explanation for SCLC transformation under TKI therapy."
+      },
+      "references": [
+        {
+          "citation": "Offin, M., et al. (2019). Concurrent RB1 and TP53 alterations define a subset of EGFR-mutant lung cancers at risk for histologic transformation and inferior clinical outcomes. Journal of Thoracic Oncology, 14(10), 1784-1793.",
+          "annotation": "Describes molecular features and clinical outcomes associated with SCLC transformation in EGFR-mutant NSCLC."
+        },
+        {
+          "citation": "Sharma, S. V., et al. (2010). A chromatin-mediated reversible drug-tolerant state in cancer cell subpopulations. Cell, 141(1), 69-80.",
+          "annotation": "Foundational work on chromatin-mediated plasticity and drug tolerance in cancer."
+        },
+        {
+          "citation": "Marjanovic, N. D., et al. (2020). Emergence of a high-plasticity cell state during lung cancer evolution. Cancer Cell, 38(2), 229-246.",
+          "annotation": "Demonstrates the role of high-plasticity cell states in lung cancer evolution and resistance."
+        },
+        {
+          "citation": "Rudin, C. M., et al. (2019). Molecular subtypes of small cell lung cancer: a synthesis of human and mouse model data. Nature Reviews Cancer, 19(5), 289-297.",
+          "annotation": "Reviews molecular mechanisms and markers of SCLC, providing context for phenotypic transitions."
+        },
+        {
+          "citation": "Hu, X., et al. (2022). Long non-coding RNA MALAT1 mediates phenotype switching in EGFR-mutant cells. Molecular Cancer, 21(1), 64.",
+          "annotation": "Links lncRNA MALAT1 to phenotype switching in EGFR-mutant lung cancer cells."
+        }
+      ],
+      "hypothesis_number": 2,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:01:04.269481"
+    },
+    {
+      "title": "Transient Epigenetic State Cycling Drives Microenvironment-Dependent Emergence of Drug-Tolerant Persister Clones in EGFR-mutant NSCLC under Osimertinib",
+      "description": "This hypothesis posits that, during osimertinib therapy, a subset of EGFR-mutant non-small cell lung cancer (NSCLC) cells undergoes reversible, cyclical transitions between distinct epigenetic states—particularly involving histone methylation and acetylation—that are temporally synchronized with dynamic changes in the tumor microenvironment (TME), such as cytokine flux and stromal cell infiltration. These transient epigenetic states, including partial epithelial-mesenchymal transition (EMT) and stem-like phenotypes, confer drug tolerance and foster the emergence of persister clones. The process is hypothesized to be spatially heterogeneous, with specific tumor regions (e.g., perivascular niches or CAF-rich areas) acting as reservoirs for these persister populations. The transitions are predicted to be detectable by single-cell multi-omics and spatial transcriptomics, manifest as oscillatory patterns in chromatin accessibility, enhancer activity, and non-coding RNA expression, and precede the outgrowth of genetically resistant clones.",
+      "experimental_validation": "To test this hypothesis, paired pre- and post-progression tumor biopsies and serial plasma samples will be collected every 6 weeks from EGFR-mutant NSCLC patients treated with osimertinib. Single-cell multi-omics (10x Genomics scATAC-seq + scRNA-seq + CITE-seq) will be performed on dissociated tumor cells, integrated with spatial transcriptomics (Slide-seq v3 or NanoString CosMx) on core biopsies to map epigenetic state transitions and their spatial context. Key chromatin modifiers (e.g., LSD1, EZH2) and EMT/stemness markers will be assessed by immunohistochemistry and phospho-proteomics. Temporal dynamics of these states will be correlated with TME features (CAF, TAM, cytokines) quantified by multiplex imaging and single-cell proteomics. Functional validation will be performed in patient-derived organoids (PDOs) barcoded and subjected to serial drug escalation, with and without epigenetic inhibitors, and in microfluidic lung-on-chip models incorporating autologous stroma. The emergence, disappearance, and cycling of drug-tolerant states will be tracked in real time. Controls include untreated baseline samples, normal lung tissue, and mock-treated PDOs. Expected outcomes: (1) identification of cyclical, reversible chromatin and transcriptomic changes in persister cells; (2) spatial co-localization with specific TME features; (3) abrogation of persister emergence by transient epigenetic reprogramming.",
+      "theory_and_computation": "A mathematical model consisting of a set of coupled ordinary differential equations (ODEs) and stochastic simulations will be developed to describe the cycling between epigenetic states, incorporating TME-driven signaling as dynamic external inputs. Agent-based spatial simulations will model clonal evolution within a virtual tumor, integrating chromatin state transitions, microenvironmental cues, and drug exposure. Machine learning algorithms (e.g., hidden Markov models, trajectory inference) will be applied to longitudinal single-cell and spatial transcriptomics data to infer state transitions and predict future clonal fates. Bayesian network analyses will link epigenetic states with TME features and resistance outcomes. These computational tools will generate quantitative predictions about the timing, frequency, and spatial localization of drug-tolerant state cycling.",
+      "hallmarks": {
+        "testability": "The hypothesis makes clear, testable predictions: that specific, measurable epigenetic state transitions precede resistance, are reversible, temporally cyclical, and spatially linked to TME features. These can be directly assessed by single-cell multi-omics, spatial transcriptomics, and functional perturbation in PDOs and lung-on-chip models.",
+        "specificity": "Variables are precisely defined: chromatin marks (e.g., H3K27me3), transcriptomic/epigenetic states, TME components (CAF, TAM, cytokines), and their spatial/temporal dynamics. The expected relationships (cycling, spatial correlation, drug tolerance) and the scope (EGFR-mutant NSCLC under osimertinib) are explicit.",
+        "grounded_knowledge": "This hypothesis builds on prior evidence of epigenetically mediated drug tolerance, EMT plasticity, and microenvironmental influence in resistance. It extends these concepts by proposing cyclical, spatially organized, and reversible state transitions as the mechanism for persister emergence.",
+        "predictive_power": "It predicts novel phenomena (oscillatory, reversible chromatin state cycling; spatially organized persister pools; epigenetic reprogramming as a means to prevent resistance) that can be empirically tested and could guide new therapeutic strategies, such as timed epigenetic interventions.",
+        "parsimony": "The hypothesis invokes a minimal set of assumptions: that chromatin state, microenvironment, and drug exposure interact to drive reversible persister states, accounting for both genetic and non-genetic resistance. It does not require invoking unknown cell types or complex, untestable feedbacks."
+      },
+      "references": [
+        {
+          "citation": "Sharma, S.V., Lee, D.Y., Li, B., et al. (2010). A chromatin-mediated reversible drug-tolerant state in cancer cell subpopulations. Cell, 141(1), 69-80.",
+          "annotation": "Seminal paper demonstrating reversible chromatin-mediated drug tolerance in cancer."
+        },
+        {
+          "citation": "Boumahdi, S., & de Sauvage, F.J. (2020). The great escape: tumour cell plasticity in resistance to targeted therapy. Nature Reviews Drug Discovery, 19(1), 39-56.",
+          "annotation": "Review on tumor cell plasticity and its role in drug resistance."
+        },
+        {
+          "citation": "Su, Y., Wei, W., Robert, L., et al. (2017). Single-cell analysis resolves the cell state transition and signaling dynamics associated with melanoma drug-induced resistance. Proc Natl Acad Sci U S A, 114(52), 13679-13684.",
+          "annotation": "Study using single-cell analysis to track state transitions during resistance."
+        },
+        {
+          "citation": "Hinohara, K., & Polyak, K. (2019). Intratumoral heterogeneity: more than just mutations. Trends in Cell Biology, 29(7), 569-579.",
+          "annotation": "Overview of non-genetic heterogeneity, including epigenetic state cycling."
+        }
+      ],
+      "hypothesis_number": 3,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:01:04.269485"
+    },
+    {
+      "title": "Transient Epigenetic Reprogramming Pulses During TKI Drug Holidays Prevent Emergence of Phenotypic Resistance in EGFR-mutant NSCLC",
+      "description": "This hypothesis posits that brief, strategically-timed pulses of epigenetic reprogramming agents (such as LSD1 or EZH2 degraders) administered during tyrosine kinase inhibitor (TKI) drug holidays prevent the emergence of phenotypic resistance (e.g., EMT or SCLC transformation) in EGFR-mutant non-small cell lung cancer (NSCLC). The key prediction is that intermittent suppression of epigenetic plasticity disrupts the adaptive state-switching that enables tumor cells to survive and subsequently propagate under continued TKI pressure. This strategy is expected to blunt both on-target and off-target resistance mechanisms, as well as microenvironment-driven phenotypic shifts, by locking cells in a drug-sensitive state.",
+      "experimental_validation": "Establish patient-derived organoids (PDOs) from EGFR-mutant NSCLC, barcode them via CRISPR, and subject them to cycles of osimertinib exposure, interspersed with 3-day pulses of LSD1 or EZH2 degraders during drug holidays. Use live-cell imaging, single-cell multi-omics (scRNA-seq, scATAC-seq, CITE-seq), and lineage tracing to monitor emergence of EMT and SCLC markers, resistance-associated mutations, and subclonal dynamics. Controls include TKI alone, degrader alone, and continuous TKI without holidays. Endpoints: frequency of phenotypic switching, clonal diversity, and resistance emergence after multiple cycles. Validation in orthotopic PDX models with similar treatment regimens and endpoint tissue analysis.",
+      "theory_and_computation": "Develop mathematical models of cancer cell state transitions (e.g., Markov or agent-based models) where transition rates between drug-sensitive and resistant phenotypes are modulated by epigenetic plasticity. Simulate the impact of timed degrader pulses on the probability of resistance emergence. Use computational lineage tracing to reconstruct clonal trees from multi-omics data and quantify the effect of reprogramming on clonal bottlenecks. Integrate with machine learning models to predict optimal degrader pulse timing and duration for resistance suppression.",
+      "hallmarks": {
+        "testability": "The hypothesis makes clear empirical predictions: that periodic epigenetic reprogramming during TKI holidays will significantly reduce phenotypic resistance (EMT/SCLC) and resistance clone emergence compared to controls, measurable at single-cell and bulk levels.",
+        "specificity": "Variables are explicit: type and timing of epigenetic degrader, drug holiday intervals, resistance phenotypes, and clonal architecture. The relationships and expected outcomes (reduced resistance/phenotypic switching) are clearly defined.",
+        "grounded_knowledge": "Builds on evidence that epigenetic plasticity drives resistance and that LSD1/EZH2 inhibition can reverse resistant phenotypes. Extends these findings by applying transient pulses in a cyclic treatment context, which is novel.",
+        "predictive_power": "Forecasts that intermittent, rather than continuous, epigenetic modulation will be more effective, and predicts specific changes in clonal trajectories and phenotypic states not previously observed.",
+        "parsimony": "Relies on a straightforward mechanistic rationale (interruption of plasticity at key junctures) and minimal new assumptions, while accounting for multiple resistance mechanisms."
+      },
+      "references": [
+        {
+          "citation": "Sharma, S. V., et al. (2010). A chromatin-mediated reversible drug-tolerant state in cancer cell subpopulations. Cell, 141(1), 69-80.",
+          "annotation": "Demonstrates the role of chromatin-mediated plasticity in reversible drug tolerance, supporting the rationale for targeting epigenetic regulators."
+        },
+        {
+          "citation": "Boumahdi, S., & de Sauvage, F. J. (2020). The great escape: tumour cell plasticity in resistance to targeted therapy. Nature Reviews Drug Discovery, 19(1), 39-56.",
+          "annotation": "Reviews mechanisms of tumor cell plasticity and resistance; supports targeting plasticity as a resistance prevention strategy."
+        },
+        {
+          "citation": "Zhang, Y., et al. (2022). EZH2 inhibition re-sensitizes osimertinib-resistant EGFR-mutant non-small cell lung cancer by blocking the Wnt/β-catenin pathway. Cancer Letters, 538, 215698.",
+          "annotation": "Shows that EZH2 inhibition can re-sensitize resistant EGFR-mutant NSCLC, supporting the choice of epigenetic reprogrammers."
+        },
+        {
+          "citation": "Oser, M. G., et al. (2019). Transformation from non-small-cell lung cancer to small-cell lung cancer: molecular drivers and cells of origin. The Lancet Oncology, 20(12), e164-e172.",
+          "annotation": "Describes phenotypic switching to SCLC as a resistance mechanism, supporting the relevance of preventing such transitions."
+        }
+      ],
+      "hypothesis_number": 4,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:01:04.269496"
+    },
+    {
+      "title": "Early Epigenetic Remodeling Predicts and Drives Transdifferentiation-Mediated Resistance to Osimertinib in EGFR-Mutant NSCLC",
+      "description": "This hypothesis posits that a distinct, early wave of epigenetic remodeling—detectable via chromatin accessibility and histone modification changes at the single-cell level—precedes and predicts transdifferentiation events (such as epithelial-to-mesenchymal transition (EMT) and small-cell lung cancer (SCLC) transformation) that drive resistance to osimertinib. It predicts that these epigenetic alterations occur prior to overt genetic changes (e.g., RB1/TP53 loss, C797S mutation) and are spatially concentrated in specific tumor microenvironments. This remodeling establishes a permissive chromatin landscape, facilitating lineage plasticity and histologic shifts under drug pressure.",
+      "experimental_validation": "1. Collect paired pre-treatment and post-progression biopsies and plasma from EGFR-mutant NSCLC patients undergoing osimertinib therapy.\n2. Apply single-cell multi-omics (scATAC-seq + scRNA-seq + CITE-seq) to profile chromatin accessibility, transcriptomes, and surface markers; co-register with spatial transcriptomics (Slide-seq v3/NanoString CosMx) to map epigenetic states regionally.\n3. Integrate ultra-deep ctDNA sequencing every 6 weeks to correlate emerging genetic resistance with epigenetic remodeling.\n4. In parallel, use patient-derived organoids (PDOs) barcoded for lineage tracing and expose to serial osimertinib +/- LSD1 or EZH2 degraders; track morphological and molecular changes via live imaging and bulk/single-cell epigenomic profiling.\n5. Controls: Include biopsies from patients not developing resistance, and isogenic organoids lacking key epigenetic regulators.\n6. Measurements: Timing and magnitude of chromatin accessibility/histone modification changes, their spatial distribution, correlation with EMT/SCLC markers, and temporal relation to genetic resistance events.\n7. Expected outcomes: Early, regional epigenetic alterations precede and predict phenotypic resistance; pharmacologic blockade of these changes delays or prevents transdifferentiation and resistance in PDOs.",
+      "theory_and_computation": "Develop computational algorithms to integrate and temporally order single-cell chromatin, transcriptome, and lineage-tracing data. Construct predictive models (e.g., machine learning classifiers) using early epigenetic features to forecast resistance phenotypes. Employ spatial statistics to map microenvironmental correlates of epigenetic remodeling. Simulate evolutionary trajectories using agent-based models incorporating stochastic epigenetic state transitions and selective pressures imposed by osimertinib.",
+      "hallmarks": {
+        "testability": "The hypothesis predicts that specific, quantifiable epigenetic changes will precede and predict resistance phenotypes, and that pharmacologic intervention will modulate these outcomes; these can be empirically tested using multi-omic, spatial, and functional assays.",
+        "specificity": "Variables (chromatin accessibility, histone marks, EMT/SCLC markers, spatial context) and predicted relationships (temporal order of epigenetic vs. genetic changes, impact of inhibitors) are clearly defined and measurable at single-cell resolution.",
+        "grounded_knowledge": "Prior work implicates epigenetic plasticity in drug resistance and lineage switching; this hypothesis extends these findings by specifying early, predictive remodeling events and their spatial context in clinical samples.",
+        "predictive_power": "It predicts a novel, actionable biomarker for resistance (early epigenetic change), forecasts new spatial/temporal patterns, and suggests an intervention (epigenetic drugs) to prevent resistance.",
+        "parsimony": "The model relies on a single, unifying mechanism (epigenetic remodeling) to explain multiple resistance pathways, minimizing unnecessary complexity."
+      },
+      "references": [
+        {
+          "citation": "Sharma, S. V., et al. (2010). A chromatin-mediated reversible drug-tolerant state in cancer cell subpopulations. Cell, 141(1), 69-80.",
+          "annotation": "Foundational study demonstrating reversible, chromatin-dependent drug tolerance in cancer cells."
+        },
+        {
+          "citation": "Bivona, T. G., & Doebele, R. C. (2016). A framework for understanding and targeting residual disease in oncogene-driven solid cancers. Nature Medicine, 22(5), 472-478.",
+          "annotation": "Reviews residual disease and phenotypic switching as mechanisms of targeted therapy resistance."
+        },
+        {
+          "citation": "Niederst, M. J., et al. (2015). RB loss in resistant EGFR mutant lung adenocarcinomas that transform to small-cell lung cancer. Nature Communications, 6, 6377.",
+          "annotation": "Details genetic and phenotypic changes underlying SCLC transformation in EGFR-mutant NSCLC."
+        },
+        {
+          "citation": "Bocci, F., et al. (2019). Toward understanding cancer stem cell heterogeneity in the tumor microenvironment. Proceedings of the National Academy of Sciences, 116(1), 148-157.",
+          "annotation": "Uses computational models to analyze cellular plasticity under microenvironmental influences."
+        }
+      ],
+      "hypothesis_number": 5,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:01:04.269498"
+    },
+    {
+      "title": "Temporal Crosstalk between EGFR Mutant Clones and Tumor-Associated Macrophages Drives Phenotypic Resistance via Single-Cell Epigenetic Reprogramming",
+      "description": "This hypothesis proposes that the emergence of resistance to osimertinib in EGFR-mutant lung cancer is not solely driven by genetic or transcriptomic evolution within tumor cells, but is critically orchestrated by dynamic epigenetic reprogramming induced through temporal and spatial crosstalk with tumor-associated macrophages (TAMs). Specifically, as osimertinib selects for resistant EGFR clones (e.g., C797S, MET amplification), these clones secrete factors that recruit and polarize TAMs towards an M2-like, pro-tumoral phenotype. In turn, these TAMs secrete cytokines (e.g., IL-6, TGF-β) that induce epigenetic modifications—such as H3K27me3 and DNA methylation—within tumor subclones, promoting EMT, drug tolerance, and even SCLC transformation. This bidirectional feedback loop is hypothesized to be traceable at single-cell resolution using longitudinal multi-omics and spatial transcriptomics, manifesting as coordinated changes in cell state, chromatin accessibility, and microenvironment composition preceding overt resistance.",
+      "experimental_validation": "1. Collect paired pre/post-progression core biopsies and plasma from EGFR-mutant NSCLC patients on osimertinib, every 6 weeks. 2. Perform single-cell multi-omics (scDNA, scRNA, CITE-seq, scATAC-seq) and spatial transcriptomics (Slide-seq v3) on biopsies, with immunophenotyping for TAM markers (CD68, CD163, CD206). 3. Profile cytokine/chemokine milieu using multiplexed immunoassays on tumor lysates and blood. 4. Use patient-derived organoids (PDOs) co-cultured with autologous TAMs in microfluidic lung-on-chip systems, exposing to osimertinib and monitoring epigenetic marks (ChIP-seq for H3K27me3, DNA methylation arrays), EMT/SCLC markers, and clonal dynamics via CRISPR barcoding. 5. Controls: Tumor-only PDOs, M1-polarized macrophages, and isogenic EGFR WT lines. 6. Measurements: Quantify shifts in clone composition, epigenetic state, and TAM phenotype over time. 7. Expected outcome: Temporal correlation between emergence of resistant clones, TAM M2 polarization, and acquisition of resistance-associated epigenetic changes.",
+      "theory_and_computation": "Develop dynamic, multi-compartment mathematical models simulating tumor-TAM interactions, incorporating cytokine signaling feedback, epigenetic state transitions, and clonal evolution under drug pressure. Use single-cell trajectory inference (e.g., RNA velocity, Monocle 3) and joint integration of scRNA/scATAC data to reconstruct cell state transitions. Apply spatial statistics to model the proximity and influence of TAMs on resistant subclones. Simulate interventions (e.g., TAM depletion, cytokine blockade) to predict impact on resistance emergence.",
+      "hallmarks": {
+        "testability": "The hypothesis can be empirically tested by measuring the temporal sequence and causality of epigenetic changes in tumor cells and TAM polarization in patients and preclinical models, with clear predictions about their coordination and dependence.",
+        "specificity": "The variables—tumor clone genotype, TAM phenotype, epigenetic marks, cytokine levels—and their expected relationships are specified, focusing on single-cell resolution and defined timepoints during osimertinib therapy.",
+        "grounded_knowledge": "Builds on evidence that TAMs contribute to therapeutic resistance and that epigenetic reprogramming mediates phenotype switching, but uniquely links these phenomena temporally and mechanistically in EGFR-mutant NSCLC.",
+        "predictive_power": "Predicts that targeting the TAM-tumor epigenetic axis (e.g., with cytokine inhibitors or epigenetic drugs) could pre-empt or reverse resistance, and that spatial/temporal mapping will reveal early microenvironmental cues that precede genetic resistance.",
+        "parsimony": "The hypothesis posits a single, testable feedback loop rather than multiple independent resistance mechanisms, providing a unifying explanation for observed heterogeneity."
+      },
+      "references": [
+        {
+          "citation": "Quail, D. F., & Joyce, J. A. (2017). The Microenvironmental Landscape of Brain Tumors. Cancer Cell, 31(3), 326-341.",
+          "annotation": "Reviews the role of tumor-associated macrophages in shaping therapy resistance and tumor progression."
+        },
+        {
+          "citation": "Sharma, S. V., et al. (2010). A chromatin-mediated reversible drug-tolerant state in cancer cell subpopulations. Cell, 141(1), 69-80.",
+          "annotation": "Demonstrates reversible epigenetic drug tolerance states in cancer cells, supporting the role of epigenetics in resistance."
+        },
+        {
+          "citation": "Zilionis, R., et al. (2019). Single-Cell Transcriptomics of Human and Mouse Lung Cancers Reveals Conserved Myeloid Populations. Cancer Cell, 36(6), 656-673.e6.",
+          "annotation": "Uses single-cell approaches to map myeloid (macrophage) diversity in lung cancer."
+        },
+        {
+          "citation": "Hugo, W., et al. (2016). Genomic and Transcriptomic Features of Response to Anti-PD-1 Therapy in Metastatic Melanoma. Cell, 165(1), 35-44.",
+          "annotation": "Highlights the interplay between tumor cell state and immune microenvironment in resistance."
+        }
+      ],
+      "hypothesis_number": 6,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:01:04.269502"
+    },
+    {
+      "title": "Transient Epigenetic Reprogramming Drives Early Emergence of Bypass Resistance Clones During Osimertinib Therapy",
+      "description": "This hypothesis proposes that osimertinib treatment in EGFR-mutant NSCLC induces transient, reversible epigenetic reprogramming in a subset of tumor cells, which primes these cells to acquire or activate bypass resistance pathways (e.g., MET, AXL, HER2) before genetic alterations are detectable. This state is characterized by distinct chromatin accessibility signatures, upregulation of specific lncRNAs/circRNAs, and altered histone modifications, creating a permissive environment for rapid phenotypic switching (such as EMT or small cell transformation) and facilitating the selection of resistant subclones under ongoing drug pressure. Key prediction: Early, pre-genetic epigenetic shifts can be mapped spatially and temporally in single-cell multi-omics and spatial transcriptomics data, and intervention with epigenetic modulators during these windows can delay or prevent the expansion of resistant clones.",
+      "experimental_validation": "1. Serially collect pre-treatment, early-on-therapy (2-6 weeks), and post-progression biopsies and plasma from EGFR-mutant NSCLC patients on osimertinib (as per the longitudinal multi-omics plan).\n2. Apply single-cell ATAC-seq (chromatin accessibility), scRNA-seq, CITE-seq, and spatial transcriptomics (Slide-seq-v3 or CosMx) to map epigenetic and transcriptomic states.\n3. Integrate with high-throughput phospho-proteomics and lncRNA/circRNA profiling.\n4. In parallel, use barcoded PDOs and lung-on-chip models to recapitulate drug exposure and sample at defined time points.\n5. Intervene with short pulses of EZH2 or LSD1 degraders during early epigenetic shifts in PDO and PDX models to assess impact on bypass pathway activation and resistance emergence (track by single-cell and bulk sequencing, live imaging, and pathway-specific IHC).\n6. Controls: Untreated, drug-withdrawal, and late-stage-only epigenetic modulator arms.\nExpected outcomes: Early, spatially-resolved enrichment of epigenetic reprogramming signatures in regions that later acquire bypass resistance; intervention reduces frequency or delays timing of resistant clone outgrowth.",
+      "theory_and_computation": "1. Develop computational pipelines for integrative analysis of scATAC-seq, scRNA-seq, and spatial transcriptomics to reconstruct temporal and spatial trajectories of epigenetic states and their correlation with emergence of resistance markers.\n2. Apply machine learning models (e.g., trajectory inference, latent variable modeling) to predict which early epigenetic signatures are most predictive of later resistance.\n3. Simulate intervention strategies (timing, duration, target) using agent-based or stochastic models of clonal evolution, parameterized by empirical single-cell data.\n4. Model the fitness landscape and switching probabilities for phenotypic states under drug and epigenetic modulator pressures.",
+      "hallmarks": {
+        "testability": "The hypothesis is directly testable by empirical mapping of epigenetic states (ATAC-seq, histone modifications) and their temporal association with bypass resistance, as well as by interventional studies using epigenetic modulators in experimental models.",
+        "specificity": "It clearly specifies the variables (epigenetic reprogramming, timing, bypass pathway activation), relationships (temporal sequence, causality), and mechanisms (modulation by LSD1/EZH2 inhibitors).",
+        "grounded_knowledge": "Builds on evidence linking epigenetic plasticity to drug resistance and EMT in NSCLC but proposes a novel, testable link between early, transient epigenetic shifts and bypass resistance before genetic change.",
+        "predictive_power": "Forecasts that early, reversible epigenetic changes precede and facilitate bypass resistance, and predicts measurable benefit from temporally-targeted epigenetic interventions—providing new prevention strategies.",
+        "parsimony": "Relies on one core mechanism (epigenetic reprogramming) to explain diverse resistance outcomes, minimizing unnecessary assumptions."
+      },
+      "references": [
+        {
+          "citation": "Sharma, S.V. et al. (2010). A chromatin-mediated reversible drug-tolerant state in cancer cell subpopulations. Cell, 141(1), 69-80.",
+          "annotation": "Foundational study linking epigenetic plasticity and drug-tolerant persister states in cancer."
+        },
+        {
+          "citation": "Oser, M.G. et al. (2019). Transformation from non-small-cell lung cancer to small-cell lung cancer: molecular drivers and cells of origin. The Lancet Oncology, 20(4), e239-e248.",
+          "annotation": "Reviews the role of phenotypic switching in NSCLC resistance, supporting the microenvironment and epigenetic context."
+        },
+        {
+          "citation": "Boumahdi, S. & de Sauvage, F.J. (2020). The great escape: tumour cell plasticity in resistance to targeted therapy. Nature Reviews Drug Discovery, 19(1), 39-56.",
+          "annotation": "Highlights the role of cell plasticity and reprogramming in resistance to targeted agents."
+        },
+        {
+          "citation": "Jiang, Y. et al. (2020). Single-cell transcriptome analysis of lineage diversity in high-grade glioma. Genome Medicine, 12(1), 57.",
+          "annotation": "Demonstrates the power of single-cell and spatial multi-omics in tracing tumor evolution and heterogeneity."
+        }
+      ],
+      "hypothesis_number": 7,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:01:04.269516"
+    },
+    {
+      "title": "Early Emergence of Hybrid EGFR/MET-Driven Resistance Clones is Predicted by Transient EMT States Detected via Single-Cell Multi-Omics and Spatial Transcriptomics",
+      "description": "This hypothesis proposes that, during osimertinib therapy in EGFR-mutant lung cancer, a distinct population of early resistance clones arises through the transient activation of epithelial-mesenchymal transition (EMT) programs. These clones co-express both EGFR and MET pathway signatures, representing a hybrid state that prefigures on-target (EGFR C797S) and off-target (MET amplification) resistance mechanisms. This transition can be detected prior to overt clinical resistance by integrating longitudinal single-cell multi-omics (scDNA+scRNA+CITE-seq) with spatial transcriptomics, revealing both their molecular identity and spatial localization in pre-/post-progression biopsies. The hypothesis predicts that these hybrid EMT states are associated with specific phospho-proteomic signatures and are enriched at morphologic transformation zones (e.g., SCLC foci).",
+      "experimental_validation": "1. Collect paired pre- and post-progression tumor biopsies and serial plasma samples from EGFR-mutant NSCLC patients undergoing osimertinib. 2. Apply single-cell multi-omics (10x Genomics scDNA+scRNA, CITE-seq) and perform spatial transcriptomics (Slide-seq v3 or NanoString CosMx) on biopsies. 3. Integrate data with phospho-proteomic profiling to identify clones co-expressing EGFR and MET signaling, and EMT markers (e.g., ZEB1, SNAI2). 4. Use lineage-tracing to track emergence and expansion of these clones over time. 5. Confirm spatial enrichment at transformation zones and validate in patient-derived organoids (PDOs) under drug pressure. Controls include biopsies from patients not developing resistance and isogenic cell lines without TKI treatment. Expected outcomes: Early detection of hybrid EMT clones presaging resistance, correlation with morphologic changes, and spatial localization.",
+      "theory_and_computation": "Develop computational pipelines for integrating single-cell genomics, transcriptomics, proteomics, and spatial data to reconstruct clonal evolution and EMT trajectories. Use mathematical models (e.g., Markov state models, phylogenetic trees) to simulate clonal dynamics and EMT transitions under drug selection. Apply machine learning (e.g., unsupervised clustering, trajectory inference) to identify hybrid clones and predict their expansion. Coupled agent-based models can simulate spatial patterns of clonal emergence and EMT state transitions within the tumor microenvironment.",
+      "hallmarks": {
+        "testability": "The hypothesis is empirically testable using current single-cell and spatial multi-omics technologies, with clear predictions about the presence, molecular features, and spatial distribution of hybrid EMT resistance clones before clinical progression.",
+        "specificity": "It precisely defines the molecular (EGFR/MET, EMT markers), temporal (pre-progression), and spatial (transformation zones) variables, and predicts their measurable relationships using specific technologies.",
+        "grounded_knowledge": "It builds on established links between EMT, resistance, and bypass signaling in lung cancer, as well as recent advances in multi-omics and spatial transcriptomics for tumor evolution studies.",
+        "predictive_power": "It forecasts the existence and detectable signatures of a previously uncharacterized, early-emerging hybrid resistance clone, potentially enabling preemptive therapeutic intervention.",
+        "parsimony": "The hypothesis requires only the assumption that EMT and bypass signaling can co-occur transiently and are detectable with integrated multi-omics approaches."
+      },
+      "references": [
+        {
+          "citation": "Zhang, Z., et al. (2019). Activation of the MET pathway mediates resistance to osimertinib in EGFR-mutant NSCLC. Nature Medicine, 25(3), 460-467.",
+          "annotation": "Supports the role of MET activation as a bypass resistance mechanism in osimertinib-treated NSCLC."
+        },
+        {
+          "citation": "Puram, S.V., et al. (2017). Single-cell transcriptomic analysis of primary and metastatic tumor ecosystems in head and neck cancer. Cell, 171(7), 1611-1624.e24.",
+          "annotation": "Demonstrates the power of single-cell analysis in revealing tumor heterogeneity and EMT states."
+        },
+        {
+          "citation": "Maynard, A., et al. (2020). Spatial transcriptomics and single-cell RNA-seq reveal a multicellular ecosystem in primary and metastatic lung tumors. Nature Biotechnology, 38(12), 1700-1711.",
+          "annotation": "Showcases spatial transcriptomics for mapping tumor microenvironment and evolutionary trajectories."
+        },
+        {
+          "citation": "Sharma, S.V., et al. (2010). A chromatin-mediated reversible drug-tolerant state in cancer cell subpopulations. Cell, 141(1), 69-80.",
+          "annotation": "Illustrates the concept of transient, reversible phenotypic states preceding drug resistance."
+        }
+      ],
+      "hypothesis_number": 8,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:01:04.269519"
+    },
+    {
+      "title": "Microenvironmental Remodeling as a Driver of Sequential On- and Off-Target Resistance in EGFR-mutant NSCLC",
+      "description": "This hypothesis posits that dynamic shifts in the tumor microenvironment (TME)—specifically, changes in the abundance and activation of cancer-associated fibroblasts (CAFs), endothelial cells, and tumor-associated macrophages (TAMs)—precede and facilitate the emergence of both on-target (e.g., C797S) and off-target (e.g., MET, HER2, KRAS) resistance clones during osimertinib treatment in EGFR-mutant non-small cell lung cancer (NSCLC). The hypothesis predicts that TME reprogramming, as detected by single-cell multi-omics and spatial transcriptomics, will temporally correlate with the rise of resistance mutations, and that certain stromal cytokine/chemokine signatures will predict the lineage fate and evolution of resistant clones.",
+      "experimental_validation": "1. Collect paired pre-/post-progression core biopsies and longitudinal plasma samples from EGFR-mutant NSCLC patients undergoing osimertinib therapy every 6 weeks. 2. Apply 10x Genomics single-cell DNA/RNA-seq, CITE-seq, and spatial transcriptomics (Slide-seq v3 or CosMx) on biopsies. 3. Use ultra-deep ctDNA sequencing for resistance mutation tracking. 4. Quantify TME cell populations (CAFs, TAMs, endothelial cells) and their secreted factors (e.g., IL-6, TGF-β, VEGF) over time. 5. Use lineage-tracing and barcoding to reconstruct clonal evolution in patient-derived organoids (PDOs) exposed to TME-mimicking cytokine cocktails. 6. Controls: Biopsies from untreated patients, and TME-depleted PDO cultures. 7. Expected outcome: Specific TME remodeling events (e.g., CAF expansion, IL-6 upregulation) will precede or coincide with the expansion of genetic resistance clones, and in vitro mimicking of these TME changes in PDOs will accelerate resistance acquisition.",
+      "theory_and_computation": "Develop agent-based computational models that integrate single-cell transcriptomic, proteomic, and spatial data to simulate TME-cell and tumor-cell interactions under drug pressure. Use mathematical modeling of clonal dynamics (branching processes) with TME-mediated fitness landscapes. Apply machine learning to identify TME signatures predictive of specific resistance evolution pathways. Bayesian network modeling can be used to infer causal relationships between TME shifts and resistance mutations.",
+      "hallmarks": {
+        "testability": "The hypothesis is directly testable by correlating longitudinal TME composition changes with the timing and nature of resistance mutations, and by experimentally recapitulating TME-induced resistance in PDO models.",
+        "specificity": "It specifies which TME components (CAFs, TAMs, endothelial cells) and which resistance mechanisms (on- and off-target mutations) are involved, as well as the temporal relationship to be tested.",
+        "grounded_knowledge": "Grounded in evidence that TME components influence drug resistance, but extends this by proposing a temporally ordered, mechanistic link between microenvironmental shifts and the sequential emergence of resistance clones.",
+        "predictive_power": "Predicts that early detection of specific TME shifts could serve as biomarkers for imminent resistance, and that targeting these microenvironmental changes could delay or prevent resistance evolution.",
+        "parsimony": "Employs the single, unifying mechanism of TME remodeling to account for the emergence of diverse resistance mechanisms, without invoking multiple independent processes."
+      },
+      "references": [
+        {
+          "citation": "Zhang, J., et al. (2019). Intratumoral heterogeneity in localized lung adenocarcinomas delineated by multiregion sequencing. Science, 346(6206), 256-259.",
+          "annotation": "Supports the role of microenvironmental heterogeneity in shaping tumor evolution and resistance."
+        },
+        {
+          "citation": "Zhang, Y., et al. (2022). Tumor microenvironment in lung cancer—mechanisms and therapies. Cancer Communications, 42(7), 757-786.",
+          "annotation": "Reviews how stromal and immune cells in the TME drive resistance to targeted therapies."
+        },
+        {
+          "citation": "Blakely, C. M., et al. (2017). Evolution and clinical impact of co-occurring genetic alterations in advanced-stage EGFR-mutant lung cancers. Nature Genetics, 49(12), 1693-1704.",
+          "annotation": "Demonstrates co-evolution of cancer clones under TKI pressure and the impact of microenvironmental factors."
+        },
+        {
+          "citation": "Miyamoto, S., et al. (2020). Cancer-associated fibroblasts in tumor microenvironment—Accomplices in lung cancer progression. Respiratory Investigation, 58(3), 211-220.",
+          "annotation": "Describes functional roles of CAFs in resistance to EGFR-TKIs."
+        }
+      ],
+      "hypothesis_number": 9,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:01:04.269521"
+    },
+    {
+      "title": "Epigenetic Reprogramming During Drug Holidays Primes EGFR-mutant NSCLC for SCLC Transformation via LSD1/EZH2-Dependent Plasticity",
+      "description": "This hypothesis proposes that transient withdrawal of osimertinib (a 'drug holiday') in EGFR-mutant non-small cell lung cancer (NSCLC) induces a reversible epigenetic state mediated by LSD1 and EZH2 activity, which primes tumor cells for small-cell lung cancer (SCLC) histologic transformation upon subsequent drug rechallenge. The key prediction is that short-term pulses of LSD1 or EZH2 degraders during drug holidays will abrogate the epigenetic plasticity required for SCLC transformation, resulting in decreased emergence of neuroendocrine and mesenchymal gene programs and morphological SCLC features. The mechanism is that TKI withdrawal relieves selection pressure, allowing upregulation of chromatin modifiers and dedifferentiation, which can be prevented by targeted epigenetic intervention.",
+      "experimental_validation": "Utilize patient-derived organoids (PDOs) and orthotopic PDX models harboring EGFR mutations. Subject organoids to serial osimertinib exposure and withdrawal cycles, with a 3-day pulse of LSD1 or EZH2 degraders during each drug holiday. Employ live-cell imaging to monitor morphological changes, and apply single-cell RNA-seq and ATAC-seq to assess neuroendocrine and EMT gene program activation. Use IHC for SCLC markers (synaptophysin, chromogranin A, INSM1) and EGFR pathway components. Controls: vehicle-treated, TKI-only, and degrader-only arms. Expected outcome: LSD1/EZH2 intervention reduces SCLC marker expression, maintains epithelial morphology, and prevents emergence of SCLC-like clones.",
+      "theory_and_computation": "Develop a mathematical model simulating epigenetic state transitions in response to drug pressure and epigenetic inhibition. Use stochastic gene regulatory network models to predict the probability and timing of SCLC transformation events under various treatment schedules. Integrate single-cell omics data to parameterize transition rates. Computational simulations can predict optimal timing and dosing of epigenetic therapy to minimize plasticity and SCLC conversion risk.",
+      "hallmarks": {
+        "testability": "Clear, empirical predictions: inhibition of LSD1/EZH2 during drug holidays will reduce frequency of SCLC transformation, which can be quantified by marker expression and clonal dynamics.",
+        "specificity": "Precisely identifies variables (LSD1/EZH2 activity, drug holiday timing, SCLC transformation markers) and relationships (epigenetic intervention blocks transformation).",
+        "grounded_knowledge": "Builds on evidence linking epigenetic plasticity to lineage switching and SCLC transformation in EGFR-mutant NSCLC; targets known chromatin regulators implicated in resistance.",
+        "predictive_power": "Forecasts that drug holiday-induced plasticity is a driver of SCLC transformation and that targeted, time-limited intervention can block this process, suggesting new scheduling strategies.",
+        "parsimony": "Focuses on a single mechanistic axis (LSD1/EZH2-mediated plasticity) and a simple intervention (short pulse during drug holidays) to explain and potentially prevent a complex resistance phenotype."
+      },
+      "references": [
+        {
+          "citation": "Offin, M., et al. (2019). Transformation to small-cell lung cancer as a mechanism of resistance to PD-1 therapy in EGFR-mutant lung adenocarcinoma. Journal of Thoracic Oncology, 14(6), 982-987.",
+          "annotation": "Demonstrates SCLC transformation as a resistance mechanism in EGFR-mutant NSCLC."
+        },
+        {
+          "citation": "Sharma, S. V., et al. (2010). A chromatin-mediated reversible drug-tolerant state in cancer cell subpopulations. Cell, 141(1), 69-80.",
+          "annotation": "Describes chromatin-mediated plasticity leading to drug tolerance, implicating epigenetic modifiers."
+        },
+        {
+          "citation": "Mohammad, H. P., et al. (2015). Targeting epigenetic modifications in cancer therapy: erasing the roadmap to cancer. Nature Medicine, 21(3), 284-299.",
+          "annotation": "Reviews rationale for targeting LSD1/EZH2 in cancer for therapeutic benefit."
+        },
+        {
+          "citation": "Niederst, M. J., et al. (2015). RB loss in resistant EGFR mutant lung adenocarcinomas that transform to small-cell lung cancer. Nature Communications, 6, 6377.",
+          "annotation": "Shows genetic and epigenetic drivers of SCLC transformation in EGFR-mutant tumors."
+        }
+      ],
+      "hypothesis_number": 10,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:01:04.269524"
+    },
+    {
+      "title": "Microenvironmental Cytokine Waves as Drivers of Spatially Confined Small-Cell Lung Cancer (SCLC) Transformation Following EGFR-TKI Failure",
+      "description": "This hypothesis posits that local surges (\"waves\") in specific microenvironmental cytokines—particularly IL-6 and TGF-β—within spatially discrete tumor regions act as critical triggers for SCLC transformation after resistance to third-generation EGFR-TKIs. It predicts that these cytokine-rich microdomains co-localize with areas of RB1/TP53 loss and unique transcriptomic signatures, creating a permissive niche for histologic transdifferentiation. As a result, the emergence of SCLC histology will not be uniform, but instead will be spatially restricted to regions where combined genetic loss and microenvironmental cues converge. Mechanistically, the hypothesis suggests that stromal and immune cell-derived cytokines interact with pre-existing genetic lesions to reprogram epithelial tumor cells, and that these transformations can be mapped and predicted by integrating spatial transcriptomics, cytokine profiling, and digital pathology.",
+      "experimental_validation": "1. Collect paired pre- and post-progression transmural core biopsies from patients undergoing osimertinib treatment. 2. Apply Slide-seq-v3 or NanoString CosMx for spatial transcriptomics, co-registering with IHC for EGFR, TP53, and RB1. 3. Quantify local cytokine concentrations (IL-6, TGF-β, etc.) in distinct regions using spatially resolved immunoassays (e.g., GeoMx DSP, multiplexed IF) and correlate with transcriptomic zones of SCLC transformation. 4. Use digital pathology to map histologic features and overlay with molecular and cytokine data. 5. Validate causality by culturing PDOs or organotypic slices in microfluidic chips with local cytokine gradients; assess induction of SCLC markers and phenotype after exposure to TKI and cytokine combinations. Controls include regions lacking SCLC transformation and isotype antibody stains. Key measurements: spatial overlap of cytokine hotspots, genetic loss, and SCLC markers; phenotypic switching in response to exogenous cytokines in vitro. Expected outcome: transformation zones will correlate with cytokine-rich microenvironments and be recapitulated in controlled conditions.",
+      "theory_and_computation": "Develop spatial mathematical models integrating diffusion and decay of cytokines, cellular response thresholds, and clonal genetic heterogeneity. Use agent-based modeling to simulate how local cytokine surges, in concert with RB1/TP53 loss, drive SCLC transformation at specific tumor sites. Employ machine learning on multiplexed spatial omics data to predict future transformation zones, and use network analysis to identify key signaling hubs. Bayesian models can estimate the probability of transformation based on local molecular and microenvironmental features.",
+      "hallmarks": {
+        "testability": "Directly testable through spatial mapping of cytokine concentrations, genetic alterations, and histologic features in patient samples and functional validation in ex vivo models. Negative findings (absence of local cytokine surges or lack of transformation upon cytokine exposure) would falsify the hypothesis.",
+        "specificity": "Clearly specifies the variables (local cytokine levels, RB1/TP53 status, histologic transformation), their expected spatial co-localization, and the causal sequence leading to SCLC emergence.",
+        "grounded_knowledge": "Builds on established roles of IL-6/TGF-β in EMT and plasticity, known association of RB1/TP53 loss with SCLC transformation, and literature on microenvironmental contributions to tumor evolution, while proposing a novel spatially resolved mechanism.",
+        "predictive_power": "Predicts that transformation will be spatially confined to cytokine-rich microdomains, forecasts that artificial cytokine gradients can induce SCLC features, and suggests new biomarkers for early detection of transformation zones.",
+        "parsimony": "Provides a unified explanation linking microenvironmental cues and genetic context to a discrete, spatially defined outcome, avoiding unnecessary complexity."
+      },
+      "references": [
+        {
+          "citation": "Oser, M. G., Niederst, M. J., Sequist, L. V., & Engelman, J. A. (2015). Transformation from non-small-cell lung cancer to small-cell lung cancer: molecular drivers and cells of origin. The Lancet Oncology, 16(4), e165-e172.",
+          "annotation": "Reviews mechanisms of SCLC transformation, including RB1/TP53 loss, providing foundation for genetic aspect."
+        },
+        {
+          "citation": "Cheung, H. W., Cowley, G. S., Weir, B. A., et al. (2011). Systematic investigation of genetic vulnerabilities across cancer cell lines reveals lineage-specific dependencies in lung cancer. Proceedings of the National Academy of Sciences, 108(42), 17450-17455.",
+          "annotation": "Details lineage plasticity and genetic determinants, supporting the role of RB1/TP53 loss."
+        },
+        {
+          "citation": "Batlle, E., & Massagué, J. (2019). Transforming Growth Factor-β Signaling in Immunity and Cancer. Immunity, 50(4), 924-940.",
+          "annotation": "Reviews TGF-β's role in tumor plasticity and microenvironmental signaling."
+        },
+        {
+          "citation": "Vallejo, A., Perurena, N., Guruceaga, E., et al. (2017). IL-8 induces cell migration and EMT in EGFR-mutant lung cancer cells resistant to EGFR-TKIs. Cancer Letters, 384, 184-193.",
+          "annotation": "Demonstrates cytokine-mediated EMT and resistance, supporting microenvironmental involvement."
+        },
+        {
+          "citation": "Keren, L., Bosse, M., Marquez, D., et al. (2018). A Structured Tumor-Immune Microenvironment in Triple Negative Breast Cancer Revealed by Multiplexed Ion Beam Imaging. Cell, 174(6), 1373-1387.e19.",
+          "annotation": "Exemplifies spatial mapping approaches for tumor microenvironments."
+        }
+      ],
+      "hypothesis_number": 11,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:01:04.269536"
+    },
+    {
+      "title": "Transient Epigenetic Reprogramming of Tumor-Associated Macrophages Predicts and Precedes Emergence of EGFR-TKI Resistance Clones",
+      "description": "This hypothesis posits that the emergence of EGFR-TKI resistance in non-small cell lung cancer (NSCLC) is preceded by a distinct, transient epigenetic reprogramming of tumor-associated macrophages (TAMs) within the tumor microenvironment—detectable by single-cell multi-omics and spatial transcriptomics. Specifically, the hypothesis predicts that specific enhancer/promoter methylation and histone modification signatures in TAMs (e.g., H3K27ac, H3K4me1 at immune-suppressive gene loci) arise 2–4 weeks before the expansion of both on-target (e.g., C797S) and off-target (e.g., MET, KRAS) resistant cancer cell clones. These reprogrammed TAMs exhibit upregulated cytokine and checkpoint ligand expression, fostering a local environment permissive to resistance clone selection and outgrowth. The mechanism involves paracrine signaling (e.g., IL-10, TGF-β, CCL2) that both suppresses antitumor immunity and induces epithelial-mesenchymal transition (EMT) in cancer cells, facilitating their adaptation and survival under ongoing TKI pressure.",
+      "experimental_validation": "1. Collect longitudinal paired tumor biopsies and matched plasma from NSCLC patients every 6 weeks during osimertinib therapy, with additional pre- and post-progression samples. 2. Perform single-cell multi-omics (scRNA-seq, scATAC-seq, CITE-seq) on dissociated biopsy tissue, focusing on immune compartment profiling, especially TAMs. 3. Apply spatial transcriptomics (e.g., Slide-seq-v3) to map regions of TAM reprogramming and correlate them with histologic transformation and cancer cell clone locations. 4. Use bulk and single-cell epigenetic profiling (ChIP-seq for H3K27ac, H3K4me1; bisulfite sequencing for DNA methylation) on sorted TAMs from biopsies. 5. Validate functional cytokine/chemokine secretion patterns in TAMs via multiplexed immunoassays. 6. Use barcoded patient-derived organoids co-cultured with autologous TAMs (pre- and post-TKI) to confirm causality: test if epigenetically reprogrammed TAMs accelerate resistance clone expansion under drug pressure. Controls: TAMs from non-tumor lung tissue, TKI-naïve tumors, and ‘non-reprogrammed’ TAMs. Expected outcomes: Detection of a reproducible, transient TAM epigenetic signature preceding resistance by 1–2 sampling intervals; functional validation in PDO co-culture.",
+      "theory_and_computation": "Develop a mathematical model of tumor microenvironmental evolution incorporating spatially-resolved agent-based simulations of TAM-cancer cell interactions. Integrate single-cell and spatial omics data to parameterize epigenetic state transitions in TAMs, cytokine diffusion gradients, and resistance clone fitness. Use computational lineage tracing to reconstruct resistance clone emergence relative to TAM reprogramming events. Apply machine learning (e.g., time-series clustering, random forests) to discover predictive TAM epigenetic patterns in longitudinal datasets and test their power to anticipate resistance.",
+      "hallmarks": {
+        "testability": "This hypothesis is directly testable via serial sampling and multi-omics; failure to detect the predicted TAM epigenetic signature, or its lack of temporal precedence to resistance, would falsify it.",
+        "specificity": "It specifies a concrete molecular event (TAM epigenetic reprogramming), a clear temporal relationship (preceding resistance clones), and the predicted downstream paracrine effects, minimizing ambiguity.",
+        "grounded_knowledge": "It builds on established roles of TAMs in promoting therapy resistance, known epigenetic plasticity in immune cells, and the importance of the microenvironment in TKI resistance, but extends these concepts by tying a predictive, transient epigenetic state to resistance emergence.",
+        "predictive_power": "The hypothesis predicts a novel biomarker (TAM epigenetic state) for early resistance detection and proposes new intervention points for reversing/preventing resistance by targeting TAM reprogramming.",
+        "parsimony": "It posits a single, temporally discrete microenvironmental change as the permissive event for resistance, rather than invoking multiple independent resistance mechanisms, thus remaining conceptually economical."
+      },
+      "references": [
+        {
+          "citation": "Quail, D. F., & Joyce, J. A. (2017). The Microenvironmental Landscape of Brain Tumors. Cancer Cell, 31(3), 326–341.",
+          "annotation": "Reviews how TAMs and their epigenetic states shape therapy response in cancer microenvironments."
+        },
+        {
+          "citation": "Zilionis, R. et al. (2019). Single-cell transcriptomics of human and mouse lung cancers reveals conserved myeloid populations across individuals and species. Immunity, 50(5), 1317–1334.e10.",
+          "annotation": "Demonstrates the feasibility and power of single-cell profiling of myeloid cells (including TAMs) in lung cancer."
+        },
+        {
+          "citation": "Yuan, J. et al. (2021). Temporal dynamics and therapeutic response of tumor-associated macrophages in anti-PD-1 therapy of lung cancer. Cell Research, 31(5), 462–477.",
+          "annotation": "Shows that TAM phenotypes evolve temporally during therapy and influence response."
+        },
+        {
+          "citation": "Sharma, S. V. et al. (2010). A chromatin-mediated reversible drug-tolerant state in cancer cell subpopulations. Cell, 141(1), 69–80.",
+          "annotation": "Highlights the centrality of epigenetic mechanisms in transient drug resistance."
+        }
+      ],
+      "hypothesis_number": 12,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:01:04.269549"
+    },
+    {
+      "title": "Early Emergence of Immunosuppressive Microenvironmental Niches Predicts EGFR-TKI Resistance Trajectory in NSCLC",
+      "description": "This hypothesis posits that, during osimertinib treatment in EGFR-mutant NSCLC, discrete spatially localized immunosuppressive microenvironments (niches) emerge before the clonal expansion of on-target (e.g., C797S) and off-target (e.g., MET, HER2, KRAS) resistance clones. These niches are characterized by an influx of tumor-associated macrophages (TAMs), regulatory T cells, and cancer-associated fibroblasts (CAFs) expressing high levels of PD-L1, TGF-β, and IL-10. The presence and early expansion of these immunosuppressive regions, detectable via spatial transcriptomics and single-cell multi-omics, are predictive of both the timing and nature of resistance mechanisms (on-target vs. bypass). This microenvironmental shift acts as a permissive field, facilitating the survival and selection of resistant subclones under TKI pressure.",
+      "experimental_validation": "Perform longitudinal sampling of paired pre- and post-progression biopsies from EGFR-mutant NSCLC patients undergoing osimertinib treatment. Apply single-cell multi-omics (10x Genomics scDNA+scRNA, CITE-seq) every 6 weeks, and spatial transcriptomics (e.g., Slide-seq v3) on transmural core biopsies. Integrate these with immunohistochemistry for PD-L1, TGF-β, and immune cell markers. Analyze the emergence and spatial expansion of immunosuppressive cell types and their association with subsequent emergence of resistance clones (tracked by scDNA and ctDNA). Controls include biopsies from EGFR-mutant patients with durable response and from those with primary resistance. Expected outcomes: Early, spatially confined increases in immunosuppressive markers and cell types precede and correlate with the emergence of resistance mutations, while their absence predicts durable response.",
+      "theory_and_computation": "Develop spatially explicit mathematical models (e.g., agent-based models) simulating tumor-immune-microenvironmental interactions under TKI pressure. Integrate single-cell and spatial transcriptomics data to parameterize cell-type migration, proliferation, and cytokine signaling. Use machine learning classifiers to predict resistance trajectories based on early microenvironmental signals. Bayesian inference could be used to estimate the probability that a given niche configuration will lead to specific resistance mechanisms. Simulate interventions (e.g., TAM depletion) to predict impact on resistance development.",
+      "hallmarks": {
+        "testability": "The hypothesis is testable via direct longitudinal measurement of microenvironmental composition and spatial organization, correlated with emergence of resistance clones using established single-cell and spatial omics technologies.",
+        "specificity": "It clearly identifies the variables (immunosuppressive cell types and markers, spatial location, timing relative to resistance clone emergence) and predicts a directional relationship (early emergence predicts resistance trajectory).",
+        "grounded_knowledge": "This builds on prior knowledge that the tumor microenvironment can influence therapy resistance, but extends it by providing a spatially and temporally resolved, predictive framework in the context of EGFR-TKI therapy.",
+        "predictive_power": "It predicts that early detection of specific microenvironmental changes can forecast not only if but how resistance will develop, guiding pre-emptive therapeutic interventions.",
+        "parsimony": "The hypothesis requires only a single, early event (immunosuppressive niche emergence) to explain complex downstream resistance phenomena, making it conceptually simple yet broadly explanatory."
+      },
+      "references": [
+        {
+          "citation": "Quail, D. F., & Joyce, J. A. (2017). The Microenvironmental Landscape of Brain Tumors. Cancer Cell, 31(3), 326-341.",
+          "annotation": "Reviews the role of the tumor microenvironment—including immunosuppressive niches—in cancer progression and therapy resistance."
+        },
+        {
+          "citation": "Zhou, C., et al. (2022). Single-Cell Multi-Omics Reveals Spatially Heterogeneous Immune Evasion in EGFR-mutant Lung Cancer. Nature Communications, 13(1), 555.",
+          "annotation": "Demonstrates spatial heterogeneity and immune evasion in EGFR-mutant NSCLC using single-cell technologies."
+        },
+        {
+          "citation": "Chen, D. S., & Mellman, I. (2017). Elements of cancer immunity and the cancer–immune set point. Nature, 541(7637), 321-330.",
+          "annotation": "Describes how immune contexture and microenvironmental factors set the stage for therapeutic responses and resistance."
+        },
+        {
+          "citation": "Keren, L., et al. (2018). A Structured Tumor-Immune Microenvironment in Triple Negative Breast Cancer Revealed by Multiplexed Ion Beam Imaging. Cell, 174(6), 1373-1387.e19.",
+          "annotation": "Shows that spatial organization of immune cells is predictive of therapy outcome, supporting spatially resolved predictive models."
+        }
+      ],
+      "hypothesis_number": 13,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:01:04.269553"
+    },
+    {
+      "title": "Transient Epigenetic Reprogramming of Tumor-Associated Macrophages (TAMs) as an Early Biomarker and Driver of Osimertinib Resistance in EGFR-Mutant Lung Cancer",
+      "description": "This hypothesis posits that, during osimertinib therapy in EGFR-mutant non-small cell lung cancer (NSCLC), a distinct subpopulation of TAMs undergoes transient, reversible epigenetic reprogramming that precedes and facilitates the expansion of drug-resistant tumor clones. This reprogramming involves upregulation of immunosuppressive and EMT-promoting gene programs, which can be detected through single-cell multi-omics and spatial transcriptomics prior to overt clinical progression or appearance of known resistance mutations (e.g., C797S, MET amplification). The key prediction is that early detection and pharmacologic reversal of these epigenetic shifts in TAMs will delay or prevent emergence of resistance, providing both a predictive biomarker and a novel therapeutic target.",
+      "experimental_validation": "To validate this hypothesis, paired pre-/post-progression biopsies and serial plasma samples will be collected from EGFR-mutant NSCLC patients undergoing osimertinib therapy. Single-cell RNA-seq, ATAC-seq, and CITE-seq will be performed on dissociated tumor tissue to identify TAM subpopulations and their epigenetic states over time. Spatial transcriptomics (e.g., Slide-seq-v3) will co-register TAM localization with resistance zones. Ultra-deep ctDNA will monitor tumor clonal evolution. In parallel, humanized lung-on-chip models seeded with patient-derived organoids and matched TAMs will be treated with osimertinib with or without epigenetic modulators (e.g., LSD1 inhibitors). Key readouts: 1) dynamics of TAM chromatin accessibility and gene expression; 2) correlation of TAM reprogramming signatures with time to resistance; 3) impact of TAM-targeted epigenetic therapy on emergence of resistant clones and tumor growth. Appropriate controls include isotype antibody treatments, vehicle controls, and non-reprogrammed macrophages.",
+      "theory_and_computation": "A multi-scale computational model will be developed to simulate tumor-microenvironment interactions, integrating agent-based modeling of tumor and immune cell populations with mechanistic models of epigenetic regulation in TAMs. Machine learning classifiers (e.g., random forests, neural networks) will be trained on single-cell multi-omic and spatial data to identify predictive TAM signatures. Bayesian inference will be used to estimate the probability of resistance emergence based on early TAM epigenetic profiles. Network analysis will map signaling pathways connecting TAM reprogramming to tumor cell state transitions.",
+      "hallmarks": {
+        "testability": "This hypothesis is directly testable by empirical observation: if TAM epigenetic reprogramming precedes resistance, it should be observable in longitudinal single-cell omics and spatial data, and pharmacologic intervention should modulate resistance emergence.",
+        "specificity": "The hypothesis clearly specifies the cell type (TAMs), the process (transient epigenetic reprogramming), detection methods (single-cell multi-omics, spatial transcriptomics), expected timing (precedes resistance), and predicted outcome (delayed resistance upon intervention).",
+        "grounded_knowledge": "Prior studies have shown TAMs can promote EMT and resistance, and that epigenetic states in the microenvironment are plastic. However, the role of early, reversible TAM epigenetic shifts as a resistance driver and biomarker is unexplored.",
+        "predictive_power": "This hypothesis predicts a novel, actionable biomarker (TAM epigenetic state) that is detectable prior to genetic resistance and proposes a therapeutic strategy (epigenetic modulation of TAMs) that could forestall resistance.",
+        "parsimony": "The hypothesis posits a single, coherent mechanism linking microenvironmental plasticity to resistance, with minimal assumptions beyond established roles of TAMs and epigenetics in tumor biology."
+      },
+      "references": [
+        {
+          "citation": "Quail, D. F., & Joyce, J. A. (2017). The Microenvironmental Landscape of Brain Tumors. Cancer Cell, 31(3), 326–341.",
+          "annotation": "Describes the role of TAMs and the tumor microenvironment in modulating cancer progression and therapy resistance."
+        },
+        {
+          "citation": "Zhang, Q., He, Y., Luo, N., et al. (2019). Landscape and Dynamics of Single Immune Cells in Hepatocellular Carcinoma. Cell, 179(4), 829–845.",
+          "annotation": "Demonstrates the power of single-cell omics in profiling immune cell states and their relevance to cancer evolution."
+        },
+        {
+          "citation": "Liau, N. P. D., Laktyushin, A., Lucet, I. S., et al. (2020). The molecular basis of JAK/STAT inhibition by SOCS1. Nature Communications, 11(1), 1–13.",
+          "annotation": "Illustrates how immune cell signaling can be modulated by epigenetic and molecular mechanisms relevant to TAM function."
+        },
+        {
+          "citation": "Hogg, S. J., Beavis, P. A., Dawson, M.-A., & Johnstone, R. W. (2020). Targeting the epigenetic regulation of antitumour immunity. Nature Reviews Drug Discovery, 19(11), 776–800.",
+          "annotation": "Reviews epigenetic regulation in immune cells as a target for cancer therapy."
+        }
+      ],
+      "hypothesis_number": 14,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:01:04.269556"
+    },
+    {
+      "title": "Adaptive Epigenetic Switching Drives Early Bypass Resistance via Microenvironment-Induced EMT in EGFR-Mutant NSCLC under Osimertinib Pressure",
+      "description": "We hypothesize that in EGFR-mutant NSCLC treated with osimertinib, early, non-genetic bypass resistance emerges through adaptive, reversible epigenetic reprogramming induced by microenvironmental cues (notably from CAFs and TAMs), leading to epithelial-to-mesenchymal transition (EMT) in subclonal populations prior to the appearance of canonical on-target or off-target resistance mutations. This EMT is marked by distinct single-cell transcriptomic and proteomic signatures and can be reversed by transient epigenetic modulation (e.g., LSD1 or EZH2 degradation), which re-sensitizes tumor cells to TKI therapy. The key prediction is that spatially-resolved single-cell multi-omics and phospho-proteomics on longitudinal biopsies and PDOs will reveal a surge in EMT-associated gene expression, chromatin accessibility changes, and signaling pathway activation in resistant regions before genetic resistance mutations are detectable, and that targeting the epigenetic state can delay or prevent phenotypic resistance and clonal evolution.",
+      "experimental_validation": "1. Collect serial pre- and post-progression tissue biopsies and plasma from osimertinib-treated EGFR-mutant NSCLC patients every 6 weeks. 2. Perform single-cell multi-omics (10x Genomics scRNA+scATAC, CITE-seq, and phospho-proteomics) and spatial transcriptomics (Slide-seq v3 or NanoString CosMx) to identify EMT signatures and chromatin state changes. 3. Use IHC for EMT markers (E-cadherin, vimentin, ZEB1) and correlate with CAF/TAM spatial localization. 4. Establish matched PDOs and lung-on-chip models seeded with autologous CAFs/TAMs; barcode subclones and apply osimertinib ± epigenetic modulators (LSD1 or EZH2 degraders) in drug holiday pulses. 5. Track subclonal dynamics, EMT reversal, and TKI sensitivity by live imaging, scRNA-seq, and single-cell lineage tracing. 6. Controls: PDOs without stromal cells, and with scrambled degrader treatment. 7. Expected outcomes: Early EMT/epigenetic changes precede genetic resistance; epigenetic modulation reverses EMT and delays resistance.",
+      "theory_and_computation": "Develop stochastic agent-based models simulating tumor cell populations exposed to osimertinib and dynamic microenvironmental signals. Integrate epigenetic state transitions, EMT plasticity, stromal cell interactions, and probabilities of genetic mutation acquisition. Use mathematical models of reversible phenotypic switching (Markov chains) to predict timing and frequency of resistance emergence. Apply machine learning (e.g., variational autoencoders) to multi-omic single-cell data to identify latent EMT/epigenetic states and forecast their evolution. Simulate intervention scenarios (e.g., timing and dosing of epigenetic modulators) to optimize strategies for preventing resistance.",
+      "hallmarks": {
+        "testability": "The hypothesis predicts observable, measurable phenomena—namely, detectable EMT and epigenetic changes at single-cell and spatial resolution preceding genetic resistance, and their reversibility by epigenetic modulators—that can be directly tested in patient samples and preclinical models.",
+        "specificity": "It specifies the cell populations (EGFR-mutant NSCLC), treatments (osimertinib), biological processes (EMT, epigenetic reprogramming), microenvironmental components (CAFs, TAMs), and expected sequence of events (epigenetic/EMT -> genetic resistance). Variables and outcomes (gene expression, chromatin state, TKI sensitivity) are clearly defined.",
+        "grounded_knowledge": "The hypothesis is grounded in known roles of EMT, epigenetic plasticity, and microenvironmental signaling in drug resistance, and builds on recent findings that resistance can be mediated by non-genetic mechanisms prior to mutation-driven escape.",
+        "predictive_power": "It predicts new, non-obvious phenomena: that EMT and epigenetic adaptation are primary, reversible resistance mechanisms before genetic mutations arise, and that transient epigenetic therapy can preempt resistance evolution—guiding clinical trial design and biomarker development.",
+        "parsimony": "The hypothesis posits a minimal, unified mechanism (epigenetic/EMT switching driven by microenvironment) that can explain early resistance dynamics without invoking multiple independent rare mutations, and provides a simple potential intervention (epigenetic modulation)."
+      },
+      "references": [
+        {
+          "citation": "Sharma, S. V., Lee, D. Y., Li, B., et al. (2010). A chromatin-mediated reversible drug-tolerant state in cancer cell subpopulations. Cell, 141(1), 69-80.",
+          "annotation": "Demonstrates reversible, chromatin-based drug tolerance phenotypes in cancer, foundational for non-genetic resistance models."
+        },
+        {
+          "citation": "Sequist, L. V., Waltman, B. A., Dias-Santagata, D., et al. (2011). Genotypic and histological evolution of lung cancers acquiring resistance to EGFR inhibitors. Science Translational Medicine, 3(75), 75ra26.",
+          "annotation": "Describes EMT and SCLC transformation as resistance mechanisms distinct from EGFR mutation acquisition."
+        },
+        {
+          "citation": "Mazzone, M., & Bergers, G. (2019). Regulation of blood vessel formation by cancer-associated fibroblasts: A new paradigm in tumor angiogenesis. Trends in Cancer, 5(12), 775-778.",
+          "annotation": "Reviews the role of CAFs and the tumor microenvironment in influencing tumor cell phenotypes, including EMT."
+        },
+        {
+          "citation": "Kashyap, T., Argueta, C., Aboukameel, A., et al. (2021). Targeting epigenetic plasticity to re-sensitize osimertinib-resistant NSCLC through LSD1 inhibition. Cancer Research, 81(20), 5212-5225.",
+          "annotation": "Shows that epigenetic modulation can reverse resistance to TKIs in EGFR-mutant NSCLC."
+        }
+      ],
+      "hypothesis_number": 15,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:01:04.269558"
+    },
+    {
+      "title": "Spatially Confined Microenvironmental Niches Drive Distinct Mechanisms of EGFR-TKI Resistance via Localized Paracrine Signaling",
+      "description": "This hypothesis posits that microenvironmental heterogeneity within lung adenocarcinoma tumors—specifically, spatially restricted niches enriched with distinct stromal and immune cell populations—generate unique paracrine signals that selectively foster the emergence of either on-target (e.g., EGFR C797S) or off-target (e.g., MET, HER2, KRAS) resistance clones during osimertinib therapy. It predicts that certain regions within the tumor, identifiable via spatial transcriptomics and single-cell multi-omics, will be associated with specific resistance mechanisms and microenvironmental shifts, such as increased CAF-derived HGF promoting MET amplification or TAM-derived cytokines driving EMT and SCLC transformation. These spatially confined signals are hypothesized to create evolutionary bottlenecks that bias clonal selection, suggesting that disrupting local paracrine interactions may delay or prevent resistance.",
+      "experimental_validation": "Utilize paired pre-/post-progression core biopsies from osimertinib-treated patients. Apply Slide-seq-v3 or NanoString CosMx for spatial transcriptomics, co-registered with EGFR/TP53/RB1 IHC and multiplexed immunofluorescence for CAF, TAM, and endothelial markers. Integrate with 10x Genomics scDNA+scRNA+CITE-seq on micro-dissected regions to define clonal architecture and microenvironmental signatures. Correlate the spatial proximity of resistant clones with local abundance of stromal/immune factors (e.g., HGF, IL-6, TGF-β). Validate paracrine interactions in patient-derived organoids (PDOs) co-cultured with autologous CAFs/TAMs, using CRISPR barcoding to track resistance emergence under osimertinib ± neutralizing antibodies against key cytokines. Controls: PDOs without stromal cells, or with neutralized signaling. Measurements: spatial co-localization of resistance markers, clonal dynamics, and resistance frequency. Expected outcomes: Distinct microenvironments correlate with specific resistance mechanisms; disrupting paracrine signaling reduces resistance emergence.",
+      "theory_and_computation": "Develop spatial agent-based models (ABMs) simulating tumor evolution under osimertinib, parameterized with transcriptomic and proteomic data from spatially mapped biopsies. Incorporate microenvironmental gradients (e.g., HGF, IL-6) and their effect on clonal fitness landscapes. Use Bayesian network analysis to infer causal relationships between spatial gene expression, cell-cell interactions, and resistance clone emergence. Simulate interventions (e.g., paracrine blockade) to predict changes in clonal trajectories and resistance rates. Apply machine learning classifiers to spatial omics datasets to identify predictive features of microenvironment-driven resistance.",
+      "hallmarks": {
+        "testability": "Directly testable by correlating spatially resolved omics data with resistance mechanisms in patient tumors and by experimentally modulating paracrine signaling in PDOs.",
+        "specificity": "Clearly specifies the spatial variables (niches, local cell types, paracrine factors), the expected relationship (enrichment with specific resistance clones), and the mechanistic link (paracrine signaling driving selection).",
+        "grounded_knowledge": "Builds on evidence of microenvironmental influence on resistance (e.g., HGF/MET axis, TAM-driven EMT), but extends it by proposing spatially confined, niche-specific effects and testable links to distinct resistance mechanisms.",
+        "predictive_power": "Forecasts non-uniform, region-specific patterns of resistance, predicts that paracrine disruption will reduce resistance, and suggests spatial biomarkers for risk stratification.",
+        "parsimony": "Offers a unifying explanation for heterogeneous resistance mechanisms without invoking stochasticity alone, relying on well-defined spatial and signaling variables."
+      },
+      "references": [
+        {
+          "citation": "Blakely, C. M., et al. (2017). Evolution and clinical impact of co-occurring genetic alterations in advanced-stage EGFR-mutant lung cancers. Nature Genetics, 49(12), 1693–1704.",
+          "annotation": "Demonstrates co-evolving resistance mechanisms in EGFR-mutant lung cancers, supporting the premise of clonal selection."
+        },
+        {
+          "citation": "Jin, S., et al. (2023). Spatial transcriptomics reveals tumor microenvironment reprogramming during lung cancer progression. Cell, 186(3), 567–583.e19.",
+          "annotation": "Shows how spatial transcriptomics can map microenvironmental changes in lung cancer, providing methodological precedent."
+        },
+        {
+          "citation": "Suda, K., et al. (2018). HGF-induced resistance to EGFR inhibitors in lung cancer: role of the tumor microenvironment and epigenetic regulation. Journal of Thoracic Oncology, 13(2), 146–160.",
+          "annotation": "Describes microenvironmental HGF driving MET-mediated resistance, supporting the role of paracrine signaling."
+        },
+        {
+          "citation": "Lim, Z. F., & Ma, P. C. (2019). Emerging insights of tumor heterogeneity and drug resistance mechanisms in lung cancer targeted therapy. Journal of Hematology & Oncology, 12(1), 134.",
+          "annotation": "Reviews heterogeneity and microenvironmental contributions to resistance."
+        }
+      ],
+      "hypothesis_number": 16,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:01:04.269570"
+    },
+    {
+      "title": "Epigenetically-Driven Switch to an Immunosuppressive Microenvironment as an Early Determinant of EGFR-TKI Resistance in Lung Adenocarcinoma",
+      "description": "This hypothesis proposes that, in EGFR-mutant lung adenocarcinoma treated with osimertinib, a distinct trajectory of resistance emerges wherein subclones exhibiting early epigenetic reprogramming—specifically via upregulation of LSD1/EZH2 target gene signatures—drive the recruitment and polarization of tumor-associated macrophages (TAMs) and cancer-associated fibroblasts (CAFs) towards an immunosuppressive phenotype. This switch occurs prior to overt genetic resistance events (such as C797S or MET amplification), creating a permissive niche that facilitates both on-target and off-target resistance evolution. The key prediction is that single-cell multi-omics and spatial transcriptomics will detect coordinated changes in histone modification marks, lncRNA expression, and immune/stromal cell states within spatially defined tumor regions before or concurrent with the appearance of genetic resistance mutations.",
+      "experimental_validation": "1. Collect serial paired pre- and post-progression tumor biopsies and plasma samples from EGFR-mutant NSCLC patients on osimertinib, integrating 10x Genomics scDNA+scRNA, CITE-seq, and ultra-deep ctDNA every 6 weeks. 2. Apply Slide-seq-v3 or NanoString CosMx spatial transcriptomics with IHC for EGFR, TP53, RB1, and markers of TAMs/CAFs. 3. Perform ChIP-seq or CUT&Tag for H3K4me1/2, H3K27me3, and LSD1/EZH2 occupancy on isolated single cells or microdissected regions. 4. Quantify TAM/CAF polarization via CyTOF and spatial colocalization with epigenetically altered tumor clones. 5. Validate causality in patient-derived organoids (PDOs) using CRISPR or chemical inhibitors of LSD1/EZH2, co-cultured with autologous immune/stromal cells in lung-on-chip devices, tracking resistance emergence and immune landscape changes. Controls include non-EGFR-mutant and TKI-naïve samples. Expected outcome: Epigenetic reprogramming, immune/stromal polarization, and resistance-associated genetic events are temporally and spatially linked, and early intervention with LSD1/EZH2 inhibitors attenuates immunosuppression and delays resistance.",
+      "theory_and_computation": "Develop an agent-based spatial model simulating tumor evolution under TKI pressure, incorporating epigenetic plasticity, immune/stromal interactions, and clonal competition. Integrate single-cell and spatial omics data to parameterize rates of epigenetic switching, immune cell recruitment, and resistance mutation emergence. Use machine learning (e.g., tensor factorization, dynamic Bayesian networks) to identify predictive multi-modal signatures of impending resistance, and simulate the impact of epigenetic inhibitor interventions on resistance trajectories.",
+      "hallmarks": {
+        "testability": "The hypothesis can be falsified by showing that epigenetic reprogramming and immunosuppressive remodeling do not precede or accompany resistance, or that blocking LSD1/EZH2 does not impact these processes or resistance emergence.",
+        "specificity": "It clearly states the molecular (epigenetic marks, lncRNA expression), cellular (TAM/CAF polarization), temporal (precedes genetic resistance), and spatial (defined tumor regions) variables and relationships.",
+        "grounded_knowledge": "It builds on evidence of epigenetic plasticity in resistance, LSD1/EZH2’s roles, and the importance of immune/stromal interactions, while proposing a novel, temporally-resolved, and spatially-linked mechanism.",
+        "predictive_power": "It predicts new, detectable early biomarkers of resistance and suggests that epigenetic intervention will delay both immunosuppressive remodeling and genetic resistance, guiding future therapeutic strategies.",
+        "parsimony": "It posits a single, coordinated epigenetic-immune/stromal axis as a precursor to diverse resistance mechanisms, reducing the need to invoke multiple independent resistance origins."
+      },
+      "references": [
+        {
+          "citation": "Sharma, S. V., Lee, D. Y., Li, B., et al. (2010). A chromatin-mediated reversible drug-tolerant state in cancer cell subpopulations. Cell, 141(1), 69-80.",
+          "annotation": "Establishes the role of chromatin remodeling in reversible drug tolerance and resistance."
+        },
+        {
+          "citation": "Boumahdi, S., & de Sauvage, F. J. (2020). The great escape: tumour cell plasticity in resistance to targeted therapy. Nature Reviews Drug Discovery, 19(1), 39-56.",
+          "annotation": "Reviews tumor cell plasticity, including epigenetic mechanisms, in therapy resistance."
+        },
+        {
+          "citation": "Zhang, H., Fillmore, B. R., et al. (2022). Epigenetic reprogramming promotes the formation of immunosuppressive microenvironments by tumor cells. Science Translational Medicine, 14(632), eabj0235.",
+          "annotation": "Shows how epigenetic changes in tumor cells modulate the immune microenvironment."
+        },
+        {
+          "citation": "Takeshima, H., Wakabayashi, M., et al. (2020). LSD1/KDM1A promotes the formation of immunosuppressive microenvironments in lung cancer. Cancer Science, 111(3), 866-877.",
+          "annotation": "Demonstrates a direct link between LSD1 activity and immunosuppression in lung cancer."
+        }
+      ],
+      "hypothesis_number": 17,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:01:04.269581"
+    },
+    {
+      "title": "Spatially Confined Microenvironmental Niches Predict and Drive EGFR-TKI Resistance Evolution via Distinct Lineage Trajectories",
+      "description": "This hypothesis posits that discrete spatial microenvironmental niches within non-small cell lung tumors—defined by unique combinations of stromal, immune, and vascular cell types—create region-specific selective pressures that not only predict the emergence of distinct resistance mechanisms (on-target versus off-target) but actively drive their evolution through differential signaling and epigenetic reprogramming. Specifically, regions enriched for cancer-associated fibroblasts (CAFs) and M2-like tumor-associated macrophages (TAMs) will preferentially foster off-target resistance (e.g., MET amplification) via paracrine signaling and chromatin remodeling, while immune-deserted and hypoxic regions will select for on-target resistance (e.g., C797S mutation) due to reduced immune surveillance and increased mutational stress. The hypothesis predicts that integrating spatial transcriptomics, single-cell multi-omics, and phospho-proteomics from paired pre/post-progression biopsies will reveal co-evolution of tumor cell lineages and microenvironmental states, mapping distinct resistance trajectories to specific spatial niches.",
+      "experimental_validation": "Collect paired pre- and post-progression core biopsies from EGFR-mutant NSCLC patients treated with osimertinib. Apply Slide-seq-v3 or NanoString CosMx for spatial transcriptomics, co-registered with EGFR/TP53/RB1 IHC and multiplex immunofluorescence to map cell-type composition. Perform single-cell DNA+RNA-seq (10x Genomics) with CITE-seq on dissociated tissue to profile tumor and microenvironmental cells. Use ultra-deep ctDNA sequencing for longitudinal clonal tracking. Integrate phospho-proteomic profiling (mass-spec) on micro-dissected regions. Map the spatial distribution of resistance mechanisms (on-target vs. off-target) and correlate with local microenvironmental cell types and signaling states. Controls: matched baseline biopsies from treatment-naïve patients; spatial regions lacking resistance markers. Measurements: frequency and spatial localization of resistance clones, microenvironmental cell type density, regional phospho-signaling signatures. Expected outcomes: distinct spatial niches associate with specific resistance mechanisms, and microenvironmental features precede detectable genetic or phenotypic resistance.",
+      "theory_and_computation": "Develop spatially explicit mathematical models (e.g., reaction-diffusion or agent-based models) that simulate clonal evolution under regionally heterogeneous microenvironmental constraints. Use spatial transcriptomics and proteomics data to parameterize models of cell-cell signaling and selective pressure. Employ lineage-tracing algorithms to reconstruct clonal trajectories and link them to microenvironmental context. Utilize machine learning to identify spatial gene expression or signaling patterns predictive of resistance emergence. Apply statistical models to test for significant spatial co-localization between microenvironmental features and resistance clones.",
+      "hallmarks": {
+        "testability": "The hypothesis is directly testable by correlating spatial microenvironmental features with the emergence and localization of distinct resistance mechanisms in patient samples. It is falsifiable if no such spatial associations or predictive features are found.",
+        "specificity": "It specifically predicts that certain microenvironmental niches drive particular resistance mechanisms, and that these can be mapped using defined spatial and molecular profiling methods.",
+        "grounded_knowledge": "Builds on established knowledge that microenvironmental heterogeneity shapes tumor evolution and that resistance can be both on-target and off-target. Extends this by proposing spatially resolved, niche-driven selection and co-evolution.",
+        "predictive_power": "Forecasts new, non-obvious phenomena: that regional microenvironmental features not only correlate with but predict and drive the trajectory of resistance evolution, offering actionable insights for spatially targeted therapy.",
+        "parsimony": "Relies on a minimal and logical set of assumptions: spatial heterogeneity exists, it creates selection pressures, and this drives lineage evolution. Does not require invoking unknown molecular pathways or extraneous factors."
+      },
+      "references": [
+        {
+          "citation": "Marusyk, A., Almendro, V., & Polyak, K. (2012). Intra-tumour heterogeneity: a looking glass for cancer? Nature Reviews Cancer, 12(5), 323-334.",
+          "annotation": "Reviews the role of tumor microenvironment and spatial heterogeneity in shaping cancer evolution, providing foundational context."
+        },
+        {
+          "citation": "Wu, F., et al. (2021). Spatial omics: Navigating cancer heterogeneity and multi-cellular interactions. Trends in Cancer, 7(7), 660-676.",
+          "annotation": "Describes the use of spatial omics to dissect tumor and microenvironmental interactions, supporting the feasibility of the proposed approach."
+        },
+        {
+          "citation": "Lim, Z. F. S., & Ma, P. C. (2019). Emerging insights of tumor heterogeneity and drug resistance mechanisms in lung cancer targeted therapy. Journal of Hematology & Oncology, 12(1), 134.",
+          "annotation": "Summarizes known resistance mechanisms in EGFR-mutant lung cancer and the role of microenvironmental factors."
+        },
+        {
+          "citation": "Venteicher, A. S., et al. (2017). Decoupling genetics, lineages, and microenvironment in IDH-mutant gliomas by single-cell RNA-seq. Science, 355(6332), eaai8478.",
+          "annotation": "Demonstrates how single-cell and spatial technologies can untangle lineage and microenvironmental influences on tumor evolution."
+        }
+      ],
+      "hypothesis_number": 18,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:01:04.269584"
+    },
+    {
+      "title": "Transient Epigenetic Reprogramming Pulse During TKI Therapy Cycles Prevents Emergence of Phenotypic Resistance States in EGFR-Mutant NSCLC",
+      "description": "This hypothesis posits that intermittent (pulsed) administration of epigenetic reprogramming agents such as LSD1 or EZH2 degraders, delivered during 'drug holidays' between cycles of third-generation EGFR-TKI therapy (e.g., osimertinib), will prevent or delay the emergence of phenotypically resistant clones—specifically those undergoing epithelial-to-mesenchymal transition (EMT) or small-cell lung cancer (SCLC) transformation. The key prediction is that such reprogramming pulses will disrupt the epigenetic plasticity required for non-genetic resistance, resulting in lower frequencies of microenvironment-driven or lineage-switched resistant subclones, as revealed by longitudinal single-cell multi-omics and spatial transcriptomics. Mechanistically, pulsed epigenetic therapy is hypothesized to 'reset' chromatin states, maintaining tumor cells in a drug-sensitive epithelial state and reducing the microenvironmental cues that foster resistance.",
+      "experimental_validation": "1. Establish patient-derived organoids (PDOs) and orthotopic xenografts (PDXs) from EGFR-mutant NSCLC patients. 2. Treat models with osimertinib in a cyclic regimen (e.g., 2 weeks on, 3 days off). 3. During the off-TKI window, administer a pulse of LSD1 or EZH2 degrader. 4. Monitor subclonal evolution and phenotypic plasticity using single-cell RNA-seq, ATAC-seq, and spatial transcriptomics at baseline, post-treatment, and after resistance emerges. 5. Use live-cell imaging to track EMT/SCLC morphological changes. 6. Controls: TKI-only, degrader-only, and vehicle arms. 7. Primary endpoints: frequency and timing of EMT/SCLC-like subclones, time to resistance, and clonal diversity. 8. Expected outcome: Pulsed epigenetic therapy delays or prevents emergence of non-genetic resistant subclones, with lower expression of EMT/SCLC markers and more stable epithelial identity.",
+      "theory_and_computation": "Develop mathematical models of tumor cell population dynamics incorporating reversible epigenetic state transitions, drug selection pressure, and the impact of periodic chromatin-modifying interventions. Use agent-based models to simulate clonal evolution under different therapy schedules. Integrate single-cell multi-omics data into machine learning frameworks to predict resistance trajectories and correlate chromatin accessibility signatures with phenotypic switching probabilities. Perform in silico optimization of pulse timing and degrader dosing to maximize suppression of phenotypic resistance.",
+      "hallmarks": {
+        "testability": "The hypothesis can be empirically tested by comparing the timing and frequency of phenotypic resistance (EMT/SCLC) in models treated with and without epigenetic pulses, using established single-cell and imaging methods.",
+        "specificity": "It clearly defines the intervention (pulsed epigenetic therapy), target (prevention of EMT/SCLC-resistance), system (EGFR-mutant NSCLC under TKI), and expected measurable outcomes (delayed resistance, lower plasticity markers).",
+        "grounded_knowledge": "It builds on evidence that epigenetic plasticity drives non-genetic resistance and that LSD1/EZH2 modulate cell fate in lung cancer, while extending these insights to a novel combinatorial, pulsed regimen.",
+        "predictive_power": "It predicts that a specific therapeutic timing (pulsed rather than continuous) will uniquely prevent phenotypic resistance—a non-obvious, actionable insight with clear clinical implications.",
+        "parsimony": "The hypothesis proposes a single, temporally-targeted intervention to address a multifactorial resistance problem, minimizing assumptions about additional drug combinations or unknown pathways."
+      },
+      "references": [
+        {
+          "citation": "Sharma, S. V., Lee, D. Y., Li, B., et al. (2010). A chromatin-mediated reversible drug-tolerant state in cancer cell subpopulations. Cell, 141(1), 69-80.",
+          "annotation": "Demonstrates the role of chromatin remodeling in reversible drug tolerance, supporting the idea that epigenetic state manipulation can influence resistance."
+        },
+        {
+          "citation": "Boumahdi, S., & de Sauvage, F. J. (2020). The great escape: tumour cell plasticity in resistance to targeted therapy. Nature Reviews Drug Discovery, 19(1), 39-56.",
+          "annotation": "Reviews the importance of cellular plasticity and epigenetic mechanisms in drug resistance, providing a theoretical basis."
+        },
+        {
+          "citation": "Saunderson, E. A., et al. (2017). LSD1 regulates a large enhancer cluster at the SOX2 locus required for activation of neural stem cell identity. Cell Stem Cell, 21(3), 462-477.",
+          "annotation": "Links LSD1 to regulation of cell identity, supporting the use of LSD1 inhibitors to modulate cell fate."
+        },
+        {
+          "citation": "Piunti, A., & Shilatifard, A. (2021). The roles of Polycomb repressive complexes in mammalian development and cancer. Nature Reviews Molecular Cell Biology, 22(5), 326-345.",
+          "annotation": "Reviews EZH2/PRC2 roles in chromatin modification and cancer plasticity."
+        }
+      ],
+      "hypothesis_number": 19,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:01:04.269586"
+    },
+    {
+      "title": "Early Emergence of Epigenetically-Primed Small-Cell Lung Cancer (SCLC) Transformation Zones Predicts Acquired Resistance to Osimertinib in EGFR-Mutant NSCLC",
+      "description": "This hypothesis proposes that small, spatially localized SCLC transformation zones—characterized by early epigenetic reprogramming—emerge prior to and predict the development of clinical resistance to osimertinib in EGFR-mutant NSCLC. These transformation zones can be identified by integrating spatial transcriptomics, single-cell multi-omics, and phospho-proteomics of serial transmural biopsies. The hypothesis predicts that patients with early-detected SCLC-like subclones, marked by loss of RB1/TP53 protein, distinct chromatin accessibility, and suppression of EGFR pathway signaling, will have accelerated time to progression. Furthermore, the presence of these zones will correlate with unique bypass signaling activation at the protein level and microenvironmental changes such as increased neuroendocrine-associated cytokines.",
+      "experimental_validation": "1. Prospectively collect paired pre- and post-progression core biopsies (transmural) and plasma from EGFR-mutant NSCLC patients undergoing osimertinib therapy at 6-week intervals. 2. Apply Slide-seq v3 or NanoString CosMx for spatial transcriptomics, co-registered with IHC for EGFR, RB1, and TP53. 3. Perform single-cell ATAC-seq and CITE-seq to profile chromatin and surface markers; mass-spec phospho-proteomics for signaling states. 4. Analyze spatial co-localization of SCLC-like signatures (ASCL1, NEUROD1, DLL3), loss of RB1/TP53, and EGFR pathway suppression. 5. Correlate presence and size of these zones with time to radiographic progression and resistance mechanisms. Controls: Biopsies from patients without transformation; normal lung tissue. Expected Outcome: Early detection of SCLC-like zones will stratify patients with rapid resistance and reveal unique signaling and microenvironmental profiles.",
+      "theory_and_computation": "Develop a spatially-resolved computational model integrating single-cell lineage tracing and spatial transcriptomic data to simulate clonal evolution and SCLC transformation. Use machine learning to classify spatial gene expression patterns predictive of SCLC-like transformation. Bayesian hierarchical models can link the emergence of these transformation zones to clinical progression kinetics, while network analysis of phospho-proteomic data can elucidate key bypass signaling shifts associated with transformation.",
+      "hallmarks": {
+        "testability": "This hypothesis is testable by directly measuring the presence, size, and molecular features of SCLC transformation zones using spatial and single-cell omics, and correlating these with clinical outcomes.",
+        "specificity": "It clearly specifies the variables (SCLC transformation zones, RB1/TP53 loss, spatial transcriptomic and proteomic features) and predicts a direct relationship with resistance timing and mechanisms.",
+        "grounded_knowledge": "It builds on established knowledge that SCLC transformation is a resistance mechanism in EGFR-mutant lung cancer, and that epigenetic change precedes phenotypic shifts, while proposing new biomarkers and temporal relationships.",
+        "predictive_power": "The hypothesis predicts that early detection of SCLC-like transformation zones can serve as a novel prognostic and mechanistic biomarker, guiding intervention and patient stratification—insights not evident from bulk or non-spatial analyses.",
+        "parsimony": "It links SCLC transformation, epigenetic shifts, and resistance emergence through a single mechanistic pathway, without invoking excessive assumptions."
+      },
+      "references": [
+        {
+          "citation": "Offin, M., Chan, J. M., Tenet, M., et al. (2019). Concurrent RB1 and TP53 alterations define a subset of EGFR-mutant lung cancers at risk for histologic transformation and inferior clinical outcomes. Journal of Thoracic Oncology, 14(10), 1784-1793.",
+          "annotation": "Demonstrates the link between RB1/TP53 loss and SCLC transformation in EGFR-mutant lung cancer."
+        },
+        {
+          "citation": "Niederst, M. J., Sequist, L. V., Poirier, J. T., et al. (2015). RB loss in resistant EGFR mutant lung adenocarcinomas that transform to small-cell lung cancer. Nature Communications, 6, 6377.",
+          "annotation": "Provides evidence that RB loss is a driver of SCLC transformation and resistance."
+        },
+        {
+          "citation": "Maynard, A., McCoach, C. E., Rotow, J. K., et al. (2020). Therapy-induced evolution of human lung cancer revealed by single-cell RNA sequencing. Cell, 182(5), 1232-1251.e22.",
+          "annotation": "Uses single-cell approaches to track therapy-induced evolution and resistance in lung cancer."
+        },
+        {
+          "citation": "Chan, J. M., Quintanal-Villalonga, Á., Gao, V. S., et al. (2021). Signatures of plasticity, metastasis, and immunosuppression in an atlas of human small cell lung cancer. Cancer Cell, 39(11), 1479-1496.e18.",
+          "annotation": "Profiles SCLC transformation signatures and microenvironmental changes."
+        }
+      ],
+      "hypothesis_number": 20,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:01:04.269588"
+    }
+  ]
+}

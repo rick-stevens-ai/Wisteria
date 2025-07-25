@@ -1,0 +1,726 @@
+{
+  "metadata": {
+    "session_type": "interactive",
+    "research_goal": "Overcoming resistance in EGFR‑mutant lung cancer requires an integrated strategy that first dissects tumor evolution in exquisite detail—via longitudinal single‑cell and spatial multi‑omics, phospho‑proteomics, and deep ctDNA monitoring—to reveal on‑target mutations, bypass pathways, and micro‑environmental shifts; then models these dynamics in next‑generation platforms such as barcoded patient‑derived organoids, humanized lung‑on‑chip systems, and in vivo CRISPR screens to uncover actionable vulnerabilities; next, deploys tailored interventions ranging from fourth‑generation covalent or degradative EGFR inhibitors, bispecific antibodies and ADCs, to rational combination or sequential regimens that anticipate evolutionary trajectories; simultaneously targets epigenetic plasticity, non‑coding RNA networks, and immuno‑stromal crosstalk to blunt phenotype switching and micro‑environment‑driven escape; and finally ties the entire effort together with real‑time data infrastructure and AI reasoning tools that transform granular patient data into adaptive trial designs and early‑stage preventative strategies, collectively creating a feedback loop that predicts, intercepts, and ultimately prevents therapeutic resistance.",
+    "model": "argo:gpt-4.1",
+    "model_name": "argo:gpt-4.1",
+    "num_unique_hypotheses": 20,
+    "total_hypothesis_versions": 20,
+    "timestamp": "2025-07-23T18:14:52.905383",
+    "hypothesis_types": {
+      "original": 20,
+      "improvements": 0,
+      "new_alternatives": 0
+    }
+  },
+  "hypotheses": [
+    {
+      "title": "Transient Epigenetic Reprogramming as a Driver of Early Resistance in EGFR-Mutant Lung Cancer",
+      "description": "This hypothesis proposes that in EGFR-mutant lung cancer, a small subset of tumor cells undergoes transient, reversible epigenetic reprogramming in response to EGFR inhibitor therapy, enabling rapid adaptation and survival before the emergence of fixed genetic resistance mutations. Specifically, these cells activate a chromatin state characterized by increased accessibility at loci governing stemness, epithelial-mesenchymal transition (EMT), and drug efflux, mediated through changes in histone modifications and non-coding RNA networks. This early, plastic adaptation occurs independently of DNA sequence changes and precedes—and may potentiate—the selection of stable, genetically resistant clones. Targeting this transient epigenetic state with specific chromatin-modifying drugs in combination with EGFR inhibitors will delay or prevent the development of resistance.",
+      "experimental_validation": "1. Use longitudinal single-cell ATAC-seq and RNA-seq on EGFR-mutant lung cancer cell lines and patient-derived organoids treated with third-generation EGFR inhibitors to detect subpopulations with dynamic, reversible chromatin remodeling.\n2. Validate the presence of a transient, stem-like/EMT chromatin signature using ChIP-seq for key histone marks (e.g., H3K27ac, H3K4me3, H3K27me3) and single-molecule imaging of chromatin accessibility.\n3. Employ CRISPR interference (CRISPRi) screens targeting chromatin remodelers (e.g., EZH2, HDACs, SWI/SNF complex) and non-coding RNAs upregulated during this state to identify essential regulators.\n4. Test the effect of combining selective epigenetic inhibitors (e.g., EZH2 inhibitors, HDAC inhibitors) with EGFR inhibitors on the emergence of resistance in barcoded organoids and in vivo xenograft models, using deep sequencing to track clonal evolution.\n5. Use ctDNA and chromatin fragmentomics in patient samples enrolled in combination trials to monitor the timing and dynamics of resistance emergence.\nExpected outcome: Disruption of the transient epigenetic state reduces or delays the outgrowth of resistant clones compared to EGFR inhibitor monotherapy.",
+      "theory_and_computation": "Develop a stochastic mathematical model of tumor evolution incorporating reversible epigenetic state transitions, genetic mutation rates, and drug selection pressures. Use agent-based simulations to predict population dynamics under different therapy regimens, parameterized with single-cell omics data. Machine learning algorithms can integrate chromatin accessibility and transcriptomic features to classify transiently reprogrammed cells and forecast their contribution to resistance. Bayesian inference methods can be applied to ctDNA and chromatin data to estimate the timing and frequency of epigenetic versus genetic resistance mechanisms in patient cohorts.",
+      "hallmarks": {
+        "testability": "The hypothesis is testable by detecting, isolating, and functionally perturbing the transient epigenetic state in vitro and in vivo, and by measuring its impact on resistance development using established omics and genetic tools.",
+        "specificity": "It precisely specifies the nature (transient, reversible chromatin state), timing (early after therapy), and mechanisms (chromatin modifications, non-coding RNAs) of the proposed adaptation, and predicts specific outcomes from pharmacological intervention.",
+        "grounded_knowledge": "It builds on evidence that epigenetic plasticity and non-genetic heterogeneity contribute to drug tolerance in cancer, but extends this to propose a distinct, targetable transient state as a critical mediator in EGFR-mutant lung cancer.",
+        "predictive_power": "It predicts that targeting the transient state will delay resistance more effectively than targeting only genetically resistant clones, and that chromatin/ctDNA signatures will precede genetic resistance in patient samples.",
+        "parsimony": "The hypothesis invokes a single, reversible mechanism (epigenetic reprogramming) to explain early adaptation, rather than requiring multiple independent genetic events, making it conceptually simple yet broadly explanatory."
+      },
+      "references": [
+        {
+          "citation": "Sharma, S. V., et al. (2010). A chromatin-mediated reversible drug-tolerant state in cancer cell subpopulations. Cell, 141(1), 69-80.",
+          "annotation": "Seminal work demonstrating reversible, chromatin-dependent drug-tolerant states in cancer, supporting the plausibility of transient epigenetic resistance."
+        },
+        {
+          "citation": "Boumahdi, S. & de Sauvage, F. J. (2020). The great escape: tumour cell plasticity in resistance to targeted therapy. Nature Reviews Drug Discovery, 19(1), 39-56.",
+          "annotation": "Review of cellular plasticity and drug resistance mechanisms, emphasizing the role of non-genetic adaptation."
+        },
+        {
+          "citation": "Hata, A. N., et al. (2016). Tumor cells can follow distinct evolutionary paths to become resistant to epidermal growth factor receptor inhibition. Nature Medicine, 22(3), 262-269.",
+          "annotation": "Describes clonal evolution and resistance trajectories in EGFR-mutant lung cancer."
+        },
+        {
+          "citation": "Aguirre, A. J., et al. (2021). Real-time mapping of drug response and resistance mechanisms in patient-derived organoids. Nature, 595(7867), 432-437.",
+          "annotation": "Demonstrates the use of patient-derived organoids to model resistance and test interventions."
+        },
+        {
+          "citation": "Suva, M. L., & Tirosh, I. (2019). Single-cell RNA sequencing in cancer: lessons learned and emerging challenges. Molecular Cell, 75(1), 7-12.",
+          "annotation": "Discusses the power of single-cell omics to dissect tumor heterogeneity and evolution."
+        }
+      ],
+      "hypothesis_number": 1,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:13:47.677440"
+    },
+    {
+      "title": "Transient Epigenetic Reprogramming of Tumor-Associated Fibroblasts Drives Adaptive EGFR Inhibitor Resistance via Secreted Non-Coding RNAs",
+      "description": "This hypothesis proposes that, in EGFR-mutant lung cancer, tumor-associated fibroblasts (TAFs) undergo rapid and reversible epigenetic reprogramming upon initial EGFR inhibitor therapy. This reprogramming leads to the secretion of specific non-coding RNAs (ncRNAs)—notably, microRNAs and long non-coding RNAs—into the tumor microenvironment. These secreted ncRNAs are subsequently taken up by cancer cells, where they modulate bypass signaling pathways (such as MET, HER2, or AXL) and facilitate phenotype switching, thus promoting adaptive resistance. Key predictions include: (1) EGFR inhibitor exposure induces distinct, transient epigenetic marks in TAFs preceding resistance; (2) TAF-derived ncRNAs are enriched in resistant tumor cell populations and their exosomes; (3) blocking TAF ncRNA release or transfer delays or prevents resistance emergence.",
+      "experimental_validation": "Longitudinal co-culture experiments will be conducted using EGFR-mutant lung cancer cell lines and primary TAFs derived from patient tumors, both in standard 2D and 3D organoid systems. EGFR inhibitors (e.g., osimertinib) will be administered, and single-cell ATAC-seq and ChIP-seq will profile dynamic epigenetic changes in TAFs over time. Extracellular vesicles (EVs) and conditioned media from TAFs will be collected and analyzed by small RNA-seq and lncRNA arrays. Transfer assays (using labeled EVs) will test ncRNA uptake by cancer cells. CRISPRi or Gapmer-based knockdown of specific TAF-derived ncRNAs will assess effects on resistance emergence, as measured by cell viability, phospho-proteomics, and bypass pathway activation. In vivo, patient-derived xenograft (PDX) mice co-engrafted with matched TAFs and treated with EGFR inhibitors will be monitored for resistance kinetics with or without TAF ncRNA blockade. Controls include mono-cultures, non-TAF fibroblasts, and scrambled RNA knockdowns. Expected outcomes: (1) TAFs show transient but reproducible epigenetic changes upon drug exposure; (2) TAF-derived ncRNAs are necessary for maximal resistance; (3) blocking their transfer prolongs response.",
+      "theory_and_computation": "A systems biology model will be constructed integrating single-cell epigenomic, transcriptomic, and secretome data to simulate TAF-cancer cell crosstalk under EGFR inhibition. Agent-based simulations and network diffusion models will predict the spatiotemporal spread of ncRNA-mediated signals and their impact on resistance. Machine learning algorithms (e.g., random forests, autoencoders) will classify TAF subpopulations by resistance-promoting capacity based on multi-omic signatures. Computational tools will prioritize candidate ncRNAs for intervention and predict the effects of blocking their transfer on tumor evolutionary trajectories.",
+      "hallmarks": {
+        "testability": "The hypothesis is testable via direct experimental manipulation: blocking TAF-derived ncRNAs should measurably delay or prevent resistance both in vitro and in vivo, with clear readouts (cell viability, pathway activation, resistance onset). The presence, transfer, and functional necessity of specific ncRNAs can be empirically quantified.",
+        "specificity": "Variables (TAF epigenetic state, secreted ncRNAs, resistance phenotype), relationships (TAF reprogramming → ncRNA secretion → cancer cell phenotype switching), and scope are clearly defined. The mechanism (ncRNA transfer) is explicitly detailed.",
+        "grounded_knowledge": "Builds on evidence that stromal cells influence therapy resistance and that ncRNAs mediate intercellular communication, extending this to the dynamic, drug-induced reprogramming of TAFs and their active role in early adaptive resistance.",
+        "predictive_power": "Predicts that blocking specific TAF-derived ncRNAs will delay resistance, that these ncRNAs can serve as early biomarkers, and that their secretion is temporally correlated with drug exposure—none of which are established in this context.",
+        "parsimony": "Offers a unifying, mechanistic link between microenvironmental remodeling and resistance with minimal assumptions: only requires that TAFs are epigenetically plastic and can secrete functional ncRNAs."
+      },
+      "references": [
+        {
+          "citation": "Costa, C., et al. (2014). Development of acquired resistance to EGFR TKIs in cancer: cellular and molecular mechanisms. Molecular Cancer, 13, 38.",
+          "annotation": "Reviews mechanisms of resistance including microenvironmental contributions, providing context for the proposed role of TAFs."
+        },
+        {
+          "citation": "Boelens, M. C., et al. (2014). Exosome transfer from stromal to breast cancer cells regulates therapy resistance pathways. Cell, 159(3), 499-513.",
+          "annotation": "Demonstrates that stromal cell-derived exosomes and their ncRNA cargo can confer therapeutic resistance, supporting the transfer mechanism."
+        },
+        {
+          "citation": "Guo, L., et al. (2020). Epigenetic reprogramming of cancer-associated fibroblasts: current knowledge and future perspectives. Signal Transduction and Targeted Therapy, 5(1), 150.",
+          "annotation": "Highlights the epigenetic plasticity of TAFs and their role in tumor progression, establishing a foundation for the hypothesis."
+        },
+        {
+          "citation": "LeBleu, V. S., & Kalluri, R. (2018). Exosomes as a multicomponent biomarker platform in cancer. Trends in Cancer, 4(9), 693-704.",
+          "annotation": "Details the role of exosome-carried ncRNAs as regulators and biomarkers in cancer."
+        },
+        {
+          "citation": "Lambrechts, D., et al. (2018). Phenotype molding of stromal cells in the lung tumor microenvironment. Nature Medicine, 24(8), 1277-1289.",
+          "annotation": "Describes stromal cell heterogeneity and plasticity in lung cancer microenvironments, supporting the focus on TAFs."
+        }
+      ],
+      "hypothesis_number": 2,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:13:47.677588"
+    },
+    {
+      "title": "Transient Epigenetic Reprogramming of Tumor-Associated Fibroblasts Drives Sequential EGFR Inhibitor Resistance in Lung Cancer Microenvironments",
+      "description": "This hypothesis posits that, in EGFR-mutant lung cancers, the rapid acquisition of resistance to third-generation EGFR inhibitors is not solely a tumor cell-intrinsic phenomenon, but is critically orchestrated by transient, reversible epigenetic reprogramming of tumor-associated fibroblasts (TAFs) within the tumor microenvironment. Specifically, exposure to EGFR inhibitors induces a secretory phenotype in TAFs via short-lived changes in chromatin accessibility and histone modification patterns. This, in turn, upregulates a defined set of paracrine factors (e.g., HGF, IL-6, WNTs) that activate bypass signaling in nearby tumor cells and promote phenotype switching toward drug-tolerant persister states. The key prediction is that interruption of this epigenetic plasticity in TAFs—through targeted inhibitors of BET bromodomains, HDACs, or specific non-coding RNAs—will restore sensitivity to EGFR inhibition and prevent or delay resistance emergence.",
+      "experimental_validation": "To validate this hypothesis, longitudinal single-cell ATAC-seq and RNA-seq will be performed on TAFs isolated from patient-derived xenografts (PDXs) and barcoded organoid co-cultures before, during, and after EGFR inhibitor treatment. Chromatin immunoprecipitation (ChIP)-seq for H3K27ac and H3K9me3, plus secretome profiling, will identify epigenetically regulated paracrine factors. Functional assays will use TAFs pre-treated with BET or HDAC inhibitors (vs vehicle) in co-culture with labeled EGFR-mutant tumor cells, monitoring drug tolerance via cell viability, phospho-proteomics, and single-cell lineage tracing. CRISPRi screens targeting TAF-specific epigenetic regulators and non-coding RNAs will further dissect causal pathways. Controls include mono-cultured tumor cells, fibroblasts from normal lung, and non-epigenetic TAF inhibitors. Expected outcomes: (i) EGFR inhibitor exposure induces rapid, reversible chromatin changes in TAFs, (ii) these changes correlate with increased bypass factor secretion and emergence of drug-tolerant tumor cells, (iii) epigenetic blockade in TAFs abrogates this effect and delays resistance.",
+      "theory_and_computation": "A systems biology model will be developed, integrating multi-omics timecourse data to quantitatively simulate the interplay between TAF epigenetic states and tumor cell signaling. Agent-based spatial models will recapitulate co-culture and in vivo architectures, simulating paracrine signaling and its impact on resistance emergence. Machine learning classifiers (e.g., random forests, autoencoders) will be trained on chromatin and transcriptomic profiles to predict fibroblast states most conducive to resistance, and to identify minimal epigenetic signatures for therapeutic targeting.",
+      "hallmarks": {
+        "testability": "This hypothesis is directly testable: If TAF-specific epigenetic modulation prevents or delays resistance in co-culture and in vivo, the hypothesis is supported; if resistance still emerges independent of TAF state, it is falsified.",
+        "specificity": "It is highly specific: The variable (TAF epigenetic state) and the predicted causal mechanism (paracrine bypass signaling) are precisely defined, as are the interventions (BET/HDAC inhibition, CRISPRi) and expected outcomes.",
+        "grounded_knowledge": "It builds on evidence that stromal cells contribute to drug resistance and that fibroblasts exhibit epigenetic plasticity under stress, but connects these in a novel, testable pathway in the context of EGFR inhibitor resistance.",
+        "predictive_power": "It predicts that targeting TAF epigenetic states—rather than only tumor cells—can modify resistance trajectories. This insight opens new combinatorial therapeutic strategies and anticipates patient-specific resistance dynamics.",
+        "parsimony": "It invokes a single, testable mechanism (TAF epigenetic reprogramming) to explain complex resistance patterns, minimizing additional assumptions about tumor cell-intrinsic evolution."
+      },
+      "references": [
+        {
+          "citation": "Biffi, G., et al. (2019). IL1-Induced JAK/STAT Signaling Is Antagonized by TGFβ to Shape CAF Heterogeneity in Pancreatic Ductal Adenocarcinoma. Cancer Discovery, 9(2), 282-301.",
+          "annotation": "Demonstrates the plasticity of cancer-associated fibroblasts and their capacity to shape tumor phenotypes via paracrine signaling."
+        },
+        {
+          "citation": "Obenauf, A. C., et al. (2015). Therapy-induced tumor secretomes promote resistance and tumor progression. Nature, 520(7547), 368-372.",
+          "annotation": "Describes how therapy-induced secretory phenotypes in the tumor microenvironment can promote resistance, supporting the secretome aspect."
+        },
+        {
+          "citation": "Li, H., et al. (2017). The Tumor Microenvironment Regulates Sensitivity of EGFR-Mutant Lung Cancer to EGFR Inhibition. Cell Reports, 20(7), 1705-1716.",
+          "annotation": "Links microenvironmental signals to EGFR inhibitor resistance in lung cancer."
+        },
+        {
+          "citation": "Lambrechts, D., et al. (2018). Phenotype molding of stromal cells in the lung tumor microenvironment. Nature Medicine, 24(8), 1277-1289.",
+          "annotation": "Details the diversity and reprogramming of stromal cells in lung cancer."
+        }
+      ],
+      "hypothesis_number": 3,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:13:47.677596"
+    },
+    {
+      "title": "Epigenetic Priming of Bypass Pathway Activation Precedes Detectable On-Target EGFR Resistance Mutations in Lung Cancer",
+      "description": "This hypothesis posits that, in EGFR-mutant lung cancer, resistance to targeted EGFR inhibitors is frequently preceded not by de novo emergence of on-target resistance mutations, but by epigenetic priming events that transiently upregulate bypass survival pathways (e.g., MET, AXL, or HER2 signaling) before genetic resistance is detectable. These epigenetic shifts—marked by enhancer activation, chromatin remodeling, and altered non-coding RNA expression—create a permissive state that enables rapid adaptation and selection for subsequent genetic resistance. Therefore, early, dynamic epigenetic alterations are predictive biomarkers and actionable vulnerabilities for intercepting resistance before it becomes genetically fixed.",
+      "experimental_validation": "Longitudinal single-cell multi-omics (scRNA-seq, scATAC-seq, and spatial transcriptomics) will be performed on tumor biopsies and patient-derived organoids from individuals with EGFR-mutant lung cancer undergoing EGFR inhibitor therapy. Deep ctDNA sequencing will monitor the emergence of on-target resistance mutations. Parallel epigenomic profiling (ChIP-seq for H3K27ac, ATAC-seq) will identify enhancer activation events. Pharmacologic and CRISPR-based inhibition of candidate epigenetic regulators (e.g., BET proteins, HDACs) or non-coding RNAs will be applied, with and without EGFR inhibitors, to test whether targeting these primed states delays or prevents resistance emergence. Controls will include vehicle-treated and non-targeted cell lines/organoids. Readouts will include time to resistance, bypass pathway activation, and emergence of resistance mutations.",
+      "theory_and_computation": "A computational framework will integrate longitudinal single-cell and spatial omics data to infer epigenetic state transitions and reconstruct evolutionary trajectories of resistance. Mathematical modeling (e.g., Markov models) will quantify the temporal ordering and dependency of epigenetic versus genetic events. Predictive machine learning classifiers (e.g., random forests, neural networks) will be trained to identify early epigenetic signatures predictive of future resistance, validated by cross-cohort and prospective datasets.",
+      "hallmarks": {
+        "testability": "The hypothesis is testable by empirically tracking the order and frequency of epigenetic versus genetic resistance events in patient samples, organoids, and animal models, and by perturbing predicted epigenetic regulators to assess effects on resistance emergence.",
+        "specificity": "It clearly specifies the variables (epigenetic priming events, bypass pathway activation, on-target EGFR mutations), their temporal relationships, and the expected effect of targeting the epigenetic state.",
+        "grounded_knowledge": "Prior work has shown both genetic and epigenetic mechanisms of resistance, as well as the involvement of bypass pathways and chromatin remodeling in drug resistance. This hypothesis builds on these insights by proposing a specific, testable sequence of resistance evolution.",
+        "predictive_power": "It predicts that epigenetic events precede genetic mutations and that targeting these events can delay or prevent resistance—offering new biomarkers and intervention points not previously exploited.",
+        "parsimony": "It relies on a simple, linear causal model (epigenetic priming → bypass activation → genetic resistance), minimizing assumptions while explaining both known and novel resistance dynamics."
+      },
+      "references": [
+        {
+          "citation": "Ramalingam, S. S., et al. (2018). Mechanisms of acquired resistance to first-line osimertinib in EGFR-mutant advanced non-small-cell lung cancer. Journal of Clinical Oncology, 36(15), 1663-1670.",
+          "annotation": "Reviews genetic and non-genetic mechanisms of osimertinib resistance, highlighting bypass pathway activation."
+        },
+        {
+          "citation": "Sharma, S. V., et al. (2010). A chromatin-mediated reversible drug-tolerant state in cancer cell subpopulations. Cell, 141(1), 69-80.",
+          "annotation": "Demonstrates that reversible chromatin states can mediate drug tolerance and precede genetic resistance."
+        },
+        {
+          "citation": "Nabet, B. Y., et al. (2017). Noncoding RNAs in cancer: Friends and foes. Nature Reviews Cancer, 17(1), 19-32.",
+          "annotation": "Reviews the roles of non-coding RNAs in cancer adaptation and resistance, supporting the mechanistic basis of the hypothesis."
+        },
+        {
+          "citation": "Lee, J. K., et al. (2017). Clinical and mechanistic characteristics of HER2-activating mutations in lung adenocarcinoma. Nature, 548(7668), 189-194.",
+          "annotation": "Describes bypass pathway activation (HER2) as a resistance mechanism, supporting the relevance of non-EGFR signaling."
+        }
+      ],
+      "hypothesis_number": 4,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:13:47.677602"
+    },
+    {
+      "title": "Transient Epigenetic Reprogramming as a Universal Precursor to EGFR Inhibitor Resistance in Lung Cancer",
+      "description": "This hypothesis posits that a transient, reversible phase of genome-wide epigenetic reprogramming—marked by changes in chromatin accessibility and histone modifications—universally precedes the stable acquisition of both on-target (EGFR) and bypass pathway resistance mutations in EGFR-mutant lung cancer. During this 'epigenetic plasticity window,' tumor cells become permissive to phenotype switching, including mesenchymal transition and immune evasion, enabling rapid adaptation to therapy. Targeting key chromatin remodelers or readers during this window will significantly reduce the emergence of both genetic and non-genetic resistance compared to interventions after resistance fixation.",
+      "experimental_validation": "1. Collect serial biopsies and plasma ctDNA from EGFR-mutant NSCLC patients at baseline, early-on treatment, minimal residual disease, and progression.\n2. Perform single-cell ATAC-seq, ChIP-seq for histone marks (H3K27ac, H3K4me3, H3K9me3), and single-cell RNA-seq. Map temporal changes in chromatin state and gene expression.\n3. Use patient-derived organoids (PDOs) and CRISPR interference/activation screens to transiently perturb chromatin regulators (e.g., EZH2, BRD4) during early treatment phase versus after resistance.\n4. Measure resistance emergence (organoid viability in drug, acquisition of resistance mutations by sequencing, phenotype switching markers) with and without epigenetic interventions.\n5. Controls: Untreated organoids, epigenetic perturbation in absence of EGFR inhibitor, late-phase intervention.\n6. Expected outcomes: Early-phase epigenetic modulation will suppress or delay resistance emergence and phenotype switching, while late-phase intervention is less effective.",
+      "theory_and_computation": "Develop a stochastic mathematical model of tumor cell state transitions, incorporating reversible epigenetic landscape dynamics, rates of genetic mutation acquisition, and selective pressures from EGFR inhibition. Simulate single-cell trajectories under different timings of epigenetic-targeting interventions. Apply machine learning to integrate time-resolved single-cell multi-omics and ctDNA data to predict the onset and duration of the plasticity window in individual patients.",
+      "hallmarks": {
+        "testability": "This hypothesis is directly testable through longitudinal multi-omics in patient samples and timing-specific intervention studies in PDOs and in vivo models. It makes clear predictions about the timing, universality, and reversibility of epigenetic changes preceding resistance.",
+        "specificity": "It specifies a temporal sequence (epigenetic changes precede mutations/phenotype switching), molecular mechanisms (chromatin changes), and intervention targets (chromatin remodelers), narrowing the hypothesis scope.",
+        "grounded_knowledge": "It builds on established evidence that epigenetic plasticity enables drug tolerance and precedes stable resistance in some cancer types, but extends this concept to propose a universal, targetable precursor phase in EGFR-mutant lung cancer.",
+        "predictive_power": "It predicts a transient, targetable window for interventions and suggests that timing of epigenetic therapy is critical for resistance prevention—insights not currently exploited in clinical practice.",
+        "parsimony": "The hypothesis requires only the assumption of a transient, reversible epigenetic state as a precursor event, providing a unifying mechanism for diverse resistance outcomes."
+      },
+      "references": [
+        {
+          "citation": "Sharma, S. V., et al. (2010). A chromatin-mediated reversible drug-tolerant state in cancer cell subpopulations. Cell, 141(1), 69–80.",
+          "annotation": "Demonstrates the existence of reversible, chromatin-based drug tolerance preceding stable resistance in cancer cells."
+        },
+        {
+          "citation": "Hata, A. N., et al. (2016). Tumor cells can follow distinct evolutionary paths to become resistant to epidermal growth factor receptor inhibition. Nature Medicine, 22(3), 262–269.",
+          "annotation": "Describes evolutionary trajectories and plasticity in EGFR-mutant lung cancer under targeted therapy."
+        },
+        {
+          "citation": "Boumahdi, S., & de Sauvage, F. J. (2020). The great escape: tumour cell plasticity in resistance to targeted therapy. Nature Reviews Drug Discovery, 19(1), 39–56.",
+          "annotation": "Reviews the role of cellular plasticity and epigenetic mechanisms in therapy resistance."
+        },
+        {
+          "citation": "Kurppa, K. J., et al. (2020). Treatment-induced tumor dormancy through YAP-mediated transcriptional reprogramming of EGFR-mutant NSCLC. Nature Cancer, 1(4), 360–374.",
+          "annotation": "Shows transcriptional and epigenetic reprogramming in response to EGFR inhibition in lung cancer."
+        }
+      ],
+      "hypothesis_number": 5,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:13:47.677608"
+    },
+    {
+      "title": "Epigenetic Remodeling of Tumor-Associated Fibroblasts Drives Adaptive Resistance in EGFR-Mutant Lung Cancer",
+      "description": "This hypothesis posits that, in response to EGFR inhibition, tumor-associated fibroblasts (TAFs) in the lung cancer microenvironment undergo rapid, reversible epigenetic remodeling that enables them to secrete pro-survival cytokines and growth factors, thereby promoting bypass signaling and facilitating tumor cell resistance. Single-cell spatial multi-omics will reveal that TAFs display specific chromatin accessibility and histone modification changes post-therapy, correlating with upregulation of factors such as HGF, IL-6, or FGF2. Inhibiting key epigenetic regulators in TAFs (e.g., EZH2, HDACs, BET proteins) will suppress this adaptive secretome and restore sensitivity to EGFR-targeted therapies.",
+      "experimental_validation": "1. Collect serial tumor biopsies and matched ctDNA from EGFR-mutant lung cancer patients pre- and post-EGFR inhibitor therapy. 2. Perform single-cell ATAC-seq, RNA-seq, and spatial transcriptomics to profile epigenetic and transcriptional states of TAFs versus other stromal and immune cells. 3. In barcoded patient-derived organoids co-cultured with autologous fibroblasts, assess resistance emergence with or without epigenetic inhibitor treatment. 4. Utilize CRISPR screens in TAFs to identify key epigenetic modifiers mediating resistance. 5. Key controls: mono-cultured tumor cells, non-tumor fibroblasts, and vehicle treatments. 6. Measure cytokine/growth factor secretion (ELISA, Luminex), tumor cell viability, and pathway activation (phospho-proteomics). Expected outcomes: TAFs from resistant tumors show distinct epigenetic/transcriptional signatures and pro-survival secretome, which is abrogated by epigenetic inhibitor treatment, restoring therapeutic response.",
+      "theory_and_computation": "Develop spatiotemporal computational models that simulate tumor-TAF interactions under drug pressure, parameterized by single-cell epigenetic/transcriptomic data. Use agent-based modeling to predict how TAF plasticity influences clonal dynamics and resistance onset. Apply machine learning to integrate multi-omics data and identify predictive biomarkers of TAF-mediated resistance. Mathematical analyses can test the sufficiency of TAF-derived factors to drive bypass signaling in silico.",
+      "hallmarks": {
+        "testability": "The hypothesis can be directly tested via multi-omics profiling, functional perturbation (epigenetic inhibitors, CRISPR knockouts), and co-culture or organoid models. Empirical predictions include measurable changes in TAF epigenetic state, secretome composition, and impact on tumor cell drug sensitivity.",
+        "specificity": "It specifies the cell type (TAFs), molecular mechanism (epigenetic remodeling), downstream effect (pro-survival secretome), and intervention (epigenetic inhibitors), making the variables and expected relationships explicit.",
+        "grounded_knowledge": "Prior research implicates stromal cells and their secretome in drug resistance, and epigenetic plasticity is increasingly recognized as a driver of adaptive responses. This builds on and extends these findings by connecting TAF epigenetics directly to resistance mechanisms in EGFR-mutant lung cancer.",
+        "predictive_power": "Predicts that targeting TAF epigenetic plasticity can prevent or reverse resistance, and that specific epigenetic/transcriptional signatures in TAFs will forecast resistance emergence, enabling new biomarker and therapeutic strategies.",
+        "parsimony": "Invokes a single, mechanistically coherent process (TAF epigenetic remodeling) to explain a complex, multi-cellular phenomenon, minimizing unnecessary assumptions."
+      },
+      "references": [
+        {
+          "citation": "Barrett, R. L., & Puré, E. (2020). Cancer-associated fibroblasts and their influence on tumor immunity and immunotherapy. eLife, 9, e57243.",
+          "annotation": "Reviews the role of fibroblasts in modulating the tumor microenvironment and therapy response."
+        },
+        {
+          "citation": "Kfoury, Y. et al. (2021). Bruton tyrosine kinase drives cancer progression and immune evasion in response to fibroblast-derived factors. Cancer Cell, 39(5), 708-726.e6.",
+          "annotation": "Demonstrates stromal cell-derived factors driving resistance and tumor progression."
+        },
+        {
+          "citation": "Topper, M. J. et al. (2020). Epigenetic therapy ties MYC depletion to reversing immune evasion and treating lung cancer. Cell, 183(5), 1324-1342.e21.",
+          "annotation": "Shows that epigenetic therapies can modulate the tumor microenvironment and restore therapy sensitivity."
+        },
+        {
+          "citation": "Su, J. et al. (2022). Single-cell analysis resolves the cell state transition and signaling dynamics in the niche-driven therapy resistance in lung cancer. Cell Reports, 38(3), 110246.",
+          "annotation": "Uses single-cell sequencing to dissect microenvironment-driven resistance in lung cancer."
+        }
+      ],
+      "hypothesis_number": 6,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:13:47.677614"
+    },
+    {
+      "title": "Transient Epigenetic Reprogramming of Tumor-Associated Myeloid Cells Drives Early Microenvironmental Escape in EGFR-Mutant Lung Cancer Under Targeted Therapy",
+      "description": "This hypothesis posits that a transient, therapy-induced epigenetic reprogramming event in tumor-associated myeloid cells (TAMCs)—specifically, a shift toward an immunosuppressive and pro-reparative state—facilitates the earliest microenvironmental escape mechanisms in EGFR-mutant lung cancer treated with EGFR inhibitors. This adaptation occurs before the emergence of classical resistance mutations in tumor cells, and is driven by dynamic crosstalk between dying tumor cells, stromal signals, and non-coding RNAs released upon targeted therapy. The key prediction is that blocking this transient myeloid reprogramming—using epigenetic inhibitors, specific microRNA antagonists, or myeloid-targeted degraders—will delay or prevent both microenvironmental and subsequent genetic resistance.",
+      "experimental_validation": "1. Collect longitudinal tumor and matched blood samples from EGFR-mutant lung cancer patients treated with EGFR inhibitors at pre-treatment, early-on-therapy (within 1-2 weeks), and at progression. 2. Perform single-cell multi-omics (scRNA-seq + scATAC-seq + proteomics) and spatial transcriptomics on tumor samples to characterize TAMC states and epigenetic landscapes. 3. Use barcoded patient-derived organoids co-cultured with autologous myeloid cells and stromal compartments, treat with EGFR inhibitors, and assess early changes in myeloid cell chromatin accessibility, transcriptome, and secretome. 4. Intervene with BET inhibitors, HDAC inhibitors, or microRNA antagonists (e.g., anti-miR-21) in these co-culture systems and mouse models, measuring effects on tumor cell survival, emergence of resistance, and immune infiltration. 5. Controls: Organoids without myeloid cells, isotype or vehicle control treatments, and myeloid cells from non-tumor sources. 6. Expected outcomes: Early upregulation of an immunosuppressive myeloid gene signature and chromatin state upon therapy; intervention blunts this signature and delays resistance.",
+      "theory_and_computation": "Develop agent-based and hybrid spatial models simulating tumor-microenvironment interactions, incorporating dynamic rules for myeloid cell plasticity, epigenetic state transitions, and feedback from dying tumor cells. Integrate single-cell and spatial multi-omics data to parameterize state-transition probabilities. Use machine learning to predict which epigenetic regulators are most critical for myeloid reprogramming and simulate interventional effects. Employ network analysis to identify master regulators and non-coding RNA mediators. Model intervention timelines to optimize therapeutic windows.",
+      "hallmarks": {
+        "testability": "This hypothesis predicts observable, measurable shifts in TAMC epigenetic and transcriptional states following EGFR inhibitor therapy, which can be directly assayed in patient samples and validated in organoid and murine models. Interventions targeting these states should produce distinct, quantifiable effects on resistance timelines.",
+        "specificity": "The hypothesis precisely implicates transient epigenetic reprogramming in TAMCs, identifies the timing (early-on-therapy), the cell types, molecular pathways (chromatin modifiers, non-coding RNAs), and specifies interventions (BET/HDAC inhibitors, miRNA antagonists) and their expected effects.",
+        "grounded_knowledge": "It is grounded in emerging evidence that tumor microenvironment, particularly myeloid cells, contributes to drug tolerance, and that epigenetic plasticity and non-coding RNAs drive adaptation. However, it extends this to propose a specific, early, actionable window and mechanism preceding genetic resistance.",
+        "predictive_power": "The hypothesis predicts a novel, non-genetic mechanism of resistance that precedes well-characterized tumor cell adaptations. It forecasts that targeting this mechanism will delay or prevent resistance, thus offering a new therapeutic avenue and biomarker opportunity.",
+        "parsimony": "It employs a single, unifying mechanism (epigenetic reprogramming of TAMCs) to explain early microenvironmental escape, requiring minimal new assumptions while accounting for both rapid adaptation and later genetic resistance."
+      },
+      "references": [
+        {
+          "citation": "Zilionis, R., Engblom, C., Pfirschke, C., et al. (2019). Single-Cell Transcriptomics of Human and Mouse Lung Cancers Reveals Conserved Myeloid Populations across Individuals and Species. Immunity, 50(5), 1317-1334.e10.",
+          "annotation": "Describes the heterogeneity and plasticity of myeloid cells in lung cancer, supporting the relevance of TAMCs."
+        },
+        {
+          "citation": "Hugo, W., Zaretsky, J. M., Sun, L., et al. (2015). Genomic and Transcriptomic Features of Response to Anti-PD-1 Therapy in Metastatic Melanoma. Cell, 165(1), 35-44.",
+          "annotation": "Demonstrates that non-genetic, microenvironmental mechanisms can influence therapy response and resistance."
+        },
+        {
+          "citation": "Sharma, S. V., Lee, D. Y., Li, B., et al. (2010). A chromatin-mediated reversible drug-tolerant state in cancer cell subpopulations. Cell, 141(1), 69-80.",
+          "annotation": "Shows that chromatin state transitions can mediate reversible drug tolerance in cancer cells, supporting an epigenetic mechanism in adaptation."
+        },
+        {
+          "citation": "Wei, S. C., Duffy, C. R., & Allison, J. P. (2018). Fundamental mechanisms of immune checkpoint blockade therapy. Cancer Discovery, 8(9), 1069-1086.",
+          "annotation": "Reviews immune microenvironment and its role in therapy response, providing foundational context."
+        }
+      ],
+      "hypothesis_number": 7,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:13:47.677619"
+    },
+    {
+      "title": "Epigenetic Reprogramming of Tumor-Associated Macrophages Drives Adaptive Resistance in EGFR-Mutant Lung Cancer",
+      "description": "This hypothesis proposes that, during EGFR-targeted therapy, tumor-associated macrophages (TAMs) in the lung tumor microenvironment undergo an epigenetic reprogramming event—characterized by dynamic enhancer remodeling and non-coding RNA expression changes—that enables them to secrete a distinct cytokine cocktail. This cocktail, in turn, promotes phenotypic plasticity and survival of EGFR-mutant tumor cells, facilitating both on-target and bypass resistance mechanisms. Key predictions include: (1) specific enhancer regions and non-coding RNA profiles in TAMs are altered during resistance evolution, (2) pharmacologic or genetic disruption of these epigenetic changes in TAMs impairs resistance development, and (3) the cytokine signature of reprogrammed TAMs can serve as an early biomarker for impending resistance.",
+      "experimental_validation": "1) Collect longitudinal tumor biopsies and matched blood samples from EGFR-mutant lung cancer patients before, during, and after EGFR inhibitor therapy. 2) Employ single-cell ATAC-seq and RNA-seq to map chromatin accessibility and transcriptomic changes in TAMs, focusing on enhancer dynamics and non-coding RNAs. 3) Use spatial transcriptomics to localize and quantify TAM subsets and cytokine secretion within tumor sections. 4) In barcoded patient-derived organoids co-cultured with autologous TAMs (isolated and/or engineered via CRISPR to manipulate candidate enhancers or ncRNAs), assess tumor cell resistance development, cytokine profiles (via multiplex ELISA), and plasticity markers. 5) In humanized lung-on-chip models, test pharmacologic inhibitors or siRNAs targeting TAM-specific epigenetic regulators, evaluating impacts on tumor resistance, cytokine milieu, and immune composition. Controls: Organoids and chips without TAMs, or with non-reprogrammed TAMs. Measurements: Resistance metrics (growth, survival), cytokine levels, enhancer/ncRNA changes, tumor cell plasticity markers. Expected outcomes: Epigenetically reprogrammed TAMs accelerate resistance; disrupting this reprogramming blunts resistance and alters cytokine signatures.",
+      "theory_and_computation": "Develop a multi-scale computational model integrating single-cell epigenomic and transcriptomic data from TAMs with tumor evolutionary trajectories. Use agent-based simulations to predict how TAM-driven cytokine changes alter tumor cell population dynamics under EGFR therapy pressure. Build machine learning models (e.g., random forest or neural networks) to classify cytokine signatures predictive of resistance onset. Mathematical analyses (e.g., network modeling) can identify key enhancer/ncRNA nodes controlling TAM plasticity and their downstream signaling effects.",
+      "hallmarks": {
+        "testability": "The hypothesis is directly testable through experimentally manipulating TAM epigenetic states and measuring resultant effects on tumor resistance, cytokine profiles, and tumor cell plasticity, both in vitro and in vivo. Specific enhancer/ncRNA alterations, cytokine changes, and resistance phenotypes can be quantitatively measured.",
+        "specificity": "The variables (TAMs, specific enhancer/ncRNA changes, cytokine profiles, resistance phenotypes) and their relationships (epigenetic change → cytokine shift → tumor resistance) are clearly defined, allowing precise experimental and computational interrogation.",
+        "grounded_knowledge": "This builds on established knowledge that the tumor microenvironment—and TAMs specifically—contribute to resistance, and that epigenetic plasticity influences immune cell states. It extends recent findings on enhancer remodeling and non-coding RNAs in macrophage function to the context of drug resistance.",
+        "predictive_power": "Predicts previously uncharacterized enhancer and ncRNA changes in TAMs as upstream drivers of adaptive resistance, and suggests that their disruption can prevent or delay resistance. Also predicts that specific cytokine signatures will emerge as early biomarkers, guiding new therapeutic interventions.",
+        "parsimony": "The hypothesis posits a single, mechanistically plausible route—epigenetically driven TAM reprogramming—by which the microenvironment promotes resistance, requiring minimal additional assumptions while encompassing both tumor-intrinsic and extrinsic contributions."
+      },
+      "references": [
+        {
+          "citation": "Quail, D. F., & Joyce, J. A. (2017). The Microenvironmental Landscape of Brain Tumors. Cancer Cell, 31(3), 326–341.",
+          "annotation": "Reviews the role of the tumor microenvironment, including TAMs, in promoting therapeutic resistance."
+        },
+        {
+          "citation": "Carmona-Rivera, C., & Kaplan, M. J. (2022). Enhancer remodeling and noncoding RNAs in macrophage function. Trends in Immunology, 43(6), 453–467.",
+          "annotation": "Describes enhancer dynamics and non-coding RNA-mediated regulation of macrophage plasticity."
+        },
+        {
+          "citation": "Hata, A. N., et al. (2016). Tumor cells can follow distinct evolutionary paths to become resistant to epidermal growth factor receptor inhibition. Nature Medicine, 22(3), 262–269.",
+          "annotation": "Demonstrates the diversity of resistance mechanisms in EGFR-mutant lung cancer and the value of longitudinal sampling."
+        },
+        {
+          "citation": "Orecchioni, M., et al. (2019). Macrophage polarization in the tumor microenvironment: Model systems and therapeutic perspectives. Current Opinion in Immunology, 61, 49–59.",
+          "annotation": "Discusses how macrophage plasticity is regulated and its impact on tumor progression and therapy response."
+        }
+      ],
+      "hypothesis_number": 8,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:13:47.677624"
+    },
+    {
+      "title": "Early Epigenetic Reprogramming as a Predictor and Driver of EGFR Inhibitor Resistance via Bivalent Chromatin States",
+      "description": "This hypothesis posits that a subset of EGFR-mutant lung cancer cells, prior to the emergence of genetic resistance mutations, transiently acquire bivalent chromatin states (concurrent H3K4me3 and H3K27me3 marks) at key lineage and survival genes in response to EGFR inhibition. These bivalent states prime the cells for rapid transcriptional plasticity, enabling phenotype switching (e.g., epithelial-to-mesenchymal transition [EMT], neuroendocrine differentiation) and facilitating bypass pathway activation upon continued therapy. The hypothesis predicts that single-cell multi-omic profiling will reveal early, therapy-induced appearance of these bivalent chromatin domains in rare cell populations, preceding both overt resistance and on-target EGFR mutations. Moreover, pharmacologic targeting of chromatin-modifying enzymes (e.g., EZH2, KDM5) at this early stage will disrupt the establishment of bivalency and blunt the emergence of resistant phenotypes.",
+      "experimental_validation": "1. Collect longitudinal tumor samples and ctDNA from EGFR-mutant lung cancer patients and matched PDX/organoid models before, during, and after EGFR TKI therapy. 2. Perform single-cell multi-omics (scRNA-seq + scATAC-seq + scCUT&Tag for H3K4me3/H3K27me3) to map chromatin and transcriptional dynamics. 3. Track the emergence of bivalent chromatin states at candidate resistance/lineage genes and their correlation with phenotypic switching and resistance. 4. Test the impact of EZH2/KDM5 inhibitors (alone and with EGFR TKIs) in barcoded organoid and PDX models, measuring frequency and timing of resistance emergence, lineage marker shifts, and clonal dynamics (via barcode tracking). Controls: DMSO, EGFR TKI alone, non-bivalent gene loci. Expected outcomes: Early appearance of bivalent marks at resistance-associated loci in a subset of cells predicts later resistance; their pharmacologic disruption prevents or delays phenotype switching and resistance.",
+      "theory_and_computation": "Develop a stochastic mathematical model of cell population dynamics incorporating chromatin state transitions (bivalent, active, repressed), mutation acquisition rates, and therapy-induced selection pressures. Utilize agent-based simulations (e.g., with spatial constraints) to model how rare bivalent-state cells contribute to population heterogeneity and resistance. Integrate with machine learning classifiers trained on multi-omic single-cell data to predict which patients/cells are at risk for early reprogramming and resistance. Apply network analysis to map regulatory gene circuits susceptible to bivalent chromatin modulation.",
+      "hallmarks": {
+        "testability": "The hypothesis is empirically testable: the presence, timing, and predictive power of bivalent chromatin states for resistance can be directly measured in longitudinal single-cell multi-omic datasets and experimentally manipulated with epigenetic drugs.",
+        "specificity": "It precisely delineates the chromatin state (bivalency), the context (early under therapy), the cell subset (rare, plastic cells), and the expected phenotypic consequence (lineage switching, resistance), minimizing ambiguity.",
+        "grounded_knowledge": "Prior work has shown epigenetic plasticity and bivalent chromatin states in development and cancer, and early epigenetic changes preceding genetic resistance in other models, but this framework directly links early bivalency to resistance emergence in EGFR-mutant lung cancer.",
+        "predictive_power": "It predicts that bivalent chromatin states will temporally precede resistance and can be therapeutically targeted to prevent it—novel testable predictions that can guide new intervention strategies.",
+        "parsimony": "The explanation requires only the minimal assumption that pre-existing or therapy-induced bivalent chromatin states enable rapid plasticity and are targetable, providing a simple mechanistic basis for complex resistance phenomena."
+      },
+      "references": [
+        {
+          "citation": "Sharma, S. V., et al. (2010). A chromatin-mediated reversible drug-tolerant state in cancer cell subpopulations. Cell, 141(1), 69-80.",
+          "annotation": "Demonstrates the existence of reversible chromatin-mediated drug tolerance in cancer, supporting the plausibility of early chromatin changes driving resistance."
+        },
+        {
+          "citation": "Liau, B. B., et al. (2017). Adaptive chromatin remodeling drives glioblastoma stem cell plasticity and drug tolerance. Cell Stem Cell, 20(2), 233-246.",
+          "annotation": "Shows that chromatin remodeling underlies stem cell plasticity and drug tolerance, analogous to proposed mechanisms in lung cancer."
+        },
+        {
+          "citation": "Teng, Y. C., et al. (2022). Bivalent chromatin domains in cancer: A target for intervention. Trends in Cancer, 8(2), 137-151.",
+          "annotation": "Reviews the role and therapeutic potential of bivalent chromatin domains in cancer, directly relevant to this hypothesis."
+        },
+        {
+          "citation": "Hata, A. N., et al. (2016). Tumor cells can follow distinct evolutionary paths to become resistant to epidermal growth factor receptor inhibition. Nature Medicine, 22(3), 262-269.",
+          "annotation": "Describes diverse resistance trajectories in EGFR-mutant lung cancer, motivating investigation into early determinants of these paths."
+        }
+      ],
+      "hypothesis_number": 9,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:13:47.677629"
+    },
+    {
+      "title": "Epigenetic Reprogramming of Tumor-Associated Macrophages Drives Adaptive Resistance to EGFR Inhibitors in Lung Cancer",
+      "description": "This hypothesis proposes that, during EGFR-targeted therapy in EGFR-mutant lung cancer, tumor-associated macrophages (TAMs) undergo epigenetic reprogramming in response to evolving tumor signals, leading to a pro-tumorigenic phenotype that supports bypass pathway activation and resistance. Specifically, EGFR inhibition triggers release of non-coding RNAs and cytokines from tumor cells, which are taken up by TAMs and induce chromatin remodeling via altered histone acetylation/methylation patterns. Reprogrammed TAMs then secrete growth factors (e.g., HGF, IL-6) that activate alternative survival pathways such as MET and STAT3 in tumor cells, driving resistance. Key predictions include: (1) distinct epigenetic signatures in TAMs emerge during resistance, (2) disrupting TAM epigenetic modifiers sensitizes tumors to EGFR inhibition, and (3) ctDNA and spatial multi-omic profiling will reveal coordinated shifts in TAM and tumor cell states during resistance evolution.",
+      "experimental_validation": "Longitudinally collect tumor biopsies and matched blood samples from EGFR-mutant lung cancer patients pre-treatment, at response, and at resistance. Perform single-cell multi-omic (scRNA-seq, scATAC-seq) and spatial transcriptomic profiling of tumor and immune microenvironment, focusing on TAMs. Analyze chromatin accessibility and histone modification (e.g., H3K27ac, H3K4me3) in TAMs across timepoints. Use in vitro co-culture of patient-derived organoids and macrophages, treating with EGFR inhibitors, and assess changes in TAM chromatin state and cytokine/growth factor secretion by ELISA/Luminex. Apply small molecule inhibitors or CRISPR knockdown of key TAM epigenetic regulators (e.g., EZH2, HDACs) in co-culture and in humanized lung-on-chip models, measuring tumor cell survival and bypass pathway activation (phospho-proteomics). Include controls: untreated, EGFRi-only, and macrophage-depleted conditions. Expected outcomes: (1) TAMs from resistant tumors show unique epigenetic and secretory profiles, (2) targeting TAM epigenetic modifiers abrogates bypass signaling and restores drug sensitivity.",
+      "theory_and_computation": "Develop a mathematical model of tumor–TAM interactions, incorporating feedback between tumor cell signaling, TAM phenotypic state, and epigenetic switching. Use agent-based modeling to simulate spatially resolved tumor evolution with dynamic TAM reprogramming, predicting the impact of interventions targeting TAM epigenetic regulators. Integrate patient-derived multi-omic data with machine learning to identify predictive TAM chromatin and transcriptomic signatures linked to resistance. Bayesian network analysis can elucidate causal relationships among tumor cell signals, TAM states, and resistance phenotypes.",
+      "hallmarks": {
+        "testability": "The hypothesis is testable by directly measuring TAM epigenetic states, secretory profiles, and impact on tumor cell resistance in both patient samples and experimental models. Disrupting predicted TAM epigenetic regulators and observing restoration of EGFRi sensitivity would falsify or support the hypothesis.",
+        "specificity": "The hypothesis specifies the cell type (TAMs), molecular mechanism (epigenetic reprogramming via non-coding RNAs/cytokines), and phenotypic outcome (bypass pathway activation and resistance). It delineates clear experimental variables and outcomes.",
+        "grounded_knowledge": "It builds on established evidence that TAMs influence tumor resistance and that the tumor microenvironment is plastic, while extending into the novel territory of epigenetically driven TAM adaptation during EGFR inhibitor therapy.",
+        "predictive_power": "The hypothesis predicts novel, testable biomarkers (TAM epigenetic signatures), actionable targets (TAM epigenetic regulators), and a mechanistic link between tumor evolution and microenvironmental adaptation, guiding new combinatorial intervention strategies.",
+        "parsimony": "It offers a simple, unified mechanism—epigenetic reprogramming of TAMs—as a driver of resistance, integrating tumor and microenvironment evolution without unnecessary complexity."
+      },
+      "references": [
+        {
+          "citation": "Quail, D. F., & Joyce, J. A. (2017). The Microenvironmental Landscape of Brain Tumors. Cancer Cell, 31(3), 326–341.",
+          "annotation": "Reviews the role of the tumor microenvironment, including macrophages, in cancer progression and therapy resistance."
+        },
+        {
+          "citation": "Zhang, Q., He, Y., Luo, N., et al. (2019). Landscape and Dynamics of Single Immune Cells in Hepatocellular Carcinoma. Cell, 179(4), 829–845.e20.",
+          "annotation": "Demonstrates single-cell and epigenetic profiling of immune cells in tumors, supporting the technical feasibility of the experimental plan."
+        },
+        {
+          "citation": "Klemm, F., & Joyce, J. A. (2015). Microenvironmental regulation of therapeutic response in cancer. Trends in Cell Biology, 25(4), 198–213.",
+          "annotation": "Discusses how the tumor microenvironment, including TAMs, modulates therapy response."
+        },
+        {
+          "citation": "Aras, S., & Zaidi, M. R. (2017). TAMeless traitors: macrophages in cancer progression and metastasis. British Journal of Cancer, 117(11), 1583–1591.",
+          "annotation": "Describes the plasticity and reprogramming of TAMs in cancer, providing a theoretical foundation."
+        }
+      ],
+      "hypothesis_number": 10,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:13:47.677634"
+    },
+    {
+      "title": "Transient Epigenetic Reprogramming as a Universal Precursor to EGFR Inhibitor Resistance via Microenvironmental Cues",
+      "description": "This hypothesis posits that, in EGFR-mutant lung cancer, transient and reversible epigenetic reprogramming events—triggered by microenvironmental signals such as hypoxia, cytokines, and stromal cell interactions—universally precede and enable the emergence of genetically fixed resistance mechanisms (on-target mutations or bypass pathway activation). Specifically, these epigenetic states create a permissive chromatin landscape that promotes the expression of survival and drug-tolerant programs, which subsequently increase the probability of acquiring stable resistance mutations. Key predictions include the detection of defined, recurrent epigenetic signatures (e.g., H3K27ac changes, chromatin accessibility shifts) in single-cell and spatial multi-omics data during the early phases of therapy, prior to the appearance of genetic resistance, and that modulating these epigenetic states can delay or prevent resistance.",
+      "experimental_validation": "1. Employ longitudinal single-cell ATAC-seq, single-cell RNA-seq, and spatial transcriptomics on tumor biopsies and matched patient-derived organoids from EGFR-mutant lung cancer patients undergoing EGFR inhibitor therapy. 2. Monitor for early, reversible epigenetic changes associated with drug-tolerant persister (DTP) states prior to genetic resistance. 3. Use CRISPRi/CRISPRa and small molecule inhibitors targeting identified epigenetic regulators (e.g., EZH2, HDACs, BET proteins) in barcoded organoids and humanized lung-on-chip models. 4. Assess whether transient inhibition or activation of these regulators alters the emergence and frequency of genetically resistant clones, as measured by deep ctDNA sequencing and lineage tracing. 5. Controls include vehicle-treated, non-EGFR mutant, and non-epigenetic intervention arms. 6. Expected outcomes: Early epigenetic changes are detectable and reversible, and their modulation delays or reduces the emergence of genetically fixed resistance.",
+      "theory_and_computation": "Develop a multi-scale stochastic model of tumor evolution incorporating epigenetic plasticity, microenvironmental feedback, and clonal selection. Use agent-based simulations parameterized with single-cell multi-omics data to predict the rate and timing of resistance emergence under various microenvironmental and epigenetic intervention scenarios. Integrate machine learning models with clinical and experimental data to identify key epigenetic features predictive of resistance. Computationally infer causal relationships between microenvironmental cues and epigenetic state transitions using time-resolved data and probabilistic graphical models.",
+      "hallmarks": {
+        "testability": "The hypothesis is highly testable: it predicts that early, reversible epigenetic states, identifiable by specific chromatin marks and transcriptomic profiles, precede and enable genetic resistance in EGFR-mutant lung cancer. Experimental interventions targeting these epigenetic states should alter the frequency and timing of resistance emergence, which can be empirically measured.",
+        "specificity": "The hypothesis precisely defines the variables (epigenetic state changes, microenvironmental cues, timing relative to genetic resistance) and predicts a causal sequence (epigenetic state precedes genetic resistance), leaving little room for ambiguity.",
+        "grounded_knowledge": "This builds on evidence for drug-tolerant persister states and the role of epigenetic plasticity in cancer therapy resistance, while proposing a universal, microenvironmentally induced epigenetic reprogramming event as a precursor to genetic resistance.",
+        "predictive_power": "It predicts novel, testable phenomena: specific epigenetic signatures as early biomarkers of resistance, the reversibility of these states, and the efficacy of transient epigenetic interventions to forestall genetic resistance, guiding future research and clinical trial design.",
+        "parsimony": "The hypothesis posits a single, temporally defined epigenetic event as the principal gateway to diverse resistance mechanisms, simplifying the complex landscape of resistance evolution."
+      },
+      "references": [
+        {
+          "citation": "Sharma, S. V., et al. (2010). A chromatin-mediated reversible drug-tolerant state in cancer cell subpopulations. Cell, 141(1), 69–80.",
+          "annotation": "Describes drug-tolerant persister cells in EGFR-mutant cancers and their epigenetic regulation."
+        },
+        {
+          "citation": "Boumahdi, S., & de Sauvage, F. J. (2020). The great escape: tumour cell plasticity in resistance to targeted therapy. Nature Reviews Drug Discovery, 19(1), 39-56.",
+          "annotation": "Reviews tumor plasticity and epigenetic mechanisms contributing to resistance."
+        },
+        {
+          "citation": "Rambow, F., et al. (2018). Toward minimal residual disease-directed therapy in melanoma. Cell, 174(4), 843-855.e19.",
+          "annotation": "Demonstrates early epigenetic and microenvironment-driven states preceding resistance in another cancer context."
+        },
+        {
+          "citation": "Hata, A. N., et al. (2016). Tumor cells can follow distinct evolutionary paths to become resistant to epidermal growth factor receptor inhibition. Nature Medicine, 22(3), 262-269.",
+          "annotation": "Provides evidence of diverse evolutionary trajectories to resistance in EGFR-mutant lung cancer."
+        }
+      ],
+      "hypothesis_number": 11,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:13:47.677672"
+    },
+    {
+      "title": "Transient Epigenetic Reprogramming Fuels Reversible EGFR Inhibitor Resistance via Non-coding RNA-Mediated Bypass Signaling in EGFR-mutant Lung Cancer",
+      "description": "This hypothesis posits that the emergence of drug-tolerant persister (DTP) cells during EGFR inhibitor treatment is driven by a transient, reversible epigenetic state orchestrated by a specific set of stress-induced long non-coding RNAs (lncRNAs) and microRNAs. These non-coding RNAs dynamically rewire chromatin accessibility and enhancer landscapes, activating bypass signaling (e.g., MET, AXL, or IGF1R) in a manner independent of permanent genetic alterations. The hypothesis predicts that (1) a distinct, plastic lncRNA/miRNA signature precedes and accompanies resistance onset, (2) transient inhibition of these non-coding RNA networks can restore EGFR inhibitor sensitivity and prevent phenotypic switching, and (3) chromatin accessibility at key bypass loci reverts upon withdrawal of EGFR inhibition, correlating with the reversibility of resistance.",
+      "experimental_validation": "Validation will employ longitudinal single-cell multi-omics (scRNA-seq, ATAC-seq, single-cell small RNA-seq) of EGFR-mutant lung cancer organoids and patient-derived xenografts under chronic EGFR inhibitor exposure. CRISPRi/a and antisense oligonucleotide (ASO) knockdown/overexpression libraries targeting candidate lncRNAs/miRNAs will assess causality for DTP formation, bypass pathway activation, and drug response. Cut&Tag profiling of enhancer marks (H3K27ac) at bypass pathway genes, coupled with rescue experiments (e.g., MET/AXL inhibitors), will test reversibility. Controls include isogenic lines and non-targeting ASOs. Measurements: cell viability, DTP frequency, chromatin accessibility, bypass gene expression, and drug response kinetics. Expected outcome: Disruption of specific non-coding RNAs abrogates bypass activation and maintains drug sensitivity.",
+      "theory_and_computation": "A dynamic systems model will be constructed incorporating epigenetic state transitions, non-coding RNA expression, and bypass signaling fluxes. Machine learning (random forest, LASSO) on multi-omic time-series data will identify predictive non-coding RNA signatures. Bayesian network inference will model causal relationships between lncRNA/miRNA networks, chromatin states, and resistance phenotypes. In silico perturbation simulations will predict the impact of non-coding RNA interventions on DTP dynamics and resistance trajectories.",
+      "hallmarks": {
+        "testability": "The hypothesis is directly testable: specific non-coding RNAs can be targeted genetically or pharmacologically, and their impact on resistance phenotypes, chromatin state, and bypass activation can be quantitatively assessed in vitro and in vivo.",
+        "specificity": "Variables are precisely defined—particular lncRNAs/miRNAs, chromatin accessibility at bypass loci, DTP formation, and drug response—enabling unambiguous experimental readouts and clear cause-effect relationships.",
+        "grounded_knowledge": "This builds on evidence of epigenetic and non-coding RNA roles in drug resistance (e.g., lncRNA-mediated chromatin remodeling, microRNA regulation of bypass kinases), while proposing a mechanistic, reversible epigenetic program as a central and targetable driver.",
+        "predictive_power": "It predicts novel, time-resolved non-coding RNA signatures preceding resistance, the reversibility of chromatin states, and that transient inhibition of these RNAs can suppress resistance emergence—expanding current models focused on permanent mutations.",
+        "parsimony": "The model posits a single, unified mechanism—transient non-coding RNA-driven chromatin reprogramming—explaining multiple resistance phenotypes, minimizing the need for invoking disparate or permanent genetic events."
+      },
+      "references": [
+        {
+          "citation": "Sharma, S.V., et al. (2010). A chromatin-mediated reversible drug-tolerant state in cancer cell subpopulations. Cell, 141(1), 69–80.",
+          "annotation": "Foundational evidence for reversible epigenetic drug tolerance in EGFR-mutant cancers."
+        },
+        {
+          "citation": "Hata, A.N., et al. (2016). Tumor cells can follow distinct evolutionary paths to become resistant to epidermal growth factor receptor inhibition. Nature Medicine, 22(3), 262–269.",
+          "annotation": "Demonstrates heterogeneity and reversibility in resistance mechanisms, supporting the importance of non-genetic plasticity."
+        },
+        {
+          "citation": "Hu, X., et al. (2020). Long noncoding RNA-mediated chromatin regulation: The emerging mechanism underlying tumorigenesis and drug resistance. Frontiers in Oncology, 10, 1239.",
+          "annotation": "Reviews lncRNA roles in chromatin remodeling and resistance, directly supporting the mechanistic basis."
+        },
+        {
+          "citation": "Hangauer, M.J., et al. (2017). Drug-tolerant persister cancer cells are vulnerable to GPX4 inhibition. Nature, 551(7679), 247–250.",
+          "annotation": "Characterizes DTP biology and therapeutic vulnerabilities in the context of resistance."
+        }
+      ],
+      "hypothesis_number": 12,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:13:47.677689"
+    },
+    {
+      "title": "Transient Epigenetic Reprogramming Drives Early Resistance Trajectories in EGFR-Mutant Lung Cancer",
+      "description": "This hypothesis posits that a subpopulation of EGFR-mutant lung cancer cells transiently enter an epigenetically reprogrammed state—marked by reversible chromatin accessibility and non-coding RNA expression changes—immediately upon initial EGFR inhibitor exposure. This 'primed' state enables rapid phenotypic plasticity, facilitating both on-target resistance mutations and the activation of bypass signaling pathways before genetic resistance becomes fixed. Key predictions include: (1) detectable, reversible chromatin state and non-coding RNA shifts in single-cell and spatial omics data within days of therapy initiation, (2) enrichment of these states at sites of microenvironmental stress (e.g., hypoxia, immune infiltration), (3) cells in this state display increased tolerance to multiple drug classes and a higher propensity to acquire stable resistance-conferring mutations.",
+      "experimental_validation": "1. Collect longitudinal tumor biopsies and blood samples from EGFR-mutant lung cancer patients pre-treatment, 24h, 72h, 1 week, and at progression. 2. Perform single-cell multi-omic profiling (ATAC-seq, RNA-seq, methylome, and proteome) and spatial transcriptomics on tissue and CTCs/ctDNA. 3. Identify transient cell states with unique chromatin accessibility and non-coding RNA signatures. 4. Model early resistance evolution in patient-derived organoids exposed to EGFR inhibitors, using CRISPRi/a screens targeting epigenetic regulators and lncRNAs, followed by clonal tracking via barcoding. 5. Use chromatin-modifying agents (e.g., EZH2 inhibitors) in combination with EGFR inhibitors to assess whether blocking the transient state reduces resistance emergence. Controls: untreated organoids, non-primed populations, and isogenic cell lines. Measurements: chromatin accessibility dynamics, resistance frequency, mutation rates, drug tolerance, and cell fate outcomes. Expected outcomes: Early, reversible epigenetic changes precede and potentiate stable resistance, and their pharmacological inhibition attenuates resistance trajectories.",
+      "theory_and_computation": "Develop a stochastic mathematical model of tumor evolution incorporating reversible epigenetic states, transition rates, and subsequent fixation of genetic resistance. Simulate single-cell trajectories using agent-based modeling, parameterized by experimentally measured rates of chromatin state switching and mutation acquisition. Use machine learning to identify predictive multi-omic signatures of primed cells from patient data. Apply AI-based causal inference to link microenvironmental features with the induction of these states. Computationally predict optimal intervention windows for combination therapy to intercept resistance.",
+      "hallmarks": {
+        "testability": "The hypothesis is testable through direct measurement of chromatin state and non-coding RNA expression in tumor cells before and after EGFR inhibitor exposure, both in patient samples and experimental models. The impact of blocking these states on resistance emergence can be empirically evaluated using pharmacological and genetic perturbations.",
+        "specificity": "It precisely identifies the variables (epigenetic states, non-coding RNA expression, timing relative to therapy, microenvironmental context) and predicts a specific sequence (epigenetic priming → resistance emergence) and mechanism (chromatin accessibility/non-coding RNA-mediated plasticity).",
+        "grounded_knowledge": "Prior studies have shown that epigenetic plasticity and non-coding RNAs contribute to drug tolerance in various cancers, but their early, transient role in resistance evolution to EGFR inhibitors in lung cancer—and their spatial and microenvironmental regulation—remains unexplored.",
+        "predictive_power": "Predicts that targeting transient, reversible epigenetic states immediately after therapy initiation can prevent or delay the development of stable resistance. Also predicts spatial heterogeneity in resistance emergence linked to microenvironmental stressors.",
+        "parsimony": "This hypothesis unifies multiple observations (epigenetic plasticity, drug tolerance, microenvironmental influence) under a single, testable mechanism, minimizing unnecessary complexity while offering explanatory breadth."
+      },
+      "references": [
+        {
+          "citation": "Sharma, S. V., Lee, D. Y., Li, B., et al. (2010). A chromatin-mediated reversible drug-tolerant state in cancer cell subpopulations. Cell, 141(1), 69-80.",
+          "annotation": "Demonstrates the existence of reversible, chromatin-based drug-tolerant states in cancer, supporting the plausibility of transient epigenetic priming."
+        },
+        {
+          "citation": "Hata, A. N., Niederst, M. J., Archibald, H. L., et al. (2016). Tumor cells can follow distinct evolutionary paths to become resistant to epidermal growth factor receptor inhibition. Nature Medicine, 22(3), 262-269.",
+          "annotation": "Reveals multiple resistance trajectories in EGFR-mutant lung cancer, suggesting the need to study early transitional states."
+        },
+        {
+          "citation": "Marjanovic, N. D., Hofree, M., Chan, J. E., et al. (2020). Emergence of a high-plasticity cell state during lung cancer evolution. Cancer Cell, 38(2), 229-246.e13.",
+          "annotation": "Identifies plastic cell states in lung cancer evolution, highlighting the link between epigenetic reprogramming and therapy resistance."
+        },
+        {
+          "citation": "Minussi, D. C., Nicholson, M. D., Ye, H., et al. (2021). Breast tumours maintain a reservoir of subclonal diversity during expansion. Nature, 592(7853), 302-308.",
+          "annotation": "Supports the concept that subclonal diversity and plasticity underpin tumor adaptation and resistance."
+        }
+      ],
+      "hypothesis_number": 13,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:13:47.677694"
+    },
+    {
+      "title": "Transient Epigenetic Reprogramming in the Tumor Microenvironment as a Catalyst for EGFR Inhibitor Resistance",
+      "description": "This hypothesis posits that transient, reversible epigenetic modifications induced by dynamic interactions with stromal and immune cells in the tumor microenvironment (TME) prime subpopulations of EGFR-mutant lung cancer cells for rapid adaptation and resistance to EGFR-targeted therapies. Specifically, exposure to inflammatory cytokines and stromal-derived factors triggers a coordinated reprogramming of chromatin accessibility and non-coding RNA expression, enabling temporary shifts in gene expression profiles that facilitate bypass signaling pathway activation or phenotype switching (e.g., epithelial-to-mesenchymal transition, EMT). These epigenetically primed cells survive initial EGFR inhibition and later acquire stable genetic or non-genetic resistance, suggesting that targeting transient epigenetic states or their microenvironmental inducers could preempt therapeutic escape.",
+      "experimental_validation": "To validate this hypothesis, establish longitudinal single-cell multi-omics profiling (scRNA-seq, scATAC-seq, and scChIP-seq) of EGFR-mutant lung cancer organoids or barcoded patient-derived xenografts co-cultured with autologous stromal/immune cells under EGFR inhibitor treatment. Employ spatial transcriptomics and multiplex cytokine profiling to map microenvironmental cues. Use CRISPRi/a screens to modulate candidate epigenetic regulators (e.g., EZH2, HDACs) and non-coding RNAs implicated in resistance. Controls should include mono-cultures and TME-depleted conditions. Key measurements: frequency and persistence of chromatin accessibility changes, expression of bypass pathway genes, EMT markers, and resistance emergence. Expected outcome: transient epigenetic states precede and predict resistance, and their disruption delays or prevents resistance acquisition.",
+      "theory_and_computation": "Develop agent-based models and stochastic simulations of tumor evolution incorporating TME-driven, reversible epigenetic state transitions. Integrate single-cell multi-omics data to parameterize transition probabilities. Use machine learning to identify predictive signatures of primed states. Construct network models linking cytokine signaling to chromatin modulators and downstream resistance pathways. Simulate intervention scenarios (epigenetic drugs, cytokine blockade) to predict impact on resistance dynamics and validate in silico findings against experimental data.",
+      "hallmarks": {
+        "testability": "This hypothesis is directly testable by measuring single-cell epigenetic and transcriptional changes in response to defined TME components and correlating these with resistance outcomes. CRISPR-based perturbation of candidate regulators provides falsifiability.",
+        "specificity": "It specifies the required variables (eg, cytokine-induced chromatin changes, non-coding RNA expression, resistance markers) and predicts a temporal sequence: transient changes precede resistance.",
+        "grounded_knowledge": "It builds on evidence for TME influence on cancer plasticity and known epigenetic mechanisms in drug resistance, while extending this to transient, microenvironment-induced reprogramming.",
+        "predictive_power": "It predicts that blocking specific transient epigenetic states or their inducers will preempt resistance, a testable and actionable insight not widely explored.",
+        "parsimony": "The hypothesis invokes a single, unifying mechanism (transient epigenetic reprogramming) mediated by TME interactions, avoiding unnecessary complexity."
+      },
+      "references": [
+        {
+          "citation": "Sharma, S. V., et al. (2010). A chromatin-mediated reversible drug-tolerant state in cancer cell subpopulations. Cell, 141(1), 69-80.",
+          "annotation": "Provides evidence for reversible, chromatin-based drug-tolerant states in cancer."
+        },
+        {
+          "citation": "Nieto, M. A., et al. (2016). EMT: 2016. Cell, 166(1), 21-45.",
+          "annotation": "Describes the role of EMT and plasticity in resistance and microenvironmental cues."
+        },
+        {
+          "citation": "Kim, K. T., et al. (2020). Application of single-cell RNA sequencing in optimizing a combinatorial therapeutic strategy in metastatic renal cell carcinoma. Genome Biology, 21(1), 1-20.",
+          "annotation": "Demonstrates use of single-cell approaches to dissect resistance mechanisms."
+        },
+        {
+          "citation": "Dagogo-Jack, I., & Shaw, A. T. (2018). Tumour heterogeneity and resistance to cancer therapies. Nature Reviews Clinical Oncology, 15(2), 81-94.",
+          "annotation": "Reviews the role of tumor heterogeneity and microenvironment in resistance."
+        }
+      ],
+      "hypothesis_number": 14,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:13:47.677706"
+    },
+    {
+      "title": "Transient Epigenetic Reprogramming Drives Early Bypass Resistance via Tumor–Stromal Exosomal microRNA Transfer in EGFR-Mutant Lung Cancer",
+      "description": "This hypothesis proposes that, upon initiation of EGFR-targeted therapy, a wave of stromal exosome-mediated transfer of specific microRNAs (miRNAs) transiently reprograms the chromatin state of EGFR-mutant tumor cells, priming them for rapid activation of bypass signaling pathways (such as MET or AXL) before canonical on-target resistance mutations emerge. Key predictions include: (1) early therapy triggers a burst of exosomal miRNAs from cancer-associated fibroblasts (CAFs) or macrophages, (2) these miRNAs induce chromatin accessibility changes at bypass pathway loci in tumor cells, and (3) inhibiting exosome production or key miRNAs delays or prevents the onset of bypass resistance, as evidenced by single-cell multi-omics and phospho-proteomics.",
+      "experimental_validation": "Longitudinal co-culture experiments using EGFR-mutant lung cancer cells and patient-derived CAFs/macrophages will be performed, with and without EGFR inhibitor treatment. Exosomes will be isolated from stromal compartments and characterized using small RNA-seq. Tumor cells will undergo ATAC-seq and RNA-seq pre- and post-exosome exposure, focusing on bypass pathway loci. CRISPRi or locked nucleic acid (LNA) inhibitors will target candidate miRNAs in stromal cells to assess impact on chromatin state and resistance emergence. Controls include monocultures, scrambled LNA controls, and exosome-depleted media. In vivo, patient-derived xenografts (PDX) with CAF co-implantation will be treated with EGFR inhibitors ± GW4869 (exosome inhibitor). Key measurements: time to resistance, bypass pathway activation (phospho-proteomics), and single-cell chromatin accessibility. Expected outcome: Disrupting exosome/miRNA transfer delays resistance and reduces bypass activation.",
+      "theory_and_computation": "A mathematical model will be developed to simulate tumor-stromal interactions, modeling exosome-mediated miRNA flux, chromatin accessibility dynamics, and the stochastic emergence of resistance. Integration with spatial transcriptomics data will enable agent-based simulations predicting spatial-temporal patterns of reprogramming and resistance. Machine learning (e.g., graph neural networks) can identify key miRNA–gene regulatory modules from multi-omics data. Sensitivity analyses will predict the impact of varying exosome flux or miRNA inhibition on resistance kinetics.",
+      "hallmarks": {
+        "testability": "The hypothesis is directly testable: it predicts that exosomal miRNAs from the stroma induce chromatin changes in tumor cells that precede and enable bypass resistance, and that inhibiting this transfer will measurably delay resistance both in vitro and in vivo.",
+        "specificity": "Variables are clearly defined: exosomal miRNAs (from stromal cells), chromatin accessibility at specific loci, bypass pathway activation, and resistance emergence. The relationship (stroma-to-tumor exosomal miRNA transfer drives epigenetic priming of resistance) is specific and measurable.",
+        "grounded_knowledge": "This builds on established findings that exosomal miRNAs mediate cell–cell communication, that chromatin plasticity underlies drug resistance, and that bypass pathway activation is a major EGFR-TKI resistance mechanism, but uniquely integrates these dimensions in the context of early resistance evolution.",
+        "predictive_power": "It predicts a non-obvious, actionable window during which stromal exosome/miRNA transfer can be targeted to delay or prevent resistance, and forecasts distinct chromatin and transcriptomic signatures preceding genetic resistance mutations.",
+        "parsimony": "The hypothesis posits a single mechanistic link (stromal exosomal miRNA-mediated chromatin reprogramming) as a driver of early resistance, minimizing unnecessary assumptions while unifying key observations."
+      },
+      "references": [
+        {
+          "citation": "Mo, H., et al. (2021). Extracellular vesicle–mediated crosstalk in the tumor microenvironment. Frontiers in Immunology, 12, 663112.",
+          "annotation": "Describes how extracellular vesicles, including exosomes, mediate communication between stromal and tumor cells."
+        },
+        {
+          "citation": "Sharma, S. V., et al. (2010). A chromatin-mediated reversible drug-tolerant state in cancer cell subpopulations. Cell, 141(1), 69-80.",
+          "annotation": "Establishes the link between chromatin plasticity and reversible drug resistance states in cancer."
+        },
+        {
+          "citation": "Ramalingam, S. S., et al. (2018). Mechanisms of acquired resistance to EGFR TKIs in EGFR-mutant lung cancer. The Lancet Oncology, 19(12), e667-e679.",
+          "annotation": "Reviews known resistance mechanisms in EGFR-mutant NSCLC, including bypass signaling."
+        },
+        {
+          "citation": "Yuan, Q., et al. (2022). Stromal cell–derived exosomal miR-21 enhances drug resistance in lung cancer through PTEN/PI3K/AKT pathway. Molecular Cancer, 21, 38.",
+          "annotation": "Demonstrates that stromal exosomal miRNAs can modulate drug resistance in lung cancer."
+        }
+      ],
+      "hypothesis_number": 15,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:13:47.677712"
+    },
+    {
+      "title": "Transient Activation of Endogenous Retroviral Elements Drives Adaptive Resistance via Non-coding RNA Modulation in EGFR-Mutant Lung Cancer",
+      "description": "This hypothesis posits that upon EGFR inhibitor treatment, a subset of EGFR-mutant lung cancer cells transiently activates endogenous retroviral elements (ERVs), leading to the production of ERV-derived non-coding RNAs (ncRNAs) that modulate chromatin state and gene expression. These ncRNAs promote phenotype switching and foster microenvironmental tolerance, enabling survival under drug pressure. The key prediction is that acute ERV activation precedes or coincides with the emergence of resistant clones and that pharmacological suppression of ERV expression (e.g., via reverse transcriptase inhibitors or epigenetic modulators) will blunt resistance emergence.",
+      "experimental_validation": "1. Establish longitudinal single-cell RNA-seq and ATAC-seq profiling of patient-derived EGFR-mutant NSCLC organoids and in vivo xenografts pre-, during, and post-EGFR inhibitor treatment. 2. Quantify ERV expression and ncRNA abundance using targeted qPCR and RNA-FISH, correlating with resistance marker emergence. 3. Employ CRISPRi or LNA gapmers to specifically suppress ERV transcripts in organoids and monitor resistance evolution under drug pressure. 4. Include controls with non-targeting guides and untreated cells. 5. Measure chromatin accessibility changes (ATAC-seq), global methylation (bisulfite sequencing), and phenotype switching markers (e.g., EMT, AXL expression). 6. Test the effect of reverse transcriptase inhibitors (e.g., AZT) or DNA methyltransferase inhibitors on resistance kinetics. Expected outcomes: ERV activation and ncRNA upregulation precede resistance; suppression of ERV expression delays or reduces resistance.",
+      "theory_and_computation": "Develop stochastic agent-based models of cell population dynamics incorporating ERV activation as a probabilistic event following drug exposure. Integrate gene regulatory network simulations to model ncRNA-mediated chromatin remodeling and its feedback on gene expression dynamics. Use machine learning to correlate ERV/ncRNA signatures in longitudinal patient ctDNA samples with time to resistance. Simulate theoretical interventions targeting ERVs and predict population-level impact on resistance emergence.",
+      "hallmarks": {
+        "testability": "This hypothesis is testable through temporal profiling of ERV/ncRNA activity, genetic and pharmacologic perturbation experiments, and measuring their impact on resistance onset.",
+        "specificity": "It specifies ERV-derived ncRNAs as mediators, predicts temporal sequence (ERV activation precedes resistance), and details measurable endpoints (ncRNA levels, chromatin state, resistance markers).",
+        "grounded_knowledge": "Recent work links transposable elements to cancer plasticity and drug response. ERV reactivation is implicated in immunogenicity and stemness, but its direct role in resistance evolution is unexplored.",
+        "predictive_power": "It predicts a novel, actionable mechanism for resistance that could explain failures in current therapies and suggests new combination regimens (e.g., EGFRi + RT inhibitors).",
+        "parsimony": "It invokes a single mechanistic axis (ERV/ncRNA) to connect drug pressure, chromatin remodeling, and resistance, minimizing assumptions about other potential mediators."
+      },
+      "references": [
+        {
+          "citation": "Babaian, A., & Mager, D. L. (2016). Endogenous retroviral promoter exaptation in human cancer. Mobile DNA, 7(1), 24.",
+          "annotation": "Describes ERV activation and its impact on cancer gene regulation, supporting the plausibility of ERVs as regulatory drivers."
+        },
+        {
+          "citation": "Krönung, S. K., et al. (2016). Endogenous retroviruses drive KRAB zinc-finger protein expression and shape the transcriptional network of human cells. Nature Communications, 7, 13486.",
+          "annotation": "Links retroviral elements with transcriptional plasticity, relevant to adaptive resistance."
+        },
+        {
+          "citation": "Yuan, J., et al. (2022). Non-coding RNAs in cancer drug resistance: Underlying mechanisms and clinical applications. Journal of Hematology & Oncology, 15(1), 47.",
+          "annotation": "Reviews the role of ncRNAs in drug resistance, providing a mechanistic foundation for ncRNA-mediated phenotype switching."
+        },
+        {
+          "citation": "Roulois, D., et al. (2015). DNA-demethylating agents target colorectal cancer cells by inducing viral mimicry by endogenous transcripts. Cell, 162(5), 961-973.",
+          "annotation": "Shows that ERV reactivation can alter tumor cell fate, supporting the therapeutic angle of this hypothesis."
+        }
+      ],
+      "hypothesis_number": 16,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:13:47.677727"
+    },
+    {
+      "title": "Microenvironmental Metabolic Reprogramming Drives Sequential Bypass Resistance in EGFR-mutant Lung Cancer",
+      "description": "This hypothesis posits that metabolic reprogramming within the tumor microenvironment (TME)—specifically, the spatial and temporal induction of a lactate-rich, hypoxic niche—precedes and facilitates the emergence of sequential bypass pathway resistance (e.g., MET, HER2, AXL) in EGFR-mutant lung cancer under targeted therapy pressure. The model predicts that early metabolic shifts, detectable via spatial metabolomics and phospho-proteomics, promote the activation of hypoxia-inducible signaling and chromatin remodeling in tumor cells, priming them for rapid adoption of alternative survival pathways upon EGFR inhibition. This process creates a permissive ecosystem that accelerates evolution of resistance and is targetable by combining metabolic inhibitors with next-generation EGFR inhibitors.",
+      "experimental_validation": "1. Longitudinally sample EGFR-mutant NSCLC patient tumors and matched plasma (ctDNA) before, during, and after EGFR inhibitor therapy. Apply spatial metabolomics, single-cell RNA-seq, and phospho-proteomics to map metabolic gradients, bypass pathway activation, and chromatin states.\n2. Use patient-derived organoids (PDOs) and humanized lung-on-chip systems to recapitulate TME metabolic gradients (e.g., hypoxia chambers, lactate supplementation). Monitor bypass pathway activation (MET, HER2, AXL, IGF1R) and chromatin remodeling upon EGFR inhibition, with/without pharmacologic inhibition of glycolysis/lactate transport (e.g., MCT1 inhibitors).\n3. Controls: Organoids grown in normoxia, without metabolic stress; isogenic EGFR-WT lines; non-tumor controls.\n4. Measurements: Quantify bypass pathway expression (qPCR, immunofluorescence), chromatin accessibility (ATAC-seq), metabolic fluxes (stable isotope tracing), and resistance emergence (viability, apoptosis assays, single-cell barcoding lineage tracing).\n5. Expected outcomes: Metabolic reprogramming precedes bypass pathway activation; metabolic intervention delays or prevents resistance emergence.\nTimeline: 12-18 months.",
+      "theory_and_computation": "Develop a spatially explicit agent-based model of tumor evolution incorporating metabolic gradients, signaling network rewiring, and clonal selection under therapy. Model predicts the probability and timing of bypass resistance emergence as a function of metabolic microenvironmental parameters. Integrate single-cell multi-omics data with Bayesian network inference to reconstruct causal relationships between metabolic shifts and pathway activation. Use machine learning (e.g., random forest, deep learning) to identify metabolic signatures predictive of resistance trajectories in longitudinal patient cohorts.",
+      "hallmarks": {
+        "testability": "Empirical predictions are clear: metabolic gradients (e.g., lactate, hypoxia) will precede and spatially co-localize with bypass pathway activation and resistance emergence, and metabolic inhibition will delay resistance. These can be directly tested using multi-omics and functional assays in patient and model systems.",
+        "specificity": "The hypothesis clearly defines variables (metabolic gradients, bypass pathway activation, chromatin states, resistance timing), expected relationships (sequential activation), and scope (EGFR-mutant NSCLC under targeted therapy).",
+        "grounded_knowledge": "It builds on evidence linking TME metabolism to therapy resistance, and the known role of bypass pathways in EGFR inhibitor resistance, but uniquely integrates spatial/temporal metabolic reprogramming as a primary driver.",
+        "predictive_power": "It predicts new phenomena: that metabolic reprogramming in the TME is a prerequisite for bypass resistance, and that metabolic targeting can alter evolutionary trajectories—guiding novel combination strategies.",
+        "parsimony": "The hypothesis relies on a single, unifying mechanism (metabolic reprogramming) to explain multiple resistance phenomena, minimizing unnecessary complexity."
+      },
+      "references": [
+        {
+          "citation": "Hensley, C. T., Faubert, B., & DeBerardinis, R. J. (2016). Metabolic heterogeneity in tumors: new perspectives for precision medicine. Nature Reviews Cancer, 16(11), 657–669.",
+          "annotation": "Reviews metabolic diversity in tumors and its implications for therapy resistance."
+        },
+        {
+          "citation": "Zhang, C., et al. (2019). Hypoxia induces the breast cancer stem cell phenotype by HIF-dependent and ALKBH5-mediated m6A-demethylation of NANOG mRNA. Proceedings of the National Academy of Sciences, 116(14), 6463–6468.",
+          "annotation": "Demonstrates hypoxia-driven phenotype switching via metabolic and chromatin changes."
+        },
+        {
+          "citation": "Piotrowska, Z., et al. (2018). MET amplification (METamp) as a resistance mechanism to osimertinib. Journal of Clinical Oncology, 36(15_suppl), 9020.",
+          "annotation": "Describes MET as a bypass resistance pathway in EGFR-mutant lung cancer."
+        },
+        {
+          "citation": "Jin, M. Z., & Jin, W. L. (2020). The updated landscape of tumor microenvironment and drug repurposing. Signal Transduction and Targeted Therapy, 5(1), 166.",
+          "annotation": "Reviews the interplay between TME metabolism and drug resistance mechanisms."
+        }
+      ],
+      "hypothesis_number": 17,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:13:47.677733"
+    },
+    {
+      "title": "Transient Epigenetic Reprogramming as a Primary Driver of Early EGFR Inhibitor Resistance in Lung Cancer",
+      "description": "This hypothesis posits that early therapeutic resistance in EGFR-mutant lung cancer is frequently initiated not by genetic mutations but by transient, reversible epigenetic reprogramming events that promote adaptive phenotype switching. Specifically, within days of EGFR inhibitor treatment, a subpopulation of tumor cells enters a drug-tolerant persister state mediated by locus-specific changes in chromatin accessibility (e.g., H3K27ac enrichment at survival pathway loci) and altered expression of key non-coding RNAs. These changes precede, and potentially facilitate, the emergence of stable, mutation-driven resistance. Therefore, targeting these early epigenetic events—such as by inhibiting specific histone modifiers or ncRNA regulators—can delay or prevent the development of both transient and permanent resistance.",
+      "experimental_validation": "1) Collect EGFR-mutant NSCLC biopsies and derive patient-derived organoids (PDOs) and cell lines. 2) Treat with third-generation EGFR inhibitors (e.g., osimertinib) and perform longitudinal sampling (0h, 6h, 24h, 72h, 7d). 3) Apply single-cell ATAC-seq, single-cell RNA-seq, and spatial transcriptomics to map chromatin, transcriptional, and cellular state dynamics. 4) Use ChIP-seq for key histone marks (H3K27ac, H3K9me3) and assess ncRNA expression by small RNA-seq. 5) Perturb candidate epigenetic regulators (e.g., EZH2, HDACs) or ncRNA targets with CRISPRi/a or small-molecule inhibitors, and measure effects on persister cell emergence, long-term viability, and acquisition of secondary resistance mutations. 6) Validate findings in vivo using patient-derived xenograft (PDX) models with longitudinal ctDNA and spatial multi-omics. Controls include untreated and vehicle-treated cells, and isogenic lines lacking EGFR mutations. Expected outcomes: rapid, reversible epigenetic changes in a subset of cells post-treatment; suppression of persister state and delayed resistance upon epigenetic/ncRNA inhibition.",
+      "theory_and_computation": "Develop mathematical models of tumor population dynamics incorporating reversible, non-genetic state transitions. Use agent-based simulations to predict the frequency and persistence of drug-tolerant cells under variable treatment schedules and epigenetic interventions. Integrate single-cell multi-omics data with machine learning (e.g., trajectory inference, manifold learning) to reconstruct cell state transitions and identify critical regulators. Bayesian inference can estimate the probability of resistance emergence under different intervention scenarios.",
+      "hallmarks": {
+        "testability": "The hypothesis makes clear, testable predictions: that specific, reversible epigenetic alterations precede genetic resistance, and that targeting these events reduces persister cell formation and delays resistance. These can be empirically tested in vitro and in vivo.",
+        "specificity": "Variables (chromatin marks, ncRNAs, timing of changes, defined drug-tolerant state) and their relationships (epigenetic change → persister state → permanent resistance) are precisely delineated.",
+        "grounded_knowledge": "Builds on established observations that drug-tolerant persister cells and chromatin remodeling are linked to early drug resistance, but advances the field by specifying temporal order and actionable targets.",
+        "predictive_power": "Predicts that early epigenetic interventions can prevent both transient and stable resistance, and that specific chromatin/ncRNA signatures will serve as early biomarkers of resistance risk.",
+        "parsimony": "Explains early resistance with minimal assumptions—transient, reversible epigenetic changes—rather than invoking complex or multiple concurrent genetic events."
+      },
+      "references": [
+        {
+          "citation": "Sharma, S. V., et al. (2010). A chromatin-mediated reversible drug-tolerant state in cancer cell subpopulations. Cell, 141(1), 69-80.",
+          "annotation": "Describes the existence of drug-tolerant persister cells and chromatin remodeling as a non-genetic mechanism of resistance."
+        },
+        {
+          "citation": "Hata, A. N., et al. (2016). Tumor cells can follow distinct evolutionary paths to become resistant to epidermal growth factor receptor inhibition. Nature Medicine, 22(3), 262-269.",
+          "annotation": "Shows the diversity of resistance mechanisms and highlights the importance of early adaptive states."
+        },
+        {
+          "citation": "Ramkumar, K., & Yagita, H. (2019). Non-coding RNAs in acquired resistance to EGFR inhibitors in lung cancer. Non-coding RNA Research, 4(3), 91-98.",
+          "annotation": "Reviews the role of non-coding RNAs in EGFR inhibitor resistance."
+        },
+        {
+          "citation": "Hangauer, M. J., et al. (2017). Drug-tolerant persister cancer cells are vulnerable to GPX4 inhibition. Nature, 551(7679), 247-250.",
+          "annotation": "Identifies metabolic and epigenetic vulnerabilities of persister cells."
+        }
+      ],
+      "hypothesis_number": 18,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:13:47.677738"
+    },
+    {
+      "title": "Transient Epigenetic Remodeling as a Precursor to Acquired EGFR TKI Resistance in Lung Cancer",
+      "description": "This hypothesis posits that, in EGFR-mutant lung cancers exposed to EGFR tyrosine kinase inhibitors (TKIs), a transient wave of coordinated epigenetic reprogramming—characterized by enhancer activation, chromatin accessibility changes, and non-coding RNA expression—precedes the emergence of stable, genetically mediated resistance. This early epigenetic plasticity enables a subset of tumor cells to survive initial drug pressure, subsequently allowing for selection and fixation of resistance mutations (e.g., EGFR C797S, MET amplification, or bypass pathway activation). Key predictions include: (1) single-cell multi-omics will reveal a distinct subpopulation with marked epigenetic alterations prior to detectable resistance mutations; (2) pharmacologic or genetic inhibition of epigenetic regulators during this window will blunt or delay the emergence of resistance; (3) epigenetic signatures from longitudinal ctDNA or patient-derived organoids will predict resistance trajectories and inform timing for combination therapy.",
+      "experimental_validation": "1. Model system: Longitudinal treatment of EGFR-mutant NSCLC patient-derived organoids and xenografts with third-generation EGFR TKIs (e.g., osimertinib), sampling at baseline, early (24-72h), mid (1-2 weeks), and resistance stages. 2. Multi-omics profiling: Single-cell ATAC-seq, scRNA-seq, and spatial transcriptomics to map epigenetic and transcriptional states; phospho-proteomics to assess signaling adaptation; deep ctDNA sequencing from mouse plasma or patient samples to monitor genetic evolution. 3. Intervention: CRISPRi/CRISPRa screens or small-molecule inhibitors targeting key epigenetic enzymes (e.g., EZH2, BRD4, HDACs) administered during the identified epigenetic remodeling window. 4. Controls: Vehicle-treated, non-TKI-exposed, and wildtype EGFR organoids/xenografts. 5. Readouts: Time to resistance, frequency of resistant clones, changes in epigenetic landscape, and survival. 6. Expected outcomes: Early epigenetic changes precede genetic resistance; interventions targeting these changes delay or diminish resistance emergence.",
+      "theory_and_computation": "Develop computational models integrating single-cell chromatin and transcriptomic data to reconstruct lineage trajectories and infer causal links between epigenetic remodeling and resistance. Bayesian network models can predict the likelihood of transition from epigenetically plastic to genetically resistant states. Machine learning classifiers trained on longitudinal multi-omic datasets can identify predictive epigenetic signatures. Agent-based simulations can model tumor evolution under varying epigenetic perturbations, predicting optimal intervention windows.",
+      "hallmarks": {
+        "testability": "The hypothesis makes specific, falsifiable predictions about the temporal sequence of epigenetic changes and resistance mutations, and the effect of targeted interventions. These can be empirically tested using time-course experiments and multi-omics.",
+        "specificity": "It precisely defines the sequence (epigenetic remodeling before genetic resistance), the cell populations involved, the measurable markers (chromatin accessibility, enhancer activity), and interventions (epigenetic modulation) within an EGFR-mutant lung cancer context.",
+        "grounded_knowledge": "It builds on evidence of epigenetic plasticity in drug resistance and recent single-cell studies showing non-genetic adaptation precedes mutation-driven resistance, while proposing a new, testable temporal order and actionable intervention point.",
+        "predictive_power": "It predicts novel biomarkers (epigenetic signatures), defines a new therapeutic window (early intervention), and anticipates resistance trajectories, thus offering testable new paradigms for monitoring and treating EGFR-mutant NSCLC.",
+        "parsimony": "The hypothesis invokes a single, mechanistically plausible process (epigenetic remodeling) as a unifying precursor to resistance, minimizing unnecessary complexity while explaining diverse resistance mechanisms."
+      },
+      "references": [
+        {
+          "citation": "Sharma, S. V., et al. (2010). A chromatin-mediated reversible drug-tolerant state in cancer cell subpopulations. Cell, 141(1), 69-80.",
+          "annotation": "Demonstrates the existence of epigenetically driven drug-tolerant persister cells, supporting the plausibility of early epigenetic remodeling as a precursor to resistance."
+        },
+        {
+          "citation": "Hinohara, K., & Polyak, K. (2019). Intratumoral heterogeneity: more than just mutations. Trends in Cell Biology, 29(7), 569-579.",
+          "annotation": "Reviews the role of non-genetic heterogeneity, including epigenetic states, in tumor evolution and drug resistance."
+        },
+        {
+          "citation": "Bhang, H. E. C., et al. (2015). Studying clonal dynamics in response to cancer therapy using high-complexity barcoding. Nature Medicine, 21(5), 440-448.",
+          "annotation": "Describes barcoding techniques to trace clonal evolution, relevant to tracking epigenetically plastic subpopulations."
+        },
+        {
+          "citation": "Dagogo-Jack, I., & Shaw, A. T. (2018). Tumour heterogeneity and resistance to cancer therapies. Nature Reviews Clinical Oncology, 15(2), 81-94.",
+          "annotation": "Discusses mechanisms of resistance, highlighting the need to dissect early adaptive changes and providing a conceptual basis for this hypothesis."
+        }
+      ],
+      "hypothesis_number": 19,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:13:47.677744"
+    },
+    {
+      "title": "Early Epigenetic Reprogramming of Tumor-Associated Macrophages Predicts and Promotes EGFR Inhibitor Resistance in Lung Cancer",
+      "description": "This hypothesis proposes that during the earliest stages of EGFR inhibitor therapy in EGFR-mutant lung cancer, tumor-associated macrophages (TAMs) undergo rapid, therapy-driven epigenetic reprogramming. This reprogramming shifts TAMs toward a pro-tumorigenic, immune-suppressive phenotype that anticipates and actively facilitates the emergence of resistant tumor clones. The key prediction is that these epigenetic changes in TAMs—detectable by single-cell ATAC-seq and methylome profiling—precede detectable genetic or transcriptomic changes in the tumor cells themselves. Further, targeting the specific epigenetic regulators identified in TAMs (e.g., using bromodomain inhibitors or DNA methyltransferase inhibitors) in combination with EGFR inhibitors will delay or prevent the onset of resistance, suggesting a causative, rather than merely correlative, role for TAM epigenetic plasticity in resistance evolution.",
+      "experimental_validation": "To validate this hypothesis, longitudinal tumor samples from EGFR-mutant lung cancer patients and matched mouse models will be collected at baseline and at multiple early timepoints post-EGFR inhibitor initiation. Single-cell ATAC-seq, methylome profiling, and RNA-seq will be performed on immune and tumor compartments, focusing on TAM subpopulations. Functional validation will involve ex vivo and in vivo perturbation of key TAM epigenetic regulators identified in omics screens, using small-molecule inhibitors or CRISPR-mediated knockdown. Controls will include vehicle-treated and EGFR inhibitor-only groups. Resistance emergence will be tracked via ctDNA, tumor burden, and relapse kinetics. Expected outcomes are that perturbing TAM epigenetic reprogramming reduces the rate or degree of tumor resistance compared to controls.",
+      "theory_and_computation": "A multi-scale agent-based model will be developed, simulating interactions between tumor cells and TAMs with dynamic epigenetic states. The model will incorporate feedback between macrophage phenotypes, cytokine secretion, and tumor cell evolutionary trajectories under therapeutic pressure. Machine learning classifiers will be trained on single-cell multi-omics data to identify early TAM epigenetic signatures predictive of resistance. Bayesian network analysis will be used to infer causality between temporal changes in TAM states and resistance emergence.",
+      "hallmarks": {
+        "testability": "The hypothesis is directly testable by measuring TAM epigenetic states before and after therapy and by experimentally altering these states to assess effects on resistance evolution.",
+        "specificity": "It specifies TAMs, early epigenetic reprogramming, and resistance as variables, as well as precise timepoints and molecular readouts.",
+        "grounded_knowledge": "Prior studies implicate macrophages in resistance and epigenetic plasticity in phenotype switching, but the specific role of early TAM epigenetic changes as a driver of resistance is not established.",
+        "predictive_power": "It predicts a novel, actionable biomarker (TAM epigenetic state) that precedes and predicts resistance, suggesting new combinatorial interventions.",
+        "parsimony": "The hypothesis posits a direct, mechanistically simple link between early TAM epigenetic changes and resistance, with minimal auxiliary assumptions."
+      },
+      "references": [
+        {
+          "citation": "Quail, D. F., & Joyce, J. A. (2017). The Microenvironmental Landscape of Brain Tumors. Cancer Cell, 31(3), 326–341.",
+          "annotation": "Reviews the role of the tumor microenvironment, particularly TAMs, in supporting tumor progression and therapy resistance."
+        },
+        {
+          "citation": "Sharma, S. V., et al. (2010). A chromatin-mediated reversible drug-tolerant state in cancer cell subpopulations. Cell, 141(1), 69-80.",
+          "annotation": "Describes epigenetic mechanisms of drug tolerance in cancer, supporting the plausibility of early epigenetic changes as a resistance driver."
+        },
+        {
+          "citation": "Zilionis, R., et al. (2019). Single-cell transcriptomics of human and mouse lung cancers reveals conserved myeloid populations across individuals and species. Immunity, 50(5), 1317-1334.e10.",
+          "annotation": "Illustrates the diversity and plasticity of myeloid cells, including TAMs, in lung cancer."
+        },
+        {
+          "citation": "Cassetta, L., & Pollard, J. W. (2018). Targeting macrophages: therapeutic approaches in cancer. Nature Reviews Drug Discovery, 17(12), 887-904.",
+          "annotation": "Discusses therapeutic strategies to target macrophage plasticity and function in cancer."
+        }
+      ],
+      "hypothesis_number": 20,
+      "version": "1.0",
+      "type": "original",
+      "generation_timestamp": "2025-07-23T18:13:47.677749"
+    }
+  ]
+}
