@@ -89,3 +89,7 @@ hypotheses_*.json
 *.bak
 *.swp
 *.swo
+
+# Configuration files
+*.yaml
+*.yml
