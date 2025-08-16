@@ -44,6 +44,7 @@ The script:
    - u - Update hypothesis with information from downloaded abstracts
    - b - Browse and view downloaded abstracts
    - c - Score hypothesis hallmarks (1-5 scale) using AI evaluation
+   - w - Configure hypothesis generation strategies for enhanced creativity
    - p - Print current hypothesis to PDF document
    - q - Quit and save all hypotheses
    - g/Home - Return to main display and reset view
@@ -54,6 +55,22 @@ The script:
    - Page Up/Down - Scroll focused pane by 5 lines
 5) Ensures each new hypothesis is different from previous ones
 6) Outputs all hypotheses and refinements to JSON file
+
+HYPOTHESIS GENERATION STRATEGIES:
+The 'w' command opens a strategy selection interface with 10 advanced strategies:
+1. Boundary-Pushing: Challenge assumptions and push boundaries
+2. Human Curiosity: Emphasize surprising and intriguing outcomes
+3. Real-World Impact: Focus on practical implications and societal benefits
+4. Analogical Thinking: Use creative analogies and metaphors
+5. Interdisciplinary: Leverage multiple disciplines
+6. What-If Scenarios: Explore provocative thought experiments
+7. Provocative Reactions: Provoke curiosity and debate
+8. Narrative Context: Frame within compelling stories
+9. Risk-Taking: Encourage bold, high-risk ideas
+0. Visionary Thinking: Future-oriented and forward-looking
+
+Strategies can be combined and applied to both hypothesis generation (n) and improvement (f) commands.
+Current strategy status is shown in the status bar.
 """
 
 import sys
@@ -266,6 +283,142 @@ class TaskQueue:
                 del self.tasks[task_id]
                 if task_id in self.callbacks:
                     del self.callbacks[task_id]
+
+# ---------------------------------------------------------------------
+# Hypothesis Generation Strategies
+# ---------------------------------------------------------------------
+
+class HypothesisStrategy:
+    """Individual hypothesis generation strategy"""
+    def __init__(self, name, key, description, prompt_addition):
+        self.name = name
+        self.key = key
+        self.description = description
+        self.prompt_addition = prompt_addition
+
+# Define all available strategies
+HYPOTHESIS_STRATEGIES = {
+    "boundary_pushing": HypothesisStrategy(
+        name="Boundary-Pushing",
+        key="1",
+        description="Challenge assumptions and push boundaries",
+        prompt_addition="Formulate hypotheses that explicitly challenge conventional understanding or integrate concepts from distinct and unexpected scientific domains."
+    ),
+    "human_curiosity": HypothesisStrategy(
+        name="Human Curiosity",
+        key="2", 
+        description="Emphasize surprising and intriguing outcomes",
+        prompt_addition="Suggest hypotheses that, if confirmed, would be surprising, intriguing, or counterintuitive to scientists in this field, sparking further curiosity and exploration."
+    ),
+    "real_world_impact": HypothesisStrategy(
+        name="Real-World Impact",
+        key="3",
+        description="Focus on practical implications and societal benefits",
+        prompt_addition="Each hypothesis should clearly articulate its potential impact on society, medicine, technology, or fundamental understanding, highlighting why confirmation would be significant."
+    ),
+    "analogical_thinking": HypothesisStrategy(
+        name="Analogical Thinking",
+        key="4",
+        description="Use creative analogies and metaphors",
+        prompt_addition="Use creative analogies, metaphors, or comparisons from everyday life or unrelated fields to generate novel and intriguing scientific hypotheses."
+    ),
+    "interdisciplinary": HypothesisStrategy(
+        name="Interdisciplinary",
+        key="5",
+        description="Leverage multiple disciplines",
+        prompt_addition="Generate hypotheses that explicitly draw insights from multiple disciplines, combining perspectives in ways rarely or never previously explored."
+    ),
+    "what_if_scenarios": HypothesisStrategy(
+        name="What-If Scenarios",
+        key="6",
+        description="Explore provocative thought experiments",
+        prompt_addition="Formulate hypotheses around imaginative 'what if?' scenarios or thought experiments that expand conventional scientific thinking."
+    ),
+    "provocative_reactions": HypothesisStrategy(
+        name="Provocative Reactions",
+        key="7",
+        description="Provoke curiosity and debate",
+        prompt_addition="Hypotheses should provoke reactions such as curiosity, excitement, debate, or even mild controversy among scientists upon reading them."
+    ),
+    "narrative_context": HypothesisStrategy(
+        name="Narrative Context",
+        key="8",
+        description="Frame within compelling stories",
+        prompt_addition="Frame each hypothesis within a brief narrative or scenario that illustrates why exploring it would be scientifically exciting or culturally significant."
+    ),
+    "risk_taking": HypothesisStrategy(
+        name="Risk-Taking",
+        key="9",
+        description="Encourage bold, high-risk ideas",
+        prompt_addition="Prioritize bold, risky hypotheses—those with lower probability of confirmation but extremely high potential impact if validated."
+    ),
+    "visionary_thinking": HypothesisStrategy(
+        name="Visionary Thinking",
+        key="0",
+        description="Future-oriented and forward-looking",
+        prompt_addition="Generate visionary hypotheses that anticipate future discoveries or technological breakthroughs, proposing directions science may move in 5-10 years ahead of current thinking."
+    )
+}
+
+class HypothesisStrategyManager:
+    """Manages active hypothesis generation strategies"""
+    def __init__(self):
+        self.active_strategies = set()
+        self.default_mode = True  # Start with default mode
+    
+    def toggle_strategy(self, strategy_key):
+        """Toggle a strategy on/off"""
+        strategy_name = None
+        for name, strategy in HYPOTHESIS_STRATEGIES.items():
+            if strategy.key == strategy_key:
+                strategy_name = name
+                break
+        
+        if strategy_name:
+            if strategy_name in self.active_strategies:
+                self.active_strategies.remove(strategy_name)
+            else:
+                self.active_strategies.add(strategy_name)
+                self.default_mode = False
+            return True
+        return False
+    
+    def set_default_mode(self, enabled=True):
+        """Enable/disable default mode"""
+        self.default_mode = enabled
+        if enabled:
+            self.active_strategies.clear()
+    
+    def get_active_strategies(self):
+        """Get list of active strategies"""
+        if self.default_mode:
+            return []
+        return [HYPOTHESIS_STRATEGIES[name] for name in self.active_strategies]
+    
+    def get_strategy_prompt_additions(self):
+        """Get combined prompt additions for active strategies"""
+        if self.default_mode:
+            return ""
+        
+        if not self.active_strategies:
+            return ""
+        
+        additions = []
+        for strategy_name in self.active_strategies:
+            strategy = HYPOTHESIS_STRATEGIES[strategy_name]
+            additions.append(f"• {strategy.prompt_addition}")
+        
+        return "\n\nADDITIONAL GENERATION STRATEGIES:\n" + "\n".join(additions)
+    
+    def get_status_text(self):
+        """Get status text for display"""
+        if self.default_mode:
+            return "Default"
+        elif not self.active_strategies:
+            return "None"
+        else:
+            active_names = [HYPOTHESIS_STRATEGIES[name].name for name in self.active_strategies]
+            return f"{len(active_names)} active: " + ", ".join(active_names[:2]) + ("..." if len(active_names) > 2 else "")
 
 # ---------------------------------------------------------------------
 # Helper functions (from argonium_score_parallel_v9.py)
@@ -751,6 +904,150 @@ def browse_abstracts_interface(stdscr, interface):
     stdscr.clear()
     interface.mark_dirty("all")
 
+def strategy_selection_interface(stdscr, interface):
+    """Interactive strategy selection interface"""
+    # Save original interface state
+    original_focus = interface.focus_pane
+    original_show_hallmarks = interface.show_hallmarks
+    original_show_references = interface.show_references
+    
+    # Clear screen
+    stdscr.clear()
+    height, width = stdscr.getmaxyx()
+    
+    selection_mode = True
+    current_selection = 0
+    scroll_offset = 0
+    
+    # Get all strategies as a list for navigation
+    strategy_items = list(HYPOTHESIS_STRATEGIES.items())
+    
+    while selection_mode:
+        try:
+            # Clear and prepare screen
+            stdscr.clear()
+            
+            # Header
+            header_text = "HYPOTHESIS GENERATION STRATEGIES"
+            stdscr.addstr(1, (width - len(header_text)) // 2, header_text, curses.A_BOLD)
+            
+            current_status = interface.strategy_manager.get_status_text()
+            status_text = f"Current: {current_status}"
+            stdscr.addstr(2, (width - len(status_text)) // 2, status_text)
+            
+            # Instructions
+            instructions = [
+                "Press number keys (0-9) to toggle strategies | d=Default | ENTER=Apply | ESC/q=Cancel"
+            ]
+            for i, instruction in enumerate(instructions):
+                try:
+                    stdscr.addstr(4 + i, (width - len(instruction)) // 2, instruction)
+                except curses.error:
+                    pass
+            
+            # Strategy list
+            list_start_y = 6
+            visible_height = height - list_start_y - 3
+            
+            # Display strategies
+            for i, (strategy_name, strategy) in enumerate(strategy_items):
+                if i < scroll_offset:
+                    continue
+                if i - scroll_offset >= visible_height:
+                    break
+                    
+                y_pos = list_start_y + (i - scroll_offset)
+                
+                # Check if strategy is active
+                is_active = strategy_name in interface.strategy_manager.active_strategies
+                is_default = interface.strategy_manager.default_mode
+                
+                # Status indicator
+                if is_default:
+                    status = " [DEFAULT] "
+                    status_attr = curses.A_BOLD
+                elif is_active:
+                    status = " [ACTIVE] "
+                    status_attr = curses.color_pair(3)  # Green
+                else:
+                    status = " [OFF] "
+                    status_attr = curses.A_DIM
+                
+                # Highlight current selection
+                if i == current_selection:
+                    line_attr = curses.A_REVERSE
+                else:
+                    line_attr = curses.A_NORMAL
+                
+                # Strategy line
+                strategy_line = f"{strategy.key}. {strategy.name}: {strategy.description}"
+                if len(strategy_line) > width - 20:
+                    strategy_line = strategy_line[:width-23] + "..."
+                
+                try:
+                    stdscr.addstr(y_pos, 2, strategy_line, line_attr)
+                    stdscr.addstr(y_pos, width - 12, status, status_attr)
+                except curses.error:
+                    pass
+            
+            # Footer
+            footer_y = height - 2
+            try:
+                stdscr.addstr(footer_y, 2, f"Strategies: {len(interface.strategy_manager.active_strategies)} active")
+            except curses.error:
+                pass
+            
+            stdscr.refresh()
+            
+            # Handle input
+            key = stdscr.getch()
+            
+            if key == 27 or key == ord('q') or key == ord('Q'):  # ESC or Q to cancel
+                selection_mode = False
+                
+            elif key == ord('\n') or key == curses.KEY_ENTER or key == 10:  # Apply changes
+                selection_mode = False
+                interface.set_status(f"Strategy settings applied: {interface.strategy_manager.get_status_text()}")
+                
+            elif key == ord('d') or key == ord('D'):  # Default mode
+                interface.strategy_manager.set_default_mode(True)
+                interface.set_status("Set to default hypothesis generation mode")
+                
+            elif key == curses.KEY_UP:
+                if current_selection > 0:
+                    current_selection -= 1
+                    if current_selection < scroll_offset:
+                        scroll_offset = current_selection
+                        
+            elif key == curses.KEY_DOWN:
+                if current_selection < len(strategy_items) - 1:
+                    current_selection += 1
+                    if current_selection >= scroll_offset + visible_height:
+                        scroll_offset = current_selection - visible_height + 1
+                        
+            elif ord('0') <= key <= ord('9'):  # Number keys to toggle strategies
+                strategy_key = chr(key)
+                if interface.strategy_manager.toggle_strategy(strategy_key):
+                    # Find and update current selection to the toggled strategy
+                    for i, (_, strategy) in enumerate(strategy_items):
+                        if strategy.key == strategy_key:
+                            current_selection = i
+                            break
+                
+        except curses.error:
+            pass  # Ignore display errors
+        except KeyboardInterrupt:
+            selection_mode = False
+    
+    # Restore original interface state
+    interface.focus_pane = original_focus
+    interface.show_hallmarks = original_show_hallmarks
+    interface.show_references = original_show_references
+    
+    # Clear screen and force full redraw
+    stdscr.clear()
+    interface.mark_dirty("all")
+
 def score_hypothesis_hallmarks(hypothesis, model_config):
     """Score hypothesis hallmarks on a 1-5 scale using AI evaluation"""
     try:
@@ -1186,6 +1483,9 @@ class CursesInterface:
         # Initialize TaskQueue for background operations
         self.task_queue = TaskQueue(max_workers=3)
         self.task_queue.start()
+        
+        # Initialize Hypothesis Strategy Manager
+        self.strategy_manager = HypothesisStrategyManager()
         
     def start_status_refresh_thread(self):
         """Start background thread to refresh status display"""
@@ -1873,13 +2173,14 @@ class CursesInterface:
         else:
             display_status = self.get_current_status()
         
-        # Status message
-        status_line = f" Status: {display_status}"
+        # Status message with strategy info
+        strategy_status = self.strategy_manager.get_status_text()
+        status_line = f" Status: {display_status} | Strategy: {strategy_status}"
         self.safe_addstr(self.status_win, 0, 0, status_line)
         
         # Commands - show on two lines if needed
-        commands_line1 = " f=Feedback n=New l=Load x=Save t=Notes s=Select v=View h=Toggle r=Refs a=Papers u=Update b=Browse c=Score p=PDF q=Quit "
-        commands_line2 = " Up/Down=Navigate j/k=Scroll d/u=FastScroll "
+        commands_line1 = " f=Feedback n=New l=Load x=Save t=Notes s=Select v=View h=Toggle r=Refs a=Papers u=Update b=Browse c=Score w=Strategy p=PDF q=Quit "
+        commands_line2 = " Up/Down=Navigate j/k=Scroll d/u=FastScroll g=Home "
         
         # Try to fit both lines, otherwise just show main commands
         if len(commands_line1) + len(status_line) < self.width:
@@ -1892,7 +2193,7 @@ class CursesInterface:
                 self.safe_addstr(self.status_win, 1, cmd2_start_x, commands_line2)
         else:
             # Shortened version for narrow terminals
-            commands_short = " f=Feedback n=New a=Papers u=Update b=Browse c=Score p=PDF q=Quit j/k=Scroll "
+            commands_short = " f=Feedback n=New a=Papers u=Update b=Browse c=Score w=Strategy p=PDF q=Quit j/k=Scroll "
             cmd_start_x = max(0, self.width - len(commands_short))
             if cmd_start_x > len(status_line):
                 self.safe_addstr(self.status_win, 0, cmd_start_x, commands_short)
@@ -2549,7 +2850,7 @@ def load_model_config(model_shortname, config_path=None):
     giveup=lambda e: "Invalid authentication" in str(e),
     max_time=300
 )
-def generate_hypotheses(research_goal, config, num_hypotheses=5):
+def generate_hypotheses(research_goal, config, num_hypotheses=5, strategy_manager=None):
     """
     Generate scientific hypotheses based on a research goal.
     Returns a list of hypothesis objects.
@@ -2561,6 +2862,7 @@ def generate_hypotheses(research_goal, config, num_hypotheses=5):
         research_goal (str): The research goal or question
         config (dict): Configuration for the model API
         num_hypotheses (int): Number of hypotheses to generate
+        strategy_manager (HypothesisStrategyManager): Optional strategy manager for enhanced generation
     """
     # Configure the OpenAI client
     api_key = config['api_key']
@@ -2628,6 +2930,8 @@ Please format your response as a JSON array where each hypothesis is an object w
 }}
 
 Ensure each hypothesis is substantively different from the others and explores unique aspects or approaches to the research goal.
+
+{strategy_manager.get_strategy_prompt_additions() if strategy_manager else ""}
 """
     
     try:
@@ -2981,7 +3285,7 @@ def get_user_feedback(all_hypotheses=None, current_hypothesis=None):
     giveup=lambda e: "Invalid authentication" in str(e),
     max_time=300
 )
-def improve_hypothesis(research_goal, current_hypothesis, user_feedback, config):
+def improve_hypothesis(research_goal, current_hypothesis, user_feedback, config, strategy_manager=None):
     """
     Improve a hypothesis based on user feedback.
     
@@ -2990,6 +3294,7 @@ def improve_hypothesis(research_goal, current_hypothesis, user_feedback, config)
         current_hypothesis (dict): The current hypothesis to improve
         user_feedback (str): User feedback for improvement
         config (dict): Configuration for the model API
+        strategy_manager (HypothesisStrategyManager): Optional strategy manager for enhanced generation
         
     Returns:
         dict: Improved hypothesis object
@@ -3049,6 +3354,8 @@ Please format your response as a JSON object with the following structure:
   ],
   "improvements_made": "Brief explanation of what specific changes were made based on the user feedback"
 }}
+
+{strategy_manager.get_strategy_prompt_additions() if strategy_manager else ""}
 """
     
     try:
@@ -3352,7 +3659,7 @@ Please format your response as a JSON object with the following structure:
     giveup=lambda e: "Invalid authentication" in str(e),
     max_time=300
 )
-def generate_new_hypothesis(research_goal, previous_hypotheses, config):
+def generate_new_hypothesis(research_goal, previous_hypotheses, config, strategy_manager=None):
     """
     Generate a new hypothesis that is different from previous ones.
     
@@ -3360,6 +3667,7 @@ def generate_new_hypothesis(research_goal, previous_hypotheses, config):
         research_goal (str): The research goal or question
         previous_hypotheses (list): List of previously generated hypotheses
         config (dict): Configuration for the model API
+        strategy_manager (HypothesisStrategyManager): Optional strategy manager for enhanced generation
         
     Returns:
         dict: New hypothesis object
@@ -3401,6 +3709,8 @@ Your new hypothesis should:
 3. Be original, testable, and provide new insights into the research area
 4. Still be relevant and valuable for addressing the research goal
 5. Include relevant scientific references that support the new hypothesis (3-5 references minimum)
+
+{strategy_manager.get_strategy_prompt_additions() if strategy_manager else ""}
 
 Please format your response as a JSON object with the following structure:
 {{
@@ -4065,7 +4375,7 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                                 # Process improvement using TaskQueue
                                 def improve_task():
                                     return improve_hypothesis(
-                                        research_goal, current_hypothesis, feedback_input.strip(), model_config
+                                        research_goal, current_hypothesis, feedback_input.strip(), model_config, interface.strategy_manager
                                     )
                                 
                                 def improve_callback(task):
@@ -4188,7 +4498,7 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                             
                             # Generate new hypothesis using TaskQueue
                             def generate_task():
-                                return generate_new_hypothesis(research_goal, all_hypotheses, model_config)
+                                return generate_new_hypothesis(research_goal, all_hypotheses, model_config, interface.strategy_manager)
                             
                             def generate_callback(task):
                                 try:
@@ -4453,6 +4763,13 @@ def curses_hypothesis_session(stdscr, research_goal, model_config, initial_hypot
                             interface.clear_status_on_action()
                             browse_abstracts_interface(stdscr, interface)
                             # Force full redraw after returning from abstract browser
+                            interface.mark_dirty("all")
+                            
+                        elif key == ord('w') or key == ord('W'):
+                            # Hypothesis generation strategies selection
+                            interface.clear_status_on_action()
+                            strategy_selection_interface(stdscr, interface)
+                            # Force full redraw after returning from strategy selection
                             interface.mark_dirty("all")
                             
                         elif key == ord('a') or key == ord('A'):
